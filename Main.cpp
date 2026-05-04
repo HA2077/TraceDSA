@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Stack/Stack as array.cpp"
 #include "Queue/Queue as array.cpp"
+#include "LinkedList/DoublyLinkedList.cpp"
+#include "ArrayList/ArrayList.h"
 using namespace std;
 
 int main(){
