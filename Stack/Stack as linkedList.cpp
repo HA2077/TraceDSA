@@ -11,19 +11,19 @@ This module implements the Stack (INT NUMBERS ONLY) DS using a linked list the c
 (LIFO)
 */
 
-struct Node{
+struct SNode{
     int data;
-    Node* next;
+    SNode* next;
 };
 
 class StackAsLinkedList{
     private:
-        Node* head = nullptr;
+        SNode* head = nullptr;
         int top = -1;
         int stacksize = 0;
     public:
         void push(int value){
-            Node* newnode = new Node();
+            SNode* newnode = new SNode();
             if (head == nullptr){
                 newnode->data = value;
                 newnode->next = nullptr;
@@ -46,7 +46,7 @@ class StackAsLinkedList{
             cout << "The stack is empty, Push an element first!" << endl;
             return;
             }
-            Node* ptr = head;
+            SNode* ptr = head;
             head = head->next;
             delete (ptr);
             stacksize--;
@@ -66,7 +66,7 @@ class StackAsLinkedList{
                 return;
             }
             cout << "Your Stack: " << endl;
-            Node* ptr = head;
+            SNode* ptr = head;
             cout << "Head -> ";
             for (int i = 0;i < stacksize;++i){
                 cout << ptr->data << " -> ";

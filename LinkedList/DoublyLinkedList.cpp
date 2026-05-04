@@ -1,16 +1,16 @@
 #include <iostream>
 using namespace std;
 
-struct Node {
+struct DNode {
     int data;
-    Node* next;
-    Node* prev;
+    DNode* next;
+    DNode* prev;
 };
 
 class DoublyLinkedList{
 private:
-    Node* head;
-    Node* tail;
+    DNode* head;
+    DNode* tail;
     int listSize = 0;
 public:
     DoublyLinkedList(){
@@ -19,7 +19,7 @@ public:
     }
 
     void insertAtTheStart(int value){
-        Node* newNode = new Node();
+        DNode* newNode = new DNode();
         newNode->data = value;
         newNode->next = head;
         newNode->prev = nullptr;
@@ -36,7 +36,7 @@ public:
     }
 
     void insertAtTheEnd(int value){
-            Node* newNode = new Node();
+            DNode* newNode = new DNode();
             newNode->data = value;
             newNode->next = nullptr;
             newNode->prev = tail;
@@ -61,7 +61,7 @@ public:
             return;
         }
 
-        Node* ptr = head;
+        DNode* ptr = head;
         if (head == tail){
             head = nullptr;
             tail = nullptr;
@@ -91,7 +91,7 @@ public:
             return;
         }
 
-        Node* ptr = tail;
+        DNode* ptr = tail;
         tail = tail->prev;
         tail->next = nullptr;
         delete ptr;
@@ -111,7 +111,7 @@ public:
                 tail = nullptr;
             } 
             else{
-                Node* ptr = head;
+                DNode* ptr = head;
                 head = head->next;
                 head->prev = nullptr;
                 delete ptr;
@@ -121,7 +121,7 @@ public:
             return;
         }
         
-        Node* ptr = head;
+        DNode* ptr = head;
         while (ptr != nullptr && ptr->data != value)
             ptr = ptr->next;
         
@@ -152,7 +152,7 @@ public:
         cout << "Your Doubly Linked List: " << endl;
         cout << "Forward: ";
         cout << "Head <-> ";
-        Node* ptr = head;
+        DNode* ptr = head;
         for (int i = 0; i < listSize; ++i){
             cout << ptr->data << " <-> ";
             ptr = ptr->next;

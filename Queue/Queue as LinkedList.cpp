@@ -1,9 +1,9 @@
 #include <iostream>
 using namespace std;
 
-struct Node{
+struct LNode{
     int data;
-    Node* next;
+    LNode* next;
 };
 
 /*
@@ -18,14 +18,14 @@ OPs:
 
 class QueueAsLinkedList{
     private:
-        Node* head;
+        LNode* head;
         int listSize = 0;
     public:
         QueueAsLinkedList(){
             head = nullptr;
         }
         void Enqueue(int value){
-            Node* newNode = new Node();
+            LNode* newNode = new LNode();
             newNode->data = value;
             newNode->next = nullptr;
 
@@ -35,7 +35,7 @@ class QueueAsLinkedList{
                 cout << "Inserted: " << value << " at the end of the Queue." << endl;
                 return;
             }
-            Node* ptr = head;
+            LNode* ptr = head;
             while (ptr->next != nullptr)
                 ptr = ptr->next;
             ptr->next = newNode;
@@ -47,7 +47,7 @@ class QueueAsLinkedList{
                 cout << "The Queue is empty, Insert an element first!" << endl;
                 return;
             }
-            Node* ptr = head;
+            LNode* ptr = head;
             head = head->next;
             delete ptr;
             listSize--;
@@ -59,7 +59,7 @@ class QueueAsLinkedList{
                 return;
             }
             cout << "Your Queue: " << endl;
-            Node* ptr = head;
+            LNode* ptr = head;
             cout << "Head -> ";
             for (int i = 0;i < listSize;++i){
                 cout << ptr->data << " -> ";
