@@ -6,6 +6,8 @@
 #include "LinkedList/LinkedList.cpp"
 #include "LinkedList/DoublyLinkedList.cpp"
 #include "ArrayList/ArrayList.h"
+#include "BST/BST.h"
+#include "PriorityQueue/Heap.h"
 using namespace std;
 
 int main(){
@@ -141,6 +143,52 @@ int main(){
     al.print();
     
     cout << "Size: " << al.getSize() << ", Capacity: " << al.getCapacity() << endl;
+    
+    // ==================== PRIORITY QUEUE (HEAP) ====================
+    cout << "\n\n=== TESTING PRIORITY QUEUE (HEAP) ===" << endl;
+    Heap pq;
+    
+    // Test Min-Heap
+    cout << "\n--- Testing Min-Heap ---" << endl;
+    int values[] = {50, 30, 70, 20, 40, 60, 80};
+    for (int value : values) {
+        pq.enqueue(value);
+        cout << "Enqueued: " << value << endl;
+    }
+    
+    pq.displayMinHeap();
+    cout << "Peek (min): " << pq.peekMin() << endl;
+    cout << "Size: " << pq.getSize() << endl;
+    
+    cout << "\nDequeuing elements in order:" << endl;
+    while (!pq.isEmpty()) {
+        cout << "Dequeued: " << pq.dequeueMin() << endl;
+    }
+    
+    // Test Max-Heap
+    cout << "\n--- Testing Max-Heap ---" << endl;
+    for (int value : values) {
+        pq.enqueueMax(value);
+        cout << "Enqueued: " << value << endl;
+    }
+    
+    pq.displayMaxHeap();
+    cout << "Peek (max): " << pq.peekMax() << endl;
+    cout << "Size: " << pq.getSize() << endl;
+    
+    cout << "\nDequeuing elements in order (highest priority first):" << endl;
+    while (!pq.isEmpty()) {
+        cout << "Dequeued: " << pq.dequeueMax() << endl;
+    }
+    
+    // Test clearing
+    cout << "\n--- Testing Clear ---" << endl;
+    for (int value : values) {
+        pq.enqueue(value);
+    }
+    pq.displayMinHeap();
+    pq.clear();
+    cout << "Is empty after clear: " << (pq.isEmpty() ? "true" : "false") << endl;
     
     cout << "\n\n===============================================" << endl;
     cout << "       ALL TESTS COMPLETED SUCCESSFULLY      " << endl;

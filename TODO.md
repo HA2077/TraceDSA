@@ -11,7 +11,7 @@
 - [x] ArrayList - Dynamic array with manual resizing
 - [x] DoublyLinkedList - Bidirectional traversal
 - [x] BST - Binary Search Tree with traversals
-- [ ] PriorityQueue - Binary heap implementation
+- [x] PriorityQueue - Binary heap implementation
 ---
 ## Code Improvements (Future)
 - Template classes for generic types
@@ -30,5 +30,5 @@
 3. ArrayList
 4. DoublyLinkedList
 5. BST
-7. PriorityQueue
+6. PriorityQueue
 ---

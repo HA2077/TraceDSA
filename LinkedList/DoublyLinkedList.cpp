@@ -125,9 +125,10 @@ public:
         while (ptr != nullptr && ptr->data != value)
             ptr = ptr->next;
         
-        if (ptr == nullptr)
+        if (ptr == nullptr){
             cout << "Value: " << value << " not found in the list." << endl;
             return;
+        }
         
         if (ptr == tail){
             tail = tail->prev;
