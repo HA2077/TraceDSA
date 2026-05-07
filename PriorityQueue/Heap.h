@@ -3,6 +3,7 @@
 
 #include "../ArrayList/ArrayList.h"
 #include <iostream>
+#include <string>
 
 class Heap{
 private:
@@ -24,13 +25,13 @@ public:
     int dequeueMax();                  
     int peekMax() const;               
     
-    // Utility methods
-    void displayMinHeap() const;       // Display as Min-Heap
-    void displayMaxHeap() const;       // Display as Max-Heap
+    // Utility methods - now return strings for TUI
+    std::string toStringMinHeap() const;       // Display as Min-Heap
+    std::string toStringMaxHeap() const;       // Display as Max-Heap
     bool isEmpty() const;
     int getSize() const;
     void clear();
 };
 
 #include "Heap.cpp"
-#endif
+#endif // HEAP_H

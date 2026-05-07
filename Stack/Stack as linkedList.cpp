@@ -1,5 +1,6 @@
 #include <iostream>
 #include "StackAsLinkedList.h"
+#include <sstream>
 using namespace std;
 
 /*
@@ -8,7 +9,7 @@ This module implements the Stack (INT NUMBERS ONLY) DS using a linked list the c
 1. push: to add an element to the top of the stack.
 2. pop: to remove the top element from the stack.
 3. peek: to return the top element without removing it.
-4. printStack: to print the elements in the stack, the stack size and the top element.
+4. toString: to return a string representation of the stack (for TUI).
 (LIFO)
 */
 
@@ -53,19 +54,22 @@ int StackAsLinkedList::peek(){
     return top;
 }
 
-void StackAsLinkedList::printStack(){
+std::string StackAsLinkedList::toString(){
     if (head == nullptr){
-        cout << "The Stack is empty." << endl;
-        return;
+        return "Stack: [empty]";
     }
-    cout << "Your Stack: " << endl;
+    
+    std::string result = "Stack: [";
     SNode* ptr = head;
-    cout << "Head -> ";
     for (int i = 0;i < stacksize;++i){
-        cout << ptr->data << " -> ";
+        std::ostringstream oss;
+        oss << ptr->data;
+        result += oss.str();
+        if (i < stacksize - 1){
+            result += " -> ";
+        }
         ptr = ptr->next;
     }
-    cout << "NULL" << endl;
-    cout << "Stack size: " << stacksize << endl;
-    cout << endl;
+    result += "]";
+    return result;
 }

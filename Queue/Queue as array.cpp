@@ -8,7 +8,7 @@ MADE BY: HA
 This module implements the Queue (INT NUMBERS ONLY) DS using ArrayList the class got 3 methods:
 1. Enqueue: to add the item in the queue.
 2. Dequeue: to remove the first item enqueued in the queue.
-3. Display: to print the elements of the queue.
+3. toString: to return a string representation of the queue (for TUI).
 (FIFO)
 */
 
@@ -27,14 +27,17 @@ void Queue::Dequeue(){
     cout << "Removed Element " << Relement << " From the queue." << endl;
 }
 
-void Queue::Display(){
+std::string Queue::toString(){
     if (Queuearr.getSize() == 0){
-        cout << "The queue is empty. Enqueue an element." << endl;
-        return;
+        return "Queue: [empty]";
     }
-    cout << "The current queue: ";
+    std::string result = "Queue: [";
     for(int i = 0;i < Queuearr.getSize();++i){
-        cout << Queuearr.get(i) << " ";
+        result += std::to_string(Queuearr.get(i));
+        if (i < Queuearr.getSize() - 1){
+            result += " ";
+        }
     }
-    cout << endl;
+    result += "]";
+    return result;
 }

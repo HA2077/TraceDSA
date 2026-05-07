@@ -34,17 +34,18 @@ void CircularQueue::Dequeue(){
     Qsize--;
 }
 
-void CircularQueue::Display(){
+std::string CircularQueue::tostring(){
     if (Qsize == 0){
-        cout << "The queue is empty. Enqueue an element." << endl;
-        return;
+        return "Queue: [empty]";
     }
     int checker = Front;
-    cout << "The current queue: ";
+    std::string result = "Queue: [";
     for(int i = 0;i < Qsize;++i){
         if (checker == 10)
                 checker = 0;
-            cout << Queuearr[checker] << " ";
+            result += std::to_string(Queuearr[checker]) + " ";
             checker++;
         }
-}
+        result += "]";
+        return result;
+    }

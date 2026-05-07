@@ -1,5 +1,6 @@
 #include <iostream>
 #include "QueueAsLinkedList.h"
+#include <sstream>
 using namespace std;
 
 /*
@@ -7,7 +8,7 @@ MADE BY: HA
 This module implements the Queue (INT NUMBERS ONLY) DS using a linked list the class got 3 methods:
 1. Enqueue: to add the item in the queue.
 2. Dequeue: to remove the first item enqueued in the queue.
-3. Display: to print the elements of the queue.
+3. toString: to return a string representation of the queue (for TUI).
 (FIFO)
 */
 
@@ -46,19 +47,21 @@ void QueueAsLinkedList::Dequeue(){
     cout << "Deleted the first element from the Queue." << endl;
 }
 
-void QueueAsLinkedList::printList(){
+std::string QueueAsLinkedList::toString(){
     if (head == nullptr){
-        cout << "The Queue is empty." << endl;
-        return;
+        return "Queue: [empty]";
     }
-    cout << "Your Queue: " << endl;
+    std::string result = "Queue: [";
     LNode* ptr = head;
-    cout << "Head -> ";
     for (int i = 0;i < listSize;++i){
-        cout << ptr->data << " -> ";
+        std::ostringstream oss;
+        oss << ptr->data;
+        result += oss.str();
+        if (i < listSize - 1){
+            result += " -> ";
+        }
         ptr = ptr->next;
     }
-    cout << "NULL" << endl;
-    cout << "Queue size: " << listSize << endl;
-    cout << endl;
+    result += "]";
+    return result;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../ArrayList/ArrayList.h"
+#include <string>
 
 class Stack{
 private:
@@ -14,7 +15,7 @@ public:
     void push(int value);
     void pop();
     int peek();
-    void printStack();
+    std::string toString();
 };
 
 #include "Stack as array.cpp"

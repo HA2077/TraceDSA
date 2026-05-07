@@ -1,5 +1,6 @@
 #include "DoublyLinkedList.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 DoublyLinkedList::DoublyLinkedList(){
@@ -133,30 +134,36 @@ void DoublyLinkedList::deleteWithVal(int value){
     cout << "Deleted: " << value << " from the list." << endl;
 }
 
-void DoublyLinkedList::printList(){
+std::string DoublyLinkedList::toString(){
     if (head == nullptr){
-        cout << "The list is empty." << endl;
-        return;
+        return "Doubly Linked List: [empty]";
     }
 
-    cout << "Your Doubly Linked List: " << endl;
-    cout << "Forward: ";
-    cout << "Head <-> ";
+    std::string result = "Doubly Linked List: Forward: [";
     DNode* ptr = head;
     for (int i = 0; i < listSize; ++i){
-        cout << ptr->data << " <-> ";
+        std::ostringstream oss;
+        oss << ptr->data;
+        result += oss.str();
+        if (i < listSize - 1){
+            result += " <-> ";
+        }
         ptr = ptr->next;
     }
-    cout << "NULL" << endl;
+    result += "]";
 
-    cout << "Backward: ";
-    cout << "NULL <-> ";
+    result += " Backward: [";
     ptr = tail;
     for (int i = 0; i < listSize; ++i){
-        cout << ptr->data << " <-> ";
+        std::ostringstream oss;
+        oss << ptr->data;
+        result += oss.str();
+        if (i < listSize - 1){
+            result += " <-> ";
+        }
         ptr = ptr->prev;
     }
-    cout << "Head" << endl;
-    cout << "List size: " << listSize << endl;
-    cout << endl;
+    result += "]";
+
+    return result;
 }

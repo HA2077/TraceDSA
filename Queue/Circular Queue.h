@@ -2,6 +2,7 @@
 #define CIRCULAR_QUEUE_H
 
 #include <iostream>
+#include <string>
 
 class CircularQueue{
 private:
@@ -10,7 +11,7 @@ private:
 public:
     void Enqueue(int value);
     void Dequeue();
-    void Display();
+    std::string tostring();
 };
 
 #include "Circular Queue.cpp"

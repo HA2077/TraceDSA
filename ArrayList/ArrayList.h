@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <sstream>
 
 template <typename T>
-class ArrayList{
+class ArrayList {
 private:
     T* data;
     int size;
@@ -30,8 +32,8 @@ public:
     void clear();
     
     // Utility methods
-    void print() const;
+    std::string toString() const;
 };
 
 #include "ArrayList.cpp"
-#endif 
+#endif // ARRAYLIST_H

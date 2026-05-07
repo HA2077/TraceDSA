@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../ArrayList/ArrayList.h"
+#include <string>
 
 class Queue{
 private:
@@ -10,7 +11,7 @@ private:
 public:
     void Enqueue(int value);
     void Dequeue();
-    void Display();
+    std::string toString();
 };
 
 #include "Queue as array.cpp"

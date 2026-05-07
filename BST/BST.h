@@ -2,6 +2,7 @@
 #define BST_H
 
 #include <iostream>
+#include <string>
 
 struct Tnode{
     int data;
@@ -18,9 +19,9 @@ private:
     Tnode* deleteHelper(Tnode* node, int value);
     Tnode* findHelper(Tnode* node, int value) const;
     Tnode* findMin(Tnode* node) const;
-    void preorderHelper(Tnode* node) const;
-    void postorderHelper(Tnode* node) const;
-    void inorderHelper(Tnode* node) const;
+    void preorderHelper(Tnode* node, std::string& result) const;
+    void postorderHelper(Tnode* node, std::string& result) const;
+    void inorderHelper(Tnode* node, std::string& result) const;
     void freeTree(Tnode* node);
 
 public:
@@ -32,10 +33,10 @@ public:
     void remove(int value);
     bool find(int value) const;
     
-    // Traversal methods
-    void preorder() const;
-    void postorder() const;
-    void inorder() const;
+    // Traversal methods returning strings for TUI
+    std::string preorder() const;
+    std::string postorder() const;
+    std::string inorder() const;
     
     // Utility methods
     bool isEmpty() const;
@@ -43,4 +44,4 @@ public:
 };
 
 #include "BST.cpp"
-#endif 
+#endif // BST_H

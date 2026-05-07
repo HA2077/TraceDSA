@@ -9,7 +9,7 @@ This module implements the Stack (INT NUMBERS ONLY) DS using a ArrayList the cla
 1. push: to add an element to the top of the stack.
 2. pop: to remove the top element from the stack.
 3. peek: to return the top element without removing it.
-4. printStack: to print the elements in the stack, the stack size and the top element.
+4. toString: to return a string representation of the stack (for TUI).
 (LIFO)
 */
 
@@ -45,12 +45,18 @@ int Stack::peek(){
     return top;
 }
 
-void Stack::printStack(){
-    cout << "Your Stack: " << endl;
-    for (int i = 0;i < stacksize;++i)
-        cout << stack.get(i) << " ";
-    cout << endl;
-    cout << "Stack size: " << stacksize << endl;
-    cout << "Top element: " << top << endl;
-    cout << endl;
+std::string Stack::toString(){
+    if (stacksize == 0){
+        return "Stack: [empty]";
+    }
+    
+    std::string result = "Stack: [";
+    for (int i = 0;i < stacksize;++i){
+        result += std::to_string(stack.get(i));
+        if (i < stacksize - 1){
+            result += " ";
+        }
+    }
+    result += "]";
+    return result;
 }

@@ -2,6 +2,7 @@
 #define STACKASLINKEDLIST_H
 
 #include <iostream>
+#include <string>
 
 struct SNode{
     int data;
@@ -17,8 +18,8 @@ public:
     void push(int value);
     void pop();
     int peek();
-    void printStack();
+    std::string toString();
 };
 
 #include "Stack as linkedList.cpp"
-#endif 
+#endif // STACKASLINKEDLIST_H

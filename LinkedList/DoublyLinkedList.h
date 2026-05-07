@@ -2,6 +2,7 @@
 #define DOUBLYLINKEDLIST_H
 
 #include <iostream>
+#include <string>
 
 struct DNode {
     int data;
@@ -21,7 +22,7 @@ public:
     void deleteAtTheStart();
     void deleteAtTheEnd();
     void deleteWithVal(int value);
-    void printList();
+    std::string toString();
 };
 
 #include "DoublyLinkedList.cpp"

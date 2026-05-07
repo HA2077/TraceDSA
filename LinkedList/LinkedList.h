@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include <iostream>
+#include <string>
 
 struct Node{
     int data;
@@ -19,7 +20,7 @@ public:
     void deleteAtTheStart();
     void deleteAtTheEnd();
     void deletewithval(int value);
-    void printList();
+    std::string toString();
 };
 
 #include "LinkedList.cpp"

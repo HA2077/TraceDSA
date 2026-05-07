@@ -1,5 +1,6 @@
 #include "LinkedList.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 /*
@@ -11,7 +12,7 @@ OPs:
 3. deleteAtTheStart: head poins to the next node and the first node is deleted.
 4. deleteAtTheEnd: the past node points to null and the last node is deleted.
 5. deletewithval: the past node points to the next node and the current node is deleted.
-6. printList: to print the elements in the list and the list size.
+6. toString: to return a string representation of the list (for TUI).
 */
 
 LinkedList::LinkedList(){
@@ -108,19 +109,22 @@ void LinkedList::deletewithval(int value){
     cout << "Deleted: " << value << " from the list." << endl;
 }
 
-void LinkedList::printList(){
+std::string LinkedList::toString(){
     if (head == nullptr){
-        cout << "The list is empty." << endl;
-        return;
+        return "List: [empty]";
     }
-    cout << "Your List: " << endl;
+    
+    std::string result = "List: [";
     Node* ptr = head;
-    cout << "Head -> ";
     for (int i = 0;i < listSize;++i){
-        cout << ptr->data << " -> ";
+        std::ostringstream oss;
+        oss << ptr->data;
+        result += oss.str();
+        if (i < listSize - 1){
+            result += " -> ";
+        }
         ptr = ptr->next;
     }
-    cout << "NULL" << endl;
-    cout << "List size: " << listSize << endl;
-    cout << endl;
+    result += "]";
+    return result;
 }

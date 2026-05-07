@@ -75,27 +75,30 @@ Tnode* BST::findMin(Tnode* node) const {
     return node;
 }
 
-void BST::preorderHelper(Tnode* node) const {
+void BST::preorderHelper(Tnode* node, string& result) const {
     if (node != nullptr) {
-        cout << node->data << " ";
-        preorderHelper(node->left);
-        preorderHelper(node->right);
+        result += to_string(node->data);
+        result += " ";
+        preorderHelper(node->left, result);
+        preorderHelper(node->right, result);
     }
 }
 
-void BST::postorderHelper(Tnode* node) const{
+void BST::postorderHelper(Tnode* node, string& result) const{
     if (node != nullptr) {
-        postorderHelper(node->left);
-        postorderHelper(node->right);
-        cout << node->data << " ";
+        postorderHelper(node->left, result);
+        postorderHelper(node->right, result);
+        result += to_string(node->data);
+        result += " ";
     }
 }
 
-void BST::inorderHelper(Tnode* node) const {
+void BST::inorderHelper(Tnode* node, string& result) const {
     if (node != nullptr){
-        inorderHelper(node->left);
-        cout << node->data << " ";
-        inorderHelper(node->right);
+        inorderHelper(node->left, result);
+        result += to_string(node->data);
+        result += " ";
+        inorderHelper(node->right, result);
     }
 }
 
@@ -139,34 +142,34 @@ bool BST::find(int value) const {
     }
 }
 
-void BST::preorder() const {
+string BST::preorder() const {
     if (isEmpty()) {
-        cout << "The BST is empty. Insert some values first!" << endl;
-        return;
+        return "Pre-order: [empty]";
     }
-    cout << "Pre-order traversal: ";
-    preorderHelper(root);
-    cout << endl;
+    string result = "Pre-order: [";
+    preorderHelper(root, result);
+    result += "]";
+    return result;
 }
 
-void BST::postorder() const {
+string BST::postorder() const {
     if (isEmpty()) {
-        cout << "The BST is empty. Insert some values first!" << endl;
-        return;
+        return "Post-order: [empty]";
     }
-    cout << "Post-order traversal: ";
-    postorderHelper(root);
-    cout << endl;
+    string result = "Post-order: [";
+    postorderHelper(root, result);
+    result += "]";
+    return result;
 }
 
-void BST::inorder() const {
+string BST::inorder() const {
     if (isEmpty()) {
-        cout << "The BST is empty. Insert some values first!" << endl;
-        return;
+        return "In-order: [empty]";
     }
-    cout << "In-order traversal: ";
-    inorderHelper(root);
-    cout << endl;
+    string result = "In-order: [";
+    inorderHelper(root, result);
+    result += "]";
+    return result;
 }
 
 bool BST::isEmpty() const{

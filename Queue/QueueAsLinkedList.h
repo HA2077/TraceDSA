@@ -2,6 +2,7 @@
 #define QUEUEASLINKEDLIST_H
 
 #include <iostream>
+#include <string>
 
 struct LNode{
     int data;
@@ -16,7 +17,7 @@ public:
     QueueAsLinkedList();
     void Enqueue(int value);
     void Dequeue();
-    void printList();
+    std::string toString();
 };
 
 #include "Queue as LinkedList.cpp"

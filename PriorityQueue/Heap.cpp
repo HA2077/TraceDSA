@@ -1,5 +1,6 @@
 #include "Heap.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 /*
@@ -8,7 +9,7 @@ This module implements the Priority Queue (Heap) DS with both Min-Heap and Max-H
 1. Enqueue/EnqueueMax: inserting a value in the heap (Min-Heap or Max-Heap)
 2. DequeueMin/DequeueMax: removing the highest priority value from the heap
 3. PeekMin/PeekMax: Getting the highest priority value without removing it
-4. DisplayMinHeap/DisplayMaxHeap: Printing the elements in the heap
+4. toStringMinHeap/toStringMaxHeap: returning a string representation of the heap (for TUI)
 */
 
 // Helper method to swap values in the heap array
@@ -144,26 +145,36 @@ int Heap::peekMax() const {
 }
 
 // Utility Methods
-void Heap::displayMinHeap() const{
+string Heap::toStringMinHeap() const{
     if (heap.getSize() == 0) {
-        cout << "Heap is empty!" << endl;
-        return;
+        return "Min-Heap: [empty]";
     }
-    cout << "Min-Heap: ";
-    for (int i = 0; i < heap.getSize(); ++i)
-        cout << heap.get(i) << " ";
-    cout << endl;
+    string result = "Min-Heap: [";
+    for (int i = 0; i < heap.getSize(); ++i){
+        std::ostringstream oss;
+        oss << heap.get(i);
+        result += oss.str();
+        if (i < heap.getSize() - 1)
+            result += " ";
+    }
+    result += "]";
+    return result;
 }
 
-void Heap::displayMaxHeap() const {
+string Heap::toStringMaxHeap() const {
     if (heap.getSize() == 0) {
-        cout << "Heap is empty!" << endl;
-        return;
+        return "Max-Heap: [empty]";
     }
-    cout << "Max-Heap: ";
-    for (int i = 0; i < heap.getSize(); ++i)
-        cout << heap.get(i) << " ";
-    cout << endl;
+    string result = "Max-Heap: [";
+    for (int i = 0; i < heap.getSize(); ++i){
+        std::ostringstream oss;
+        oss << heap.get(i);
+        result += oss.str();
+        if (i < heap.getSize() - 1)
+            result += " ";
+    }
+    result += "]";
+    return result;
 }
 
 bool Heap::isEmpty() const {

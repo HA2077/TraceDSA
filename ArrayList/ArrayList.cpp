@@ -12,7 +12,7 @@ Array List implemention with dynamic resizing, the class got 10 methods:
 7. getCapacity(): to return the current capacity of the list.
 8. isEmpty(): to check if the list is empty.
 9. clear(): to remove all elements from the list.
-10. print(): to print the elements in the list along with its size and capacity.
+10. toString(): to return a string representation of the list (for TUI).
 */
 
 template <typename T>
@@ -148,15 +148,22 @@ void ArrayList<T>::clear(){
 }
 
 template <typename T>
-void ArrayList<T>::print() const {
-    std::cout << "[";
+std::string ArrayList<T>::toString() const {
+    if (size == 0){
+        return "[]";
+    }
+    
+    std::string result = "[";
     for (int i = 0; i < size; i++) {
-        std::cout << data[i];
+        std::ostringstream oss;
+        oss << data[i];
+        result += oss.str();
         if (i < size - 1) {
-            std::cout << ", ";
+            result += ", ";
         }
     }
-    std::cout << "] (size: " << size << ", capacity: " << capacity << ")" << std::endl;
+    result += "]";
+    return result;
 }
 
 // Explicit instantiation for common types if needed
