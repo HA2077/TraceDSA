@@ -2,15 +2,6 @@
 #include "../ArrayList/ArrayList.h"
 using namespace std;
 
-/*
-MADE BY: HA
-This module implements the Queue (INT NUMBERS ONLY) DS using ArrayList the class got 3 methods:
-1. Enqueue: to add the item in the queue.
-2. Dequeue: to remove the first item enqueued in the queue.
-3. Display: to print the elements of the queue.
-(FIFO)
-*/
-
 class Queue{
     private:
         ArrayList<int> Queuearr;

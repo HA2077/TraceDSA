@@ -6,16 +6,6 @@ struct LNode{
     LNode* next;
 };
 
-/*
-MADE BY: HA
-This module implements the Queue (INT NUMBERS ONLY) DS using a linked list the class got 3 methods:
-OPs:
-1. Enqueue: New node and the pointer is null.
-2. Dequeue: head points to the next node and the first node is deleted.
-3. printList: to print the elements in the list and the list size.
-(FIFO)
-*/
-
 class QueueAsLinkedList{
     private:
         LNode* head;

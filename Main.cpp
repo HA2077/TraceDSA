@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Stack/Stack as array.cpp"
-#include "Stack/Stack as linkedList.cpp"
+#include "Stack/Stack.h"
+#include "Stack/StackAsLinkedList.h"
 #include "Queue/Queue as array.cpp"
 #include "Queue/Queue as LinkedList.cpp"
 #include "LinkedList/LinkedList.cpp"
