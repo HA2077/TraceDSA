@@ -9,8 +9,8 @@
 - [x] QueueLL - Queue using linked list (FIFO)
 ### Phase 2: Additional Data Structures
 - [x] ArrayList - Dynamic array with manual resizing
-- [ ] DoublyLinkedList - Bidirectional traversal
-- [ ] BST - Binary Search Tree with traversals
+- [x] DoublyLinkedList - Bidirectional traversal
+- [x] BST - Binary Search Tree with traversals
 - [ ] PriorityQueue - Binary heap implementation
 ---
 ## Code Improvements (Future)

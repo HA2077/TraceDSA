@@ -5,15 +5,15 @@
 
 * **Stack:** Implemented using a custom `ArrayList` (LIFO). Includes manual boundary checking to ensure stability during `pop` operations.
 * **Queue:** Implemented using a custom `ArrayList` (FIFO). Utilizes dynamic resizing to eliminate fixed-size limitations.
-* **Circular Queue:** implementation using a fixed-size array (FIFO). Utilizes modulo arithmetic `(Front + Qsize) % 10` to manage wrap-around logic.
 * **Singly Linked List:** Built using custom `Node` structs and `nullptr` for modern memory safety (C++23 standard). Supports insertion and deletion at both ends and by specific value.
+* **Binary Search Tree (BST):** Implemented with insert, remove, find operations and three traversal methods (Pre-order, In-order, Post-order).
 
 ## 🛠️ Extended Roadmap
 
 As the semester progresses, the following structures will be implemented in sync with the course syllabus:
 
 - [x] **ArrayList:** Manual implementation of a dynamic array (resizing logic).
-- [ ] **Trees:** Binary Search Trees (BST) and traversal algorithms (In-order, Pre-order, Post-order).
+- [x] **Trees:** Binary Search Trees (BST) and traversal algorithms (In-order, Pre-order, Post-order).
 - [ ] **Priority Queues:** Implementation using Heaps.
 - [ ] **Unified TUI:** A Terminal User Interface for real-time visualization of data states.
     * *Note: Still evaluating whether to use Python for the TUI wrapper or keep it pure C++.*
