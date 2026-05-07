@@ -1,10 +1,6 @@
+#include "LinkedList.h"
 #include <iostream>
 using namespace std;
-
-struct Node{
-    int data;
-    Node* next;
-};
 
 /*
 MADE BY: HA
@@ -18,113 +14,113 @@ OPs:
 6. printList: to print the elements in the list and the list size.
 */
 
-class LinkedList{
-    private:
-        Node* head;
-        int listSize = 0;
-    public:
-        LinkedList(){
-            head = nullptr;
-        }
-        void insertAthestart(int value){
-            Node* newNode = new Node();
-            newNode->data = value;
-            newNode->next = head;
-            head = newNode;
-            listSize++;
-            cout << "Inserted: " << value << " at the start of the list." << endl;
-        }
-        void insertAtTheEnd(int value){
-            Node* newNode = new Node();
-            newNode->data = value;
-            newNode->next = nullptr;
+LinkedList::LinkedList(){
+    head = nullptr;
+}
 
-            if (head == nullptr){
-                head = newNode;
-                listSize++;
-                cout << "Inserted: " << value << " at the end of the list." << endl;
-                return;
-            }
-            Node* ptr = head;
-            while (ptr->next != nullptr)
-                ptr = ptr->next;
-            ptr->next = newNode;
-            listSize++;
-            cout << "Inserted: " << value << " at the end of the list." << endl;
-        }
-        void deleteAtTheStart(){
-            if (head == nullptr){
-                cout << "The list is empty, Insert an element first!" << endl;
-                return;
-            }
-            Node* ptr = head;
-            head = head->next;
-            delete ptr;
-            listSize--;
-            cout << "Deleted the first element from the list." << endl;
-        }
-        void deleteAtTheEnd(){
-            if (head == nullptr){
-                cout << "The list is empty, Insert an element first!" << endl;
-                return;
-            }
-            if (head->next == nullptr){
-                delete head;
-                head = nullptr;
-                listSize--;
-                cout << "Deleted the last element from the list." << endl;
-                return;
-            }
-            Node* ptr = head;
-            while (ptr->next->next != nullptr){
-                ptr = ptr->next;
-            }
-            delete ptr->next;
-            ptr->next = nullptr;
-            listSize--;
-            cout << "Deleted the last element from the list." << endl;
-        }
-        void deletewithval(int value){
-            if (head == nullptr){
-                cout << "The list is empty, Insert an element first!" << endl;
-                return;
-            }
-            Node* ptr = head;
-            if (head->data == value){
-                head = head->next;
-                delete ptr;
-                listSize--;
-                cout << "Deleted: " << value << " from the list." << endl;
-                return;
-            }
-            while (ptr->next != nullptr && ptr->next->data != value)
-                ptr = ptr->next;
+void LinkedList::insertAthestart(int value){
+    Node* newNode = new Node();
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+    listSize++;
+    cout << "Inserted: " << value << " at the start of the list." << endl;
+}
 
-            if (ptr->next == nullptr){
-                cout << "Value: " << value << " not found in the list." << endl;
-                return;
-            }
+void LinkedList::insertAtTheEnd(int value){
+    Node* newNode = new Node();
+    newNode->data = value;
+    newNode->next = nullptr;
 
-            Node* remove = ptr->next;
-            ptr->next = remove->next;
-            delete remove;
-            listSize--;
-            cout << "Deleted: " << value << " from the list." << endl;
-        }
-        void printList(){
-            if (head == nullptr){
-                cout << "The list is empty." << endl;
-                return;
-            }
-            cout << "Your List: " << endl;
-            Node* ptr = head;
-            cout << "Head -> ";
-            for (int i = 0;i < listSize;++i){
-                cout << ptr->data << " -> ";
-                ptr = ptr->next;
-            }
-            cout << "NULL" << endl;
-            cout << "List size: " << listSize << endl;
-            cout << endl;
-        }
-};
+    if (head == nullptr){
+        head = newNode;
+        listSize++;
+        cout << "Inserted: " << value << " at the end of the list." << endl;
+        return;
+    }
+    Node* ptr = head;
+    while (ptr->next != nullptr)
+        ptr = ptr->next;
+    ptr->next = newNode;
+    listSize++;
+    cout << "Inserted: " << value << " at the end of the list." << endl;
+}
+
+void LinkedList::deleteAtTheStart(){
+    if (head == nullptr){
+        cout << "The list is empty, Insert an element first!" << endl;
+        return;
+    }
+    Node* ptr = head;
+    head = head->next;
+    delete ptr;
+    listSize--;
+    cout << "Deleted the first element from the list." << endl;
+}
+
+void LinkedList::deleteAtTheEnd(){
+    if (head == nullptr){
+        cout << "The list is empty, Insert an element first!" << endl;
+        return;
+    }
+    if (head->next == nullptr){
+        delete head;
+        head = nullptr;
+        listSize--;
+        cout << "Deleted the last element from the list." << endl;
+        return;
+    }
+    Node* ptr = head;
+    while (ptr->next->next != nullptr){
+        ptr = ptr->next;
+    }
+    delete ptr->next;
+    ptr->next = nullptr;
+    listSize--;
+    cout << "Deleted the last element from the list." << endl;
+}
+
+void LinkedList::deletewithval(int value){
+    if (head == nullptr){
+        cout << "The list is empty, Insert an element first!" << endl;
+        return;
+    }
+    Node* ptr = head;
+    if (head->data == value){
+        head = head->next;
+        delete ptr;
+        listSize--;
+        cout << "Deleted: " << value << " from the list." << endl;
+        return;
+    }
+    while (ptr->next != nullptr && ptr->next->data != value)
+        ptr = ptr->next;
+
+    if (ptr->next == nullptr){
+        cout << "Value: " << value << " not found in the list." << endl;
+        return;
+    }
+
+    Node* remove = ptr->next;
+    ptr->next = remove->next;
+    delete remove;
+    listSize--;
+    cout << "Deleted: " << value << " from the list." << endl;
+}
+
+void LinkedList::printList(){
+    if (head == nullptr){
+        cout << "The list is empty." << endl;
+        return;
+    }
+    cout << "Your List: " << endl;
+    Node* ptr = head;
+    cout << "Head -> ";
+    for (int i = 0;i < listSize;++i){
+        cout << ptr->data << " -> ";
+        ptr = ptr->next;
+    }
+    cout << "NULL" << endl;
+    cout << "List size: " << listSize << endl;
+    cout << endl;
+}
