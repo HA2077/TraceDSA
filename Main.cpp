@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Stack/Stack.h"
 #include "Stack/StackAsLinkedList.h"
-#include "Queue/Queue as array.cpp"
-#include "Queue/Queue as LinkedList.cpp"
+#include "Queue/Queue.h"
+#include "Queue/QueueAsLinkedList.h"
+#include "Queue/Circular Queue.h"
 #include "LinkedList/LinkedList.cpp"
 #include "LinkedList/DoublyLinkedList.cpp"
 #include "ArrayList/ArrayList.h"

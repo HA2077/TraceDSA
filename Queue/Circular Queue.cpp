@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Circular Queue.h"
 using namespace std;
 
 /*
@@ -10,44 +11,40 @@ This module implements the Queue (INT NUMBERS ONLY) DS using a arrays (array of 
 (FIFO)
 */
 
-class Queue{
-    private:
-        int Qsize = 0, Front = 0;
-        int Queuearr[10];
-    public:
-        void Enqueue(int value){
-            if (Qsize == 10){
-                cout << "The queue is full. dequeue an element." << endl;
-                return;
-            }
-            int insertpos = (Front + Qsize) % 10;
-            Queuearr[insertpos] = value;
-            cout << "Added element " << value << " to the queue in pos " << insertpos << endl;
-            Qsize++;
+void CircularQueue::Enqueue(int value){
+    if (Qsize == 10){
+        cout << "The queue is full. dequeue an element." << endl;
+        return;
+    }
+    int insertpos = (Front + Qsize) % 10;
+    Queuearr[insertpos] = value;
+    cout << "Added element " << value << " to the queue in pos " << insertpos << endl;
+    Qsize++;
+}
+
+void CircularQueue::Dequeue(){
+    if (Qsize == 0){
+        cout << "The queue is empty. Enqueue an element." << endl;
+        return;
+    }
+    int Relement = Queuearr[Front];
+    Queuearr[Front] = -1;   // Removed
+    cout << "Removed Element " << Relement << " From the queue." << endl;
+    Front = (Front + 1) % 10;
+    Qsize--;
+}
+
+void CircularQueue::Display(){
+    if (Qsize == 0){
+        cout << "The queue is empty. Enqueue an element." << endl;
+        return;
+    }
+    int checker = Front;
+    cout << "The current queue: ";
+    for(int i = 0;i < Qsize;++i){
+        if (checker == 10)
+                checker = 0;
+            cout << Queuearr[checker] << " ";
+            checker++;
         }
-        void Dequeue(){
-            if (Qsize == 0){
-                cout << "The queue is empty. Enqueue an element." << endl;
-                return;
-            }
-            int Relement = Queuearr[Front];
-            Queuearr[Front] = -1;   // Removed
-            cout << "Removed Element " << Relement << " From the queue." << endl;
-            Front = (Front + 1) % 10;
-            Qsize--;
-        }
-        void Display(){
-            if (Qsize == 0){
-                cout << "The queue is empty. Enqueue an element." << endl;
-                return;
-            }
-            int checker = Front;
-            cout << "The current queue: ";
-            for(int i = 0;i < Qsize;++i){
-                if (checker == 10)
-                    checker = 0;
-                cout << Queuearr[checker] << " ";
-                checker++;
-            }
-        }
-};
+}
