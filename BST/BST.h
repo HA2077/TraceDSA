@@ -2,6 +2,7 @@
 #define BST_H
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 struct Tnode{

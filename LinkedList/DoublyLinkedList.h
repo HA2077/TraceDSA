@@ -2,6 +2,7 @@
 #define DOUBLYLINKEDLIST_H
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 struct DNode {

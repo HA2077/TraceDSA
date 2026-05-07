@@ -49,8 +49,7 @@ void LinkedList::insertAtTheEnd(int value){
 
 void LinkedList::deleteAtTheStart(){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
     Node* ptr = head;
     head = head->next;
@@ -61,8 +60,7 @@ void LinkedList::deleteAtTheStart(){
 
 void LinkedList::deleteAtTheEnd(){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
     if (head->next == nullptr){
         delete head;
@@ -83,8 +81,7 @@ void LinkedList::deleteAtTheEnd(){
 
 void LinkedList::deletewithval(int value){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
     Node* ptr = head;
     if (head->data == value){
@@ -98,8 +95,7 @@ void LinkedList::deletewithval(int value){
         ptr = ptr->next;
 
     if (ptr->next == nullptr){
-        cout << "Value: " << value << " not found in the list." << endl;
-        return;
+        throw std::runtime_error("Value not found in list");
     }
 
     Node* remove = ptr->next;

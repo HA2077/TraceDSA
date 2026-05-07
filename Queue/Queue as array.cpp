@@ -19,8 +19,7 @@ void Queue::Enqueue(int value){
 
 void Queue::Dequeue(){
     if (Queuearr.getSize() == 0){
-        cout << "The queue is empty. Enqueue an element." << endl;
-        return;
+        throw std::underflow_error("Cannot dequeue from empty queue");
     }
     int Relement = Queuearr.get(0);
     Queuearr.remove(0);

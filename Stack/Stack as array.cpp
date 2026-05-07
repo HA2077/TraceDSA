@@ -22,8 +22,7 @@ void Stack::push(int value){
 
 void Stack::pop(){
     if (stacksize == 0){
-        cout << "The stack is empty, Push an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot pop from empty stack");
     }
 
     stack.remove(stacksize - 1);
@@ -32,15 +31,16 @@ void Stack::pop(){
     if(stacksize > 0){
         top = stack.get(stacksize - 1);
         cout << "Popped The Top Element From the stack." << endl;
-        return;
     }
-    else    top = -1;
+    else{
+        top = -1;
+        cout << "Popped The Top Element From the stack." << endl;
+    }
 }
 
 int Stack::peek(){
     if (stacksize == 0){
-        cout << "The stack is empty, Push an element first!" << endl;
-        return -1;
+        throw std::underflow_error("Cannot peek from empty stack");
     }
     return top;
 }

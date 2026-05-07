@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include <iostream>
+#include <stdexcept>
 #include "../ArrayList/ArrayList.h"
 #include <string>
 

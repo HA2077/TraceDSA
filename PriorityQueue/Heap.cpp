@@ -51,7 +51,6 @@ void Heap::heapifyDown(int index){
     }
 }
 
-
 void Heap::maxHeapifyUp(int index) {
     while (index > 0) {
         int parentIndex = (index - 1) / 2;
@@ -93,24 +92,22 @@ void Heap::enqueue(int value){
 
 int Heap::dequeueMin(){
     if (heap.getSize() == 0) {
-        cout << "Heap is empty!" << endl;
-        return -1;
+        throw std::underflow_error("Cannot dequeue from empty heap");
     }
-    
+
     int minValue = heap.get(0);
     heap.set(0, heap.get(heap.getSize() - 1));
     heap.remove(heap.getSize() - 1);
-    
+
     if (heap.getSize() > 0)
         heapifyDown(0);
-    
+
     return minValue;
 }
 
 int Heap::peekMin() const {
     if (heap.getSize() == 0){
-        cout << "Heap is empty!" << endl;
-        return -1;
+        throw std::underflow_error("Cannot peek from empty heap");
     }
     return heap.get(0);
 }
@@ -122,24 +119,22 @@ void Heap::enqueueMax(int value){
 
 int Heap::dequeueMax() {
     if (heap.getSize() == 0){
-        cout << "Heap is empty!" << endl;
-        return -1;
+        throw std::underflow_error("Cannot dequeue from empty heap");
     }
-    
+
     int maxValue = heap.get(0);
     heap.set(0, heap.get(heap.getSize() - 1));
     heap.remove(heap.getSize() - 1);
-    
+
     if (heap.getSize() > 0)
         maxHeapifyDown(0);
-    
+
     return maxValue;
 }
 
 int Heap::peekMax() const {
     if (heap.getSize() == 0){
-        cout << "Heap is empty!" << endl;
-        return -1;
+        throw std::underflow_error("Cannot peek from empty heap");
     }
     return heap.get(0);
 }

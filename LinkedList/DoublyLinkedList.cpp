@@ -47,15 +47,14 @@ void DoublyLinkedList::insertAtTheEnd(int value){
 
 void DoublyLinkedList::deleteAtTheStart(){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
 
     DNode* ptr = head;
     if (head == tail){
         head = nullptr;
         tail = nullptr;
-    } 
+    }
 
     else{
         head = head->next;
@@ -68,8 +67,7 @@ void DoublyLinkedList::deleteAtTheStart(){
 }
 void DoublyLinkedList::deleteAtTheEnd(){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
 
     if (head == tail){
@@ -90,8 +88,7 @@ void DoublyLinkedList::deleteAtTheEnd(){
 }
 void DoublyLinkedList::deleteWithVal(int value){
     if (head == nullptr){
-        cout << "The list is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot delete from empty list");
     }
 
     if (head->data == value){
@@ -99,7 +96,7 @@ void DoublyLinkedList::deleteWithVal(int value){
             delete head;
             head = nullptr;
             tail = nullptr;
-        } 
+        }
         else{
             DNode* ptr = head;
             head = head->next;
@@ -116,15 +113,14 @@ void DoublyLinkedList::deleteWithVal(int value){
         ptr = ptr->next;
 
     if (ptr == nullptr){
-        cout << "Value: " << value << " not found in the list." << endl;
-        return;
+        throw std::runtime_error("Value not found in list");
     }
 
     if (ptr == tail){
         tail = tail->prev;
         tail->next = nullptr;
         delete ptr;
-    } 
+    }
     else{
         ptr->prev->next = ptr->next;
         ptr->next->prev = ptr->prev;

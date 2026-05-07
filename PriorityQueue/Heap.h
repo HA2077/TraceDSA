@@ -3,6 +3,7 @@
 
 #include "../ArrayList/ArrayList.h"
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 class Heap{
@@ -24,7 +25,7 @@ public:
     void enqueueMax(int value);       
     int dequeueMax();                  
     int peekMax() const;               
-    
+
     // Utility methods - now return strings for TUI
     std::string toStringMinHeap() const;       // Display as Min-Heap
     std::string toStringMaxHeap() const;       // Display as Max-Heap

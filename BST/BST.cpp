@@ -123,8 +123,7 @@ void BST::insert(int value){
 
 void BST::remove(int value){
     if (!find(value)) {
-        cout << "Value " << value << " not found in the BST. Cannot delete." << endl;
-        return;
+        throw std::runtime_error("Value not found in BST");
     }
     root = deleteHelper(root, value);
     cout << "Removed: " << value << " from the BST." << endl;

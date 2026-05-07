@@ -35,8 +35,7 @@ void StackAsLinkedList::push(int value){
 
 void StackAsLinkedList::pop(){
     if (stacksize == 0){
-        cout << "The stack is empty, Push an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot pop from empty stack");
     }
     SNode* ptr = head;
     head = head->next;
@@ -51,6 +50,9 @@ void StackAsLinkedList::pop(){
 }
 
 int StackAsLinkedList::peek(){
+    if (stacksize == 0){
+        throw std::underflow_error("Cannot peek from empty stack");
+    }
     return top;
 }
 

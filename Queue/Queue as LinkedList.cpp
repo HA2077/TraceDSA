@@ -37,8 +37,7 @@ void QueueAsLinkedList::Enqueue(int value){
 
 void QueueAsLinkedList::Dequeue(){
     if (head == nullptr){
-        cout << "The Queue is empty, Insert an element first!" << endl;
-        return;
+        throw std::underflow_error("Cannot dequeue from empty queue");
     }
     LNode* ptr = head;
     head = head->next;

@@ -2,6 +2,7 @@
 #define QUEUEASLINKEDLIST_H
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 struct LNode{
