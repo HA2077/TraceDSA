@@ -1,0 +1,29 @@
+CXX = g++
+CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
+
+BINS = bins
+
+SRCS_STACK = Stack/Stack.cpp Stack/stack_interactive.cpp
+SRCS_STACKLL = Stack/StackAsLinkedList.cpp Stack/StackAsLinkedList_interactive.cpp
+
+all: clean dirs stack stackll
+
+dirs:
+	mkdir -p $(BINS)
+
+stack: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_STACK) -o $(BINS)/stack_interactive
+
+stackll: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_STACKLL) -o $(BINS)/stackll_interactive
+
+run-stack: stack
+	./$(BINS)/stack_interactive
+
+run-stackll: stackll
+	./$(BINS)/stackll_interactive
+
+clean:
+	rm -rf $(BINS)
+
+.PHONY: all dirs stack stackll run-stack run-stackll clean
