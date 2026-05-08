@@ -1,7 +1,5 @@
 #include "DoublyLinkedList.h"
-#include <iostream>
 #include <sstream>
-using namespace std;
 
 DoublyLinkedList::DoublyLinkedList(){
     head = nullptr;
@@ -22,7 +20,6 @@ void DoublyLinkedList::insertAtTheStart(int value){
         tail = newNode;
 
     listSize++;
-    cout << "Inserted: " << value << " at the start of the list." << endl;
 }
 
 void DoublyLinkedList::insertAtTheEnd(int value){
@@ -35,14 +32,12 @@ void DoublyLinkedList::insertAtTheEnd(int value){
         head = newNode;
         tail = newNode;
         listSize++;
-        cout << "Inserted: " << value << " at the end of the list." << endl;
         return;
     }
     
     tail->next = newNode;
     tail = newNode;
     listSize++;
-    cout << "Inserted: " << value << " at the end of the list." << endl;
 }
 
 void DoublyLinkedList::deleteAtTheStart(){
@@ -63,7 +58,6 @@ void DoublyLinkedList::deleteAtTheStart(){
 
     delete ptr;
     listSize--;
-    cout << "Deleted the first element from the list." << endl;
 }
 void DoublyLinkedList::deleteAtTheEnd(){
     if (head == nullptr){
@@ -75,7 +69,6 @@ void DoublyLinkedList::deleteAtTheEnd(){
         head = nullptr;
         tail = nullptr;
         listSize--;
-        cout << "Deleted the last element from the list." << endl;
         return;
     }
 
@@ -84,7 +77,6 @@ void DoublyLinkedList::deleteAtTheEnd(){
     tail->next = nullptr;
     delete ptr;
     listSize--;
-    cout << "Deleted the last element from the list." << endl;
 }
 void DoublyLinkedList::deleteWithVal(int value){
     if (head == nullptr){
@@ -104,7 +96,6 @@ void DoublyLinkedList::deleteWithVal(int value){
             delete ptr;
         }
         listSize--;
-        cout << "Deleted: " << value << " from the list." << endl;
         return;
     }
 
@@ -112,9 +103,8 @@ void DoublyLinkedList::deleteWithVal(int value){
     while (ptr != nullptr && ptr->data != value)
         ptr = ptr->next;
 
-    if (ptr == nullptr){
+    if (ptr == nullptr)
         throw std::runtime_error("Value not found in list");
-    }
 
     if (ptr == tail){
         tail = tail->prev;
@@ -127,7 +117,6 @@ void DoublyLinkedList::deleteWithVal(int value){
         delete ptr;
     }
     listSize--;
-    cout << "Deleted: " << value << " from the list." << endl;
 }
 
 std::string DoublyLinkedList::toString(){

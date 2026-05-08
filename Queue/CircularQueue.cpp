@@ -1,6 +1,4 @@
-#include <iostream>
 #include "CircularQueue.h"
-using namespace std;
 
 /*
 MADE BY: HA
@@ -13,23 +11,17 @@ This module implements the Queue (INT NUMBERS ONLY) DS using a arrays (array of 
 
 void CircularQueue::Enqueue(int value){
     if (Qsize == 10){
-        cout << "The queue is full. dequeue an element." << endl;
         return;
     }
     int insertpos = (Front + Qsize) % 10;
     Queuearr[insertpos] = value;
-    cout << "Added element " << value << " to the queue in pos " << insertpos << endl;
     Qsize++;
 }
 
 void CircularQueue::Dequeue(){
-    if (Qsize == 0){
-        cout << "The queue is empty. Enqueue an element." << endl;
+    if (Qsize == 0)
         return;
-    }
-    int Relement = Queuearr[Front];
-    Queuearr[Front] = -1;   // Removed
-    cout << "Removed Element " << Relement << " From the queue." << endl;
+    Queuearr[Front] = -1;   // Removed 
     Front = (Front + 1) % 10;
     Qsize--;
 }

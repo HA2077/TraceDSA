@@ -1,7 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <iostream>
 #include <stdexcept>
 #include "../ArrayList/ArrayList.h"
 #include <string>

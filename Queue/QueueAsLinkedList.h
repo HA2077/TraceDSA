@@ -1,7 +1,6 @@
 #ifndef QUEUEASLINKEDLIST_H
 #define QUEUEASLINKEDLIST_H
 
-#include <iostream>
 #include <stdexcept>
 #include <string>
 

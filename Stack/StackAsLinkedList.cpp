@@ -1,7 +1,5 @@
-#include <iostream>
 #include "StackAsLinkedList.h"
 #include <sstream>
-using namespace std;
 
 /*
 MADE BY: HA
@@ -21,7 +19,6 @@ void StackAsLinkedList::push(int value){
         head = newnode;
         top = value;
         stacksize++;
-        cout << "Pushed: " << value << " to the stack." << endl;
         return;
     }
     newnode->data = value;
@@ -29,7 +26,6 @@ void StackAsLinkedList::push(int value){
     head = newnode;
     top = value;
     stacksize++;
-    cout << "Pushed: " << value << " to the stack." << endl;
     return;
 }
 
@@ -45,14 +41,13 @@ void StackAsLinkedList::pop(){
         top = head->data;
     else
         top = -1;
-    cout << "Popped The Top Element From the stack." << endl;
     return;
 }
 
 int StackAsLinkedList::peek(){
-    if (stacksize == 0){
+    if (stacksize == 0)
         throw std::underflow_error("Cannot peek from empty stack");
-    }
+    
     return top;
 }
 

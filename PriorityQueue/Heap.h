@@ -2,7 +2,6 @@
 #define HEAP_H
 
 #include "../ArrayList/ArrayList.h"
-#include <iostream>
 #include <stdexcept>
 #include <string>
 

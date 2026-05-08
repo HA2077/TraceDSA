@@ -1,7 +1,5 @@
-#include <iostream>
 #include "../ArrayList/ArrayList.h"
 #include "Queue.h"
-using namespace std;
 
 /*
 MADE BY: HA
@@ -14,16 +12,12 @@ This module implements the Queue (INT NUMBERS ONLY) DS using ArrayList the class
 
 void Queue::Enqueue(int value){
     Queuearr.add(value);
-    cout << "Added element " << value << " to the queue" << endl;
 }
 
 void Queue::Dequeue(){
-    if (Queuearr.getSize() == 0){
+    if (Queuearr.getSize() == 0)
         throw std::underflow_error("Cannot dequeue from empty queue");
-    }
-    int Relement = Queuearr.get(0);
     Queuearr.remove(0);
-    cout << "Removed Element " << Relement << " From the queue." << endl;
 }
 
 std::string Queue::toString(){

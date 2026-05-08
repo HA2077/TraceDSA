@@ -1,5 +1,4 @@
 #include "BST.h"
-#include <iostream>
 using namespace std;
 
 /*
@@ -118,7 +117,6 @@ BST::~BST(){
 
 void BST::insert(int value){
     root = insertHelper(root, value);
-    cout << "Inserted: " << value << " into the BST." << endl;
 }
 
 void BST::remove(int value){
@@ -126,25 +124,19 @@ void BST::remove(int value){
         throw std::runtime_error("Value not found in BST");
     }
     root = deleteHelper(root, value);
-    cout << "Removed: " << value << " from the BST." << endl;
 }
 
-bool BST::find(int value) const {
+bool BST::find(int value) const{
     Tnode* result = findHelper(root, value);
-    if (result != nullptr){
-        cout << "Value " << value << " found in the BST." << endl;
+    if (result != nullptr)
         return true;
-    } 
-    else{
-        cout << "Value " << value << " not found in the BST." << endl;
+    else
         return false;
-    }
 }
 
 string BST::preorder() const {
-    if (isEmpty()) {
+    if (isEmpty())
         return "Pre-order: [empty]";
-    }
     string result = "Pre-order: [";
     preorderHelper(root, result);
     result += "]";
@@ -152,19 +144,17 @@ string BST::preorder() const {
 }
 
 string BST::postorder() const {
-    if (isEmpty()) {
+    if (isEmpty())
         return "Post-order: [empty]";
-    }
     string result = "Post-order: [";
     postorderHelper(root, result);
     result += "]";
     return result;
 }
 
-string BST::inorder() const {
-    if (isEmpty()) {
+string BST::inorder() const{
+    if (isEmpty())
         return "In-order: [empty]";
-    }
     string result = "In-order: [";
     inorderHelper(root, result);
     result += "]";
@@ -178,5 +168,4 @@ bool BST::isEmpty() const{
 void BST::clear(){
     freeTree(root);
     root = nullptr;
-    cout << "BST cleared." << endl;
 }

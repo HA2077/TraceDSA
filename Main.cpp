@@ -85,13 +85,13 @@ int main(){
     cq.Enqueue(5);
     cq.Enqueue(15);
     cq.Enqueue(25);
-    cout << cq.tostring() << endl;
+    cout << cq.toString() << endl;
     cq.Dequeue();
-    cout << cq.tostring() << endl;
+    cout << cq.toString() << endl;
     cq.Dequeue();
-    cout << cq.tostring() << endl;
+    cout << cq.toString() << endl;
     cq.Dequeue();
-    cout << cq.tostring() << endl; // Should be empty
+    cout << cq.toString() << endl; // Should be empty
 
     // ==================== SINGLY LINKED LIST ====================
     cout << "\n\n=== TESTING SINGLY LINKED LIST ===" << endl;

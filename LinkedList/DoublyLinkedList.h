@@ -1,7 +1,6 @@
 #ifndef DOUBLYLINKEDLIST_H
 #define DOUBLYLINKEDLIST_H
 
-#include <iostream>
 #include <stdexcept>
 #include <string>
 

@@ -1,5 +1,4 @@
 #include "Heap.h"
-#include <iostream>
 #include <sstream>
 using namespace std;
 
@@ -182,5 +181,4 @@ int Heap::getSize() const {
 
 void Heap::clear() {
     heap.clear();
-    cout << "Heap cleared." << endl;
 }

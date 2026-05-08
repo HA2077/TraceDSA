@@ -1,7 +1,5 @@
-#include <iostream>
 #include "QueueAsLinkedList.h"
 #include <sstream>
-using namespace std;
 
 /*
 MADE BY: HA
@@ -24,7 +22,6 @@ void QueueAsLinkedList::Enqueue(int value){
     if (head == nullptr){
         head = newNode;
         listSize++;
-        cout << "Inserted: " << value << " at the end of the Queue." << endl;
         return;
     }
     LNode* ptr = head;
@@ -32,7 +29,6 @@ void QueueAsLinkedList::Enqueue(int value){
         ptr = ptr->next;
     ptr->next = newNode;
     listSize++;
-    cout << "Inserted: " << value << " at the end of the Queue." << endl;
 }
 
 void QueueAsLinkedList::Dequeue(){
@@ -43,7 +39,6 @@ void QueueAsLinkedList::Dequeue(){
     head = head->next;
     delete ptr;
     listSize--;
-    cout << "Deleted the first element from the Queue." << endl;
 }
 
 std::string QueueAsLinkedList::toString(){

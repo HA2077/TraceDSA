@@ -1,7 +1,6 @@
 #ifndef ARRAYLIST_H
 #define ARRAYLIST_H
 
-#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <sstream>

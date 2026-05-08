@@ -1,7 +1,6 @@
 #ifndef STACKASLINKEDLIST_H
 #define STACKASLINKEDLIST_H
 
-#include <iostream>
 #include <stdexcept>
 #include <string>
 

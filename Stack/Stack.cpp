@@ -1,7 +1,5 @@
-#include <iostream>
 #include "../ArrayList/ArrayList.h"
 #include "Stack.h"
-using namespace std;
 
 /*
 MADE BY: HA
@@ -17,45 +15,36 @@ void Stack::push(int value){
     stack.add(value);
     top = value;
     stacksize++;
-    cout << "Pushed: " << value << " to the stack." << endl;
 }
 
 void Stack::pop(){
-    if (stacksize == 0){
+    if (stacksize == 0)
         throw std::underflow_error("Cannot pop from empty stack");
-    }
 
     stack.remove(stacksize - 1);
     stacksize--;
 
-    if(stacksize > 0){
+    if(stacksize > 0)
         top = stack.get(stacksize - 1);
-        cout << "Popped The Top Element From the stack." << endl;
-    }
-    else{
+    else
         top = -1;
-        cout << "Popped The Top Element From the stack." << endl;
-    }
 }
 
 int Stack::peek(){
-    if (stacksize == 0){
+    if (stacksize == 0)
         throw std::underflow_error("Cannot peek from empty stack");
-    }
     return top;
 }
 
 std::string Stack::toString(){
-    if (stacksize == 0){
+    if (stacksize == 0)
         return "Stack: [empty]";
-    }
     
     std::string result = "Stack: [";
     for (int i = 0;i < stacksize;++i){
         result += std::to_string(stack.get(i));
-        if (i < stacksize - 1){
+        if (i < stacksize - 1)
             result += " ";
-        }
     }
     result += "]";
     return result;

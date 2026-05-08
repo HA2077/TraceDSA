@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++23 -Wall
+CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
 
 SRCS = Main.cpp \
        Stack/Stack.cpp \

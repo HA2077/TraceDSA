@@ -1,7 +1,5 @@
 #include "LinkedList.h"
-#include <iostream>
 #include <sstream>
-using namespace std;
 
 /*
 MADE BY: HA
@@ -25,7 +23,6 @@ void LinkedList::insertAthestart(int value){
     newNode->next = head;
     head = newNode;
     listSize++;
-    cout << "Inserted: " << value << " at the start of the list." << endl;
 }
 
 void LinkedList::insertAtTheEnd(int value){
@@ -36,7 +33,6 @@ void LinkedList::insertAtTheEnd(int value){
     if (head == nullptr){
         head = newNode;
         listSize++;
-        cout << "Inserted: " << value << " at the end of the list." << endl;
         return;
     }
     Node* ptr = head;
@@ -44,7 +40,6 @@ void LinkedList::insertAtTheEnd(int value){
         ptr = ptr->next;
     ptr->next = newNode;
     listSize++;
-    cout << "Inserted: " << value << " at the end of the list." << endl;
 }
 
 void LinkedList::deleteAtTheStart(){
@@ -55,7 +50,6 @@ void LinkedList::deleteAtTheStart(){
     head = head->next;
     delete ptr;
     listSize--;
-    cout << "Deleted the first element from the list." << endl;
 }
 
 void LinkedList::deleteAtTheEnd(){
@@ -66,7 +60,6 @@ void LinkedList::deleteAtTheEnd(){
         delete head;
         head = nullptr;
         listSize--;
-        cout << "Deleted the last element from the list." << endl;
         return;
     }
     Node* ptr = head;
@@ -76,7 +69,6 @@ void LinkedList::deleteAtTheEnd(){
     delete ptr->next;
     ptr->next = nullptr;
     listSize--;
-    cout << "Deleted the last element from the list." << endl;
 }
 
 void LinkedList::deletewithval(int value){
@@ -88,21 +80,18 @@ void LinkedList::deletewithval(int value){
         head = head->next;
         delete ptr;
         listSize--;
-        cout << "Deleted: " << value << " from the list." << endl;
         return;
     }
     while (ptr->next != nullptr && ptr->next->data != value)
         ptr = ptr->next;
 
-    if (ptr->next == nullptr){
+    if (ptr->next == nullptr)
         throw std::runtime_error("Value not found in list");
-    }
 
     Node* remove = ptr->next;
     ptr->next = remove->next;
     delete remove;
     listSize--;
-    cout << "Deleted: " << value << " from the list." << endl;
 }
 
 std::string LinkedList::toString(){
