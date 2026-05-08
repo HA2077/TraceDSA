@@ -34,7 +34,7 @@ void CircularQueue::Dequeue(){
     Qsize--;
 }
 
-std::string CircularQueue::tostring(){
+std::string CircularQueue::toString(){
     if (Qsize == 0){
         return "Queue: [empty]";
     }
