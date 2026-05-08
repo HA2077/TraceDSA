@@ -14,5 +14,4 @@ public:
     std::string tostring();
 };
 
-#include "Circular Queue.cpp"
 #endif

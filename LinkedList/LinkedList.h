@@ -24,5 +24,4 @@ public:
     std::string toString();
 };
 
-#include "LinkedList.cpp"
 #endif // LINKEDLIST_H

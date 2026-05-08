@@ -44,5 +44,4 @@ public:
     void clear();
 };
 
-#include "BST.cpp"
 #endif // BST_H

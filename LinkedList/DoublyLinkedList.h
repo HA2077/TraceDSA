@@ -26,5 +26,4 @@ public:
     std::string toString();
 };
 
-#include "DoublyLinkedList.cpp"
 #endif // DOUBLYLINKEDLIST_H

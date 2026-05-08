@@ -22,5 +22,4 @@ public:
     std::string toString();
 };
 
-#include "Stack as linkedList.cpp"
 #endif // STACKASLINKEDLIST_H

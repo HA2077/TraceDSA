@@ -34,5 +34,4 @@ public:
     void clear();
 };
 
-#include "Heap.cpp"
 #endif // HEAP_H

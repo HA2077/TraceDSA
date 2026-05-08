@@ -21,5 +21,4 @@ public:
     std::string toString();
 };
 
-#include "Queue as LinkedList.cpp"
 #endif // QUEUEASLINKEDLIST_H

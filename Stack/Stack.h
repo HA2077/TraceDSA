@@ -19,5 +19,4 @@ public:
     std::string toString();
 };
 
-#include "Stack as array.cpp"
 #endif // STACK_H

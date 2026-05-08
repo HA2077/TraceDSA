@@ -15,5 +15,4 @@ public:
     std::string toString();
 };
 
-#include "Queue as array.cpp"
 #endif // QUEUE_H

@@ -3,7 +3,7 @@
 #include "Stack/StackAsLinkedList.h"
 #include "Queue/Queue.h"
 #include "Queue/QueueAsLinkedList.h"
-#include "Queue/Circular Queue.h"
+#include "Queue/CircularQueue.h"
 #include "LinkedList/LinkedList.h"
 #include "LinkedList/DoublyLinkedList.h"
 #include "ArrayList/ArrayList.h"
