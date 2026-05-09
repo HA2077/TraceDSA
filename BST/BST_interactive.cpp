@@ -20,9 +20,9 @@ int main() {
             if (iss >> val) {
                 bst.insert(val);
                 cout << "OK " << bst.inorder() << endl; // Show inorder after insert
-            } else {
+            } 
+            else
                 cout << "ERROR Invalid value" << endl;
-            }
             cout.flush();
         }
         else if (cmd == "REMOVE") {
@@ -34,9 +34,9 @@ int main() {
                 } catch (const exception& e) {
                     cout << "ERROR " << e.what() << endl;
                 }
-            } else {
+            } 
+            else
                 cout << "ERROR Invalid value" << endl;
-            }
             cout.flush();
         }
         else if (cmd == "FIND") {

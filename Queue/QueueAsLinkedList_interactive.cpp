@@ -15,7 +15,7 @@ int main() {
         string cmd;
         iss >> cmd;
         
-        if (cmd == "PUSH") {
+        if (cmd == "ENQUEUE") {
             int val;
             if (iss >> val) {
                 q.Enqueue(val);
@@ -25,7 +25,7 @@ int main() {
             }
             cout.flush();
         }
-        else if (cmd == "POP") {
+        else if (cmd == "DEQUEUE") {
             try {
                 q.Dequeue();
                 cout << "OK " << q.toString() << endl;

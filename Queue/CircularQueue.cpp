@@ -1,4 +1,5 @@
 #include "CircularQueue.h"
+#include <stdexcept>
 
 /*
 MADE BY: HA
@@ -20,7 +21,7 @@ void CircularQueue::Enqueue(int value){
 
 void CircularQueue::Dequeue(){
     if (Qsize == 0)
-        return;
+        throw std::underflow_error("Cannot dequeue from empty queue");
     Queuearr[Front] = -1;   // Removed 
     Front = (Front + 1) % 10;
     Qsize--;

@@ -83,6 +83,22 @@ def main():
                 ("POP", "ERROR"),  # Should error on empty
             ]
         ),
+        # Stack (linked list-backed)
+        (
+            "./TUI/bins/linux/stackll",
+            "Stack (Linked List)",
+            [
+                ("PUSH 10", "OK"),
+                ("PUSH 20", "OK"),
+                ("PUSH 30", "OK"),
+                ("PEEK", "OK Peek: 30"),
+                ("PRINT", "OK"),
+                ("POP", "OK"),
+                ("POP", "OK"),
+                ("POP", "OK"),
+                ("POP", "ERROR"),  # Should error on empty
+            ]
+        ),
         # Queue (array-backed)
         (
             "./TUI/bins/linux/queue",
@@ -97,6 +113,79 @@ def main():
                 ("DEQUEUE", "OK"),
                 ("DEQUEUE", "OK"),
                 ("DEQUEUE", "ERROR"),  # Should error on empty
+            ]
+        ),
+        # Queue (linked list-backed)
+        (
+            "./TUI/bins/linux/queuell",
+            "Queue (Linked List)",
+            [
+                ("ENQUEUE 5", "OK"),
+                ("ENQUEUE 15", "OK"),
+                ("ENQUEUE 25", "OK"),
+                ("PEEK", "OK Peek:"),  # Will check for "Peek:" in response
+                ("PRINT", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "ERROR"),  # Should error on empty
+            ]
+        ),
+        # Circular Queue
+        (
+            "./TUI/bins/linux/circqueue",
+            "Circular Queue",
+            [
+                ("ENQUEUE 5", "OK"),
+                ("ENQUEUE 15", "OK"),
+                ("ENQUEUE 25", "OK"),
+                ("PEEK", "OK Peek:"),  # Will check for "Peek:" in response
+                ("PRINT", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "OK"),
+                ("DEQUEUE", "ERROR"),  # Should error on empty
+                ("ENQUEUE 99", "OK"),  # Should work after dequeuing all
+                ("PRINT", "OK"),
+                ("DEQUEUE", "OK"),     # Should remove the 99, leaving empty
+                ("DEQUEUE", "ERROR"),  # Should error on empty again
+                ("DEQUEUE", "ERROR"),  # Should error on empty again
+            ]
+        ),
+        # Linked List
+        (
+            "./TUI/bins/linux/ll",
+            "Linked List",
+            [
+                ("INSERT_START 10", "OK"),
+                ("INSERT_END 20", "OK"),
+                ("INSERT_END 30", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_START", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_END", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_START", "OK"),
+                ("PRINT", "OK"),  # Should be empty
+                ("DELETE_START", "ERROR"),  # Should error on empty
+            ]
+        ),
+        # Doubly Linked List
+        (
+            "./TUI/bins/linux/dll",
+            "Doubly Linked List",
+            [
+                ("INSERT_START 10", "OK"),
+                ("INSERT_END 20", "OK"),
+                ("INSERT_END 30", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_START", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_END", "OK"),
+                ("PRINT", "OK"),
+                ("DELETE_START", "OK"),
+                ("PRINT", "OK"),  # Should be empty
+                ("DELETE_START", "ERROR"),  # Should error on empty
             ]
         ),
         # BST
