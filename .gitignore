@@ -2,3 +2,5 @@ CONTEXT.md
 DESIGN.md
 Main
 bins
+__pycache__
+*.pyc
