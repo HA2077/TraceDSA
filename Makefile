@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
 
-SRCS = Main.cpp \
+SRCS = TestingModules.cpp \
        Stack/Stack.cpp \
        Stack/StackAsLinkedList.cpp \
        Queue/Queue.cpp \
