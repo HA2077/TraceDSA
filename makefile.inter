@@ -3,27 +3,64 @@ CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
 
 BINS = TUI/bins/linux
 
-SRCS_STACK = Stack/Stack.cpp Stack/stack_interactive.cpp
-SRCS_STACKLL = Stack/StackAsLinkedList.cpp Stack/StackAsLinkedList_interactive.cpp
+# Sources
+SRCS_STACK       = Stack/Stack.cpp Stack/stack_interactive.cpp
+SRCS_STACKLL     = Stack/StackAsLinkedList.cpp Stack/StackAsLinkedList_interactive.cpp
+SRCS_QUEUE       = Queue/Queue.cpp Queue/Queue_interactive.cpp
+SRCS_QUEUELL     = Queue/QueueAsLinkedList.cpp Queue/QueueAsLinkedList_interactive.cpp
+SRCS_CIRCQUEUE   = Queue/CircularQueue.cpp Queue/CircularQueue_interactive.cpp
+SRCS_LL          = LinkedList/LinkedList.cpp LinkedList/LinkedList_interactive.cpp
+SRCS_DLL         = LinkedList/DoublyLinkedList.cpp LinkedList/DoublyLinkedList_interactive.cpp
+SRCS_BST         = BST/BST.cpp BST/BST_interactive.cpp
+SRCS_HEAP        = PriorityQueue/Heap.cpp PriorityQueue/Heap_interactive.cpp
 
-all: clean dirs stack stackll
+all: clean dirs stack stackll queue queuell circqueue ll dll bst heap run-all
 
 dirs:
 	mkdir -p $(BINS)
 
+# Individual targets
 stack: dirs
 	$(CXX) $(CXXFLAGS) $(SRCS_STACK) -o $(BINS)/stack
 
 stackll: dirs
 	$(CXX) $(CXXFLAGS) $(SRCS_STACKLL) -o $(BINS)/stackll
 
-run-stack: stack
-	./$(BINS)/stack
+queue: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_QUEUE) -o $(BINS)/queue
 
-run-stackll: stackll
-	./$(BINS)/stackll
+queuell: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_QUEUELL) -o $(BINS)/queuell
+
+circqueue: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_CIRCQUEUE) -o $(BINS)/circqueue
+
+ll: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_LL) -o $(BINS)/ll
+
+dll: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_DLL) -o $(BINS)/dll
+
+bst: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_BST) -o $(BINS)/bst
+
+heap: dirs
+	$(CXX) $(CXXFLAGS) $(SRCS_HEAP) -o $(BINS)/heap
+
+run-all: stack stackll queue queuell circqueue ll dll bst heap
+	echo "EXIT" | ./$(BINS)/stack
+	echo "EXIT" | ./$(BINS)/stackll
+	echo "EXIT" | ./$(BINS)/queue
+	echo "EXIT" | ./$(BINS)/queuell
+	echo "EXIT" | ./$(BINS)/circqueue
+	echo "EXIT" | ./$(BINS)/ll
+	echo "EXIT" | ./$(BINS)/dll
+	echo "EXIT" | ./$(BINS)/bst
+	echo "EXIT" | ./$(BINS)/heap
 
 clean:
 	rm -rf $(BINS)
 
-.PHONY: all dirs stack stackll run-stack run-stackll clean
+.PHONY: all clean dirs \
+        stack stackll queue queuell circqueue ll dll bst heap \
+        run-all
