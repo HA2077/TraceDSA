@@ -1,4 +1,4 @@
-# Data Structures in C++ (DS All In One)
+# Data Structures in C++ (TraceDSA)
 **A collection of foundational Data Structures implemented from scratch in C++, built for a better understanding of the data structure course I am taking.**
 
 ## 🚀 Current Modules

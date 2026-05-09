@@ -89,10 +89,10 @@ def test_stack(binary_path):
 
 if __name__ == "__main__":
     # Test array-backed stack
-    test_stack("./bins/stack_interactive")
+    test_stack("TUI/bins/linux/stack")
     
     # Test linked list stack
-    test_stack("./bins/stackll_interactive")
+    test_stack("TUI/bins/linux/stackll")
     
     print(f"\n{'='*50}")
     print("ALL TESTS COMPLETED SUCCESSFULLY")
