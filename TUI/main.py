@@ -37,9 +37,9 @@ class TraceDSApp(App):
             "stack", "stackll", "queue", "queuell", 
             "circqueue", "ll", "dll", "bst", "heap"
         ]
-        
+
         for name in binary_names:
-            binary_path = f"./TUI/bins/linux/{name}"
+            binary_path = f"bins/linux/{name}"
             if os.path.exists(binary_path):
                 try:
                     self.bridges[name] = DSBridge(name)

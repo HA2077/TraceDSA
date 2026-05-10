@@ -34,72 +34,72 @@ class TraceWindow(Screen):
         
         self.operation_buttons = {
             "stack": [
-                ("PUSH [value]", "push-input", "PUSH"),
-                ("POP", "pop-btn", "POP"),
-                ("PEEK", "peek-btn", "PEEK"),
-                ("PRINT", "print-btn", "PRINT"),
-                ("CLEAR", "clear-btn", "CLEAR"),
+                ("PUSH [value]", "push_btn", "PUSH"),
+                ("POP", "pop_btn", "POP"),
+                ("PEEK", "peek_btn", "PEEK"),
+                ("PRINT", "print_btn", "PRINT"),
+                ("CLEAR", "clear_btn", "CLEAR"),
             ],
             "queue": [
-                ("ENQUEUE [value]", "enqueue-input", "ENQUEUE"),
-                ("DEQUEUE", "dequeue-btn", "DEQUEUE"),
-                ("PEEK", "peek-btn", "PEEK"),
-                ("PRINT", "print-btn", "PRINT"),
-                ("CLEAR", "clear-btn", "CLEAR"),
+                ("ENQUEUE [value]", "enqueue_btn", "ENQUEUE"),
+                ("DEQUEUE", "dequeue_btn", "DEQUEUE"),
+                ("PEEK", "peek_btn", "PEEK"),
+                ("PRINT", "print_btn", "PRINT"),
+                ("CLEAR", "clear_btn", "CLEAR"),
             ],
             "bst": [
-                ("INSERT [value]", "insert-input", "INSERT"),
-                ("REMOVE [value]", "remove-input", "REMOVE"),
-                ("FIND [value]", "find-input", "FIND"),
-                ("INORDER", "inorder-btn", "INORDER"),
-                ("PREORDER", "preorder-btn", "PREORDER"),
-                ("POSTORDER", "postorder-btn", "POSTORDER"),
-                ("CLEAR", "clear-btn", "CLEAR"),
+                ("INSERT [value]", "insert_btn", "INSERT"),
+                ("REMOVE [value]", "remove_btn", "REMOVE"),
+                ("FIND [value]", "find_btn", "FIND"),
+                ("INORDER", "inorder_btn", "INORDER"),
+                ("PREORDER", "preorder_btn", "PREORDER"),
+                ("POSTORDER", "postorder_btn", "POSTORDER"),
+                ("CLEAR", "clear_btn", "CLEAR"),
             ],
             "heap": [
-                ("ENQUEUE [value]", "enqueue-input", "ENQUEUE"),
-                ("DEQUEUE MIN", "dequeue-min-btn", "DEQUEUE MIN"),
-                ("PEEK MIN", "peek-min-btn", "PEEK MIN"),
-                ("PRINT", "print-btn", "PRINT"),
-                ("CLEAR", "clear-btn", "CLEAR"),
+                ("ENQUEUE [value]", "enqueue_btn", "ENQUEUE"),
+                ("DEQUEUE MIN", "dequeue_min_btn", "DEQUEUE MIN"),
+                ("PEEK MIN", "peek_min_btn", "PEEK MIN"),
+                ("PRINT", "print_btn", "PRINT"),
+                ("CLEAR", "clear_btn", "CLEAR"),
             ],
             "default": [
-                ("OP [value]", "op-input", "OP"),
-                ("CLEAR", "clear-btn", "CLEAR"),
+                ("OP [value]", "op_btn", "OP"),
+                ("CLEAR", "clear_btn", "CLEAR"),
             ]
         }
     
     def compose(self) -> ComposeResult:
         yield Container(
             Container(
-                Button("← Back", id="back-button", variant="default"),
-                Static(self.display_name.upper(), id="module-name"),
-                id="trace-header"
+                Button("← Back", id="back_button", variant="default"),
+                Static(self.display_name.upper(), id="module_name"),
+                id="trace_header"
             ),
             
             # Main content: ASCII visualization and operation log
             Horizontal(
                 Container(
                     # Will be replaced with actual widget in on_mount
-                    Static("Initializing...", id="ascii-placeholder"),
-                    id="ascii-panel"
+                    Static("Initializing...", id="ascii_placeholder"),
+                    id="ascii_panel"
                 ),
                 
                 Container(
-                    Static("Operation Log", id="log-header"),
+                    Static("Operation Log", id="log_header"),
                     # Will be replaced with actual widget in on_mount
-                    Static("", id="log-content"),
-                    id="log-panel"
+                    Static("", id="log_content"),
+                    id="log_panel"
                 ),
-                id="main-content"
+                id="main_content"
             ),
             
             # Bottom bar: Operation buttons
             Container(
-                id="button-container"
+                id="button_container"
             ),
             
-            id="trace-window-container"
+            id="trace_window_container"
         )
     
     def on_mount(self) -> None:
@@ -111,8 +111,8 @@ class TraceWindow(Screen):
             return
         
         # Get references to containers
-        ascii_container = self.query_one("#ascii-panel")
-        log_container = self.query_one("#log-panel")
+        ascii_container = self.query_one("#ascii_panel")
+        log_container = self.query_one("#log_panel")
         
         # Clear the containers and mount our actual widgets
         ascii_container.remove_children()
@@ -153,7 +153,7 @@ class TraceWindow(Screen):
     
     def _build_operation_buttons(self) -> None:
         """Build operation buttons based on the binary type"""
-        container = self.query_one("#button-container")
+        container = self.query_one("#button_container")
         container.remove_children()
         
         # Get button configuration for this binary type
@@ -165,7 +165,7 @@ class TraceWindow(Screen):
         buttons = []
         for label, button_id, command_prefix in button_configs:
             if "[value]" in label:
-                input_id = button_id.replace("-btn", "-input")
+                input_id = button_id.replace("_btn", "_input")
                 btn = Button(label.replace("[value]", ""), id=button_id)
                 buttons.append(("input", input_id, label, btn))
             else:
@@ -179,7 +179,7 @@ class TraceWindow(Screen):
             for btn_type, btn_id, btn_label, btn in group:
                 if btn_type == "input":
                     input_field = Input(placeholder="value", id=btn_id)
-                    container.mount(Horizontal(input_field, btn, id=f"{btn_id}-group"))
+                    container.mount(Horizontal(input_field, btn, id=f"{btn_id}_group"))
                     if "push" in btn_id.lower() or "enqueue" in btn_id.lower() or "insert" in btn_id.lower():
                         self.input_field = input_field  # Store reference for Enter key
                 else:
@@ -190,7 +190,7 @@ class TraceWindow(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         
-        if button_id == "back-button":
+        if button_id == "back_button":
             self.action_go_back()
             return
         
@@ -201,30 +201,30 @@ class TraceWindow(Screen):
     
     def _get_command_for_button(self, button_id: str) -> str:
         command_map = {
-            "back-button": "EXIT",  # Handled separately
+            "back_button": "EXIT",  # Handled separately
             
             # Stack operations
-            "push-input": lambda: f"PUSH {self.query_one('#push-input').value}",
-            "pop-btn": "POP",
-            "peek-btn": "PEEK",
-            "print-btn": "PRINT",
-            "clear-btn": lambda: self._clear_and_reset(),
+            "push_input": lambda: f"PUSH {self.query_one('#push_input').value}",
+            "pop_btn": "POP",
+            "peek_btn": "PEEK",
+            "print_btn": "PRINT",
+            "clear_btn": lambda: self._clear_and_reset(),
             
             # Queue operations
-            "enqueue-input": lambda: f"ENQUEUE {self.query_one('#enqueue-input').value}",
-            "dequeue-btn": "DEQUEUE",
+            "enqueue_input": lambda: f"ENQUEUE {self.query_one('#enqueue_input').value}",
+            "dequeue_btn": "DEQUEUE",
             
             # BST operations
-            "insert-input": lambda: f"INSERT {self.query_one('#insert-input').value}",
-            "remove-input": lambda: f"REMOVE {self.query_one('#remove-input').value}",
-            "find-input": lambda: f"FIND {self.query_one('#find-input').value}",
-            "inorder-btn": "INORDER",
-            "preorder-btn": "PREORDER",
-            "postorder-btn": "POSTORDER",
+            "insert_input": lambda: f"INSERT {self.query_one('#insert_input').value}",
+            "remove_input": lambda: f"REMOVE {self.query_one('#remove_input').value}",
+            "find_input": lambda: f"FIND {self.query_one('#find_input').value}",
+            "inorder_btn": "INORDER",
+            "preorder_btn": "PREORDER",
+            "postorder_btn": "POSTORDER",
             
             # Heap operations
-            "dequeue-min-btn": "DEQUEUE MIN",
-            "peek-min-btn": "PEEK MIN",
+            "dequeue_min_btn": "DEQUEUE MIN",
+            "peek_min_btn": "PEEK MIN",
         }
         
         if button_id in command_map:
@@ -362,16 +362,17 @@ class TraceWindow(Screen):
     
     def on_key(self, event) -> None:
         if event.key == "enter" and self.input_field and self.input_field.has_focus:
-            # Find which button to trigger based on focused input
             focused_id = self.input_field.id
-            if focused_id == "push-input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#push-btn")))
-            elif focused_id == "enqueue-input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#dequeue-btn")))
-            elif focused_id == "insert-input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#remove-btn")))
-            elif focused_id == "find-input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#find-btn")))
+            if focused_id == "push_input":
+                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#push_btn")))
+            elif focused_id == "enqueue_input":
+                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#enqueue_btn")))
+            elif focused_id == "insert_input":
+                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#insert_btn")))
+            elif focused_id == "remove_input":
+                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#remove_btn")))
+            elif focused_id == "find_input":
+                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#find_btn")))
             # Add more as needed
 
 

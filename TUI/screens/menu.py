@@ -1,9 +1,12 @@
+import os
+import re
+import random
+
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal, Vertical
 from textual.widgets import Static, Button, Label, Input
 from textual.screen import Screen
 from textual.binding import Binding
-import random
 
 from .trace_screen import TraceWindow
 
@@ -39,6 +42,13 @@ class MainMenu(Screen):
         self.selected_category = None
         self.show_level_2 = False
         self.random_fact = random.choice(self.FUN_FACTS)
+        self._module_id_map = {}
+    
+    def _sanitize_id(self, text: str) -> str:
+        sanitized = re.sub(r'[^a-zA-Z0-9_-]', '_', text)
+        if sanitized and sanitized[0].isdigit():
+            sanitized = '_' + sanitized
+        return sanitized
     
     def compose(self) -> ComposeResult:
         yield Container(
@@ -62,7 +72,7 @@ class MainMenu(Screen):
         )
     
     def on_mount(self) -> None:
-        self.show_level_1()  # Start with level 1 (categories)
+        self._show_level_1()  # Start with level 1 (categories)
         self.query_one("#search_input").focus()
     
     def _get_random_dsa_art(self) -> str:
@@ -80,12 +90,12 @@ class MainMenu(Screen):
         ]
         return random.choice(arts)
     
-    def show_level_1(self) -> None:
+    def _show_level_1(self) -> None:
         self.show_level_2 = False
         self.selected_category = None
         self._build_level_1_buttons()
     
-    def show_level_2(self, category: str) -> None:
+    def _show_level_2(self, category: str) -> None:
         self.show_level_2 = True
         self.selected_category = category
         self._build_level_2_buttons(category)
@@ -110,14 +120,16 @@ class MainMenu(Screen):
         
         modules = self.CATEGORY_MODULES.get(category, [])
         buttons = []
+        self._module_id_map.clear()
         
         # Back button
         back_btn = Button("← Back", variant="default", id="back_button")
         buttons.append(back_btn)
         
-        # Module buttons
         for module in modules:
-            btn = Button(module, variant="success", id=f"module_{module}")
+            safe_id = self._sanitize_id(module)
+            self._module_id_map[safe_id] = module
+            btn = Button(module, variant="success", id=f"module_{safe_id}")
             buttons.append(btn)
         
         if buttons:
@@ -138,12 +150,14 @@ class MainMenu(Screen):
         
         if button_id.startswith("category_"):
             category = button_id.replace("category_", "")
-            self.show_level_2(category)
+            self._show_level_2(category)
         elif button_id.startswith("module_"):
-            module = button_id.replace("module_", "")
-            self._launch_module(module)
+            safe_id = button_id.replace("module_", "")
+            module = self._module_id_map.get(safe_id)
+            if module:
+                self._launch_module(module)
         elif button_id == "back_button":
-            self.show_level_1()
+            self._show_level_1()
     
     def _launch_module(self, module_name: str) -> None:
         module_mapping = {
@@ -184,6 +198,3 @@ class MainMenu(Screen):
     
     def action_quit(self) -> None:
         self.app.exit()
-
-
-import os
