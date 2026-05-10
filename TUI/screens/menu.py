@@ -5,7 +5,7 @@ from textual.screen import Screen
 from textual.binding import Binding
 import random
 
-from trace import TraceWindow
+from .trace_screen import TraceWindow
 
 
 class MainMenu(Screen):
@@ -18,7 +18,7 @@ class MainMenu(Screen):
     CATEGORY_MODULES = {
         "Stack": ["Stack (Array)", "Stack (LinkedList)"],
         "Queue": ["Queue (Array)", "Queue (LinkedList)", "Circular Queue"],
-        "Linked List": ["Singly LinkedList", "Doubly LinkedList"],
+        "LinkedList": ["Singly LinkedList", "Doubly LinkedList"],
         "BST": ["Binary Search Tree"],
         "Heap": ["Min-Heap", "Max-Heap"],
     }
@@ -96,7 +96,7 @@ class MainMenu(Screen):
         
         buttons = []
         for category in self.CATEGORY_MODULES.keys():
-            btn = Button(category, variant="primary", id=f"category-{category}")
+            btn = Button(category, variant="primary", id=f"category_{category}")
             buttons.append(btn)
         
         # Arrange buttons in rows of 3
@@ -118,7 +118,7 @@ class MainMenu(Screen):
         
         # Module buttons
         for module in modules:
-            btn = Button(module, variant="success", id=f"module-{module}")
+            btn = Button(module, variant="success", id=f"module_{module}")
             buttons.append(btn)
         
         if buttons:
@@ -137,11 +137,11 @@ class MainMenu(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         
-        if button_id.startswith("category-"):
-            category = button_id.replace("category-", "")
+        if button_id.startswith("category_"):
+            category = button_id.replace("category_", "")
             self.show_level_2(category)
-        elif button_id.startswith("module-"):
-            module = button_id.replace("module-", "")
+        elif button_id.startswith("module_"):
+            module = button_id.replace("module_", "")
             self._launch_module(module)
         elif button_id == "back-button":
             self.show_level_1()

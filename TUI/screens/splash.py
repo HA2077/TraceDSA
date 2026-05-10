@@ -3,8 +3,7 @@ from textual.containers import Container
 from textual.widgets import Static, Button
 from textual.screen import Screen
 from textual.binding import Binding
-from menu import MainMenu
-
+from .menu import MainMenu
 
 class SplashScreen(Screen):
     

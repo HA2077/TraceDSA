@@ -5,6 +5,15 @@ from textual.screen import Screen
 from textual.binding import Binding
 from rich.text import Text
 import os
+import sys
+
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(parent_dir)
+from bridge import DSBridge
+from widgets.ascii_array import ASCIIArray
+from widgets.ascii_tree import ASCII2DTree
+from widgets.ascii_heap import ASCIIHeap
+from widgets.ops_log import OpsLog
 
 
 class TraceWindow(Screen):
@@ -70,15 +79,15 @@ class TraceWindow(Screen):
             
             # Main content: ASCII visualization and operation log
             Horizontal(
-                # Left panel: Live ASCII art visualization
                 Container(
-                    Static("~live ASCII art~", id="ascii-placeholder"),
+                    # Will be replaced with actual widget in on_mount
+                    Static("Initializing...", id="ascii-placeholder"),
                     id="ascii-panel"
                 ),
                 
-                # Right panel: Operation log
                 Container(
                     Static("Operation Log", id="log-header"),
+                    # Will be replaced with actual widget in on_mount
                     Static("", id="log-content"),
                     id="log-panel"
                 ),
@@ -101,18 +110,46 @@ class TraceWindow(Screen):
             self.app.pop_screen()
             return
         
-        # Get references to widgets
-        self.ascii_widget = self.query_one("#ascii-placeholder")
-        self.log_widget = self.query_one("#log-content")
+        # Get references to containers
+        ascii_container = self.query_one("#ascii-panel")
+        log_container = self.query_one("#log-panel")
+        
+        # Clear the containers and mount our actual widgets
+        ascii_container.remove_children()
+        log_container.remove_children()
+        
+        # Initialize and mount the appropriate ASCII widget based on binary type
+        if self.binary_name in ["stack", "stackll", "queue", "queuell", "circqueue"]:
+            self.ascii_widget = ASCIIArray(title=self.display_name)
+            ascii_container.mount(self.ascii_widget)
+        elif self.binary_name == "bst":
+            self.ascii_widget = ASCII2DTree(title=self.display_name)
+            ascii_container.mount(self.ascii_widget)
+        elif self.binary_name == "heap":
+            # For heap, we'll determine min/max from the display name
+            heap_type = "min" if "Min" in self.display_name else "max"
+            self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=heap_type)
+            ascii_container.mount(self.ascii_widget)
+        else:
+            # Fallback to generic array widget
+            self.ascii_widget = ASCIIArray(title=self.display_name)
+            ascii_container.mount(self.ascii_widget)
+        
+        self.log_widget = OpsLog()
+        log_container.mount(self.log_widget)
         self.input_field = None  # Will be set when needed
         
-        # Build operation buttons based on binary type
         self._build_operation_buttons()
         
-        # Clear log and show initial state
         self._clear_log()
         self._log_operation(f"Connected to {self.display_name}")
-        self._update_ascii_art("Initializing...")
+        
+        if self.binary_name in ["stack", "stackll", "queue", "queuell", "circqueue"]:
+            self.ascii_widget.update_data([])  # Empty array
+        elif self.binary_name == "bst":
+            self.ascii_widget.update_tree([])  # Empty tree
+        elif self.binary_name == "heap":
+            self.ascii_widget.update_heap([])  # Empty heap
     
     def _build_operation_buttons(self) -> None:
         """Build operation buttons based on the binary type"""
@@ -125,16 +162,13 @@ class TraceWindow(Screen):
             self.operation_buttons["default"]
         )
         
-        # Create buttons in groups
         buttons = []
         for label, button_id, command_prefix in button_configs:
             if "[value]" in label:
-                # This is an input field + button combo
                 input_id = button_id.replace("-btn", "-input")
                 btn = Button(label.replace("[value]", ""), id=button_id)
                 buttons.append(("input", input_id, label, btn))
             else:
-                # Regular button
                 btn = Button(label, id=button_id)
                 buttons.append(("button", button_id, label, btn))
         
@@ -144,7 +178,6 @@ class TraceWindow(Screen):
             
             for btn_type, btn_id, btn_label, btn in group:
                 if btn_type == "input":
-                    # Create input field + button pair
                     input_field = Input(placeholder="value", id=btn_id)
                     container.mount(Horizontal(input_field, btn, id=f"{btn_id}-group"))
                     if "push" in btn_id.lower() or "enqueue" in btn_id.lower() or "insert" in btn_id.lower():
@@ -155,7 +188,6 @@ class TraceWindow(Screen):
                     button_widgets.append(btn)
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Handle button presses"""
         button_id = event.button.id
         
         if button_id == "back-button":
@@ -168,8 +200,6 @@ class TraceWindow(Screen):
             self._execute_command(command)
     
     def _get_command_for_button(self, button_id: str) -> str:
-        """Get the command string for a button ID"""
-        # Map button IDs to commands
         command_map = {
             "back-button": "EXIT",  # Handled separately
             
@@ -205,11 +235,9 @@ class TraceWindow(Screen):
         return None
     
     def _clear_and_reset(self) -> str:
-        """Clear the data structure and return command"""
         self._clear_log()
         self._log_operation(f"Cleared {self.display_name}")
         self._update_ascii_art("[]")
-        # Reconnect bridge to reset state
         self.bridge.close()
         self.bridge = DSBridge(self.binary_name)
         return ""  # No command to send
@@ -220,14 +248,11 @@ class TraceWindow(Screen):
             return
             
         try:
-            # Send command to binary
             response = self.bridge.send(command)
             
-            # Log the operation
             self._log_operation(f"> {command}")
             self._log_operation(f"< {response}")
             
-            # Update ASCII art based on response
             self._update_ascii_art_from_response(response)
             
             # Clear input field if applicable
@@ -239,29 +264,66 @@ class TraceWindow(Screen):
             self.notify(f"Command failed: {str(e)}", severity="error")
     
     def _log_operation(self, message: str) -> None:
-        """Add a message to the operation log"""
         if self.log_widget:
-            current_content = self.log_widget.renderable
-            if hasattr(current_content, 'plain'):
-                current_text = current_content.plain
-            else:
-                current_text = str(current_content) if current_content else ""
-            
-            new_text = f"{current_text}\n{message}" if current_text else message
-            self.log_widget.update(new_text)
-            
-            # Auto-scroll to bottom (simulated by ensuring last lines are visible)
-            # In a real implementation, we'd use a RichLog or similar widget
+            self.log_widget.add_entry(message)
     
     def _clear_log(self) -> None:
-        """Clear the operation log"""
         if self.log_widget:
-            self.log_widget.update("")
+            self.log_widget.clear()
     
     def _update_ascii_art(self, art: str) -> None:
-        """Update the ASCII art display"""
         if self.ascii_widget:
-            self.ascii_widget.update(art)
+            # For our custom widgets, we need to update their internal data and refresh
+            if hasattr(self.ascii_widget, 'update_data'):
+                # ASCIIArray widget
+                try:
+                    # Try to parse as array data like "[1 2 3]"
+                    if art.startswith('[') and art.endswith(']'):
+                        content = art[1:-1].strip()
+                        if content:
+                            data = [int(x.strip()) for x in content.split() if x.strip()]
+                            self.ascii_widget.update_data(data)
+                        else:
+                            self.ascii_widget.update_data([])
+                    else:
+                        # Just update with the raw string for now
+                        self.ascii_widget.update_data([])
+                except ValueError:
+                    # If parsing fails, keep current data
+                    pass
+            elif hasattr(self.ascii_widget, 'update_tree'):
+                # ASCII2DTree widget
+                try:
+                    # Try to parse as tree traversal data
+                    if art.startswith('[') and art.endswith(']'):
+                        content = art[1:-1].strip()
+                        if content:
+                            data = [int(x.strip()) for x in content.split() if x.strip()]
+                            self.ascii_widget.update_tree(data)
+                        else:
+                            self.ascii_widget.update_tree([])
+                    else:
+                        self.ascii_widget.update_tree([])
+                except ValueError:
+                    self.ascii_widget.update_tree([])
+            elif hasattr(self.ascii_widget, 'update_heap'):
+                # ASCIIHeap widget
+                try:
+                    # Try to parse as heap array data
+                    if art.startswith('[') and art.endswith(']'):
+                        content = art[1:-1].strip()
+                        if content:
+                            data = [int(x.strip()) for x in content.split() if x.strip()]
+                            self.ascii_widget.update_heap(data)
+                        else:
+                            self.ascii_widget.update_heap([])
+                    else:
+                        self.ascii_widget.update_heap([])
+                except ValueError:
+                    self.ascii_widget.update_heap([])
+            else:
+                # Fallback - just refresh the widget
+                self.ascii_widget.refresh()
     
     def _update_ascii_art_from_response(self, response: str) -> None:
         """Update ASCII art based on binary response"""
@@ -294,13 +356,11 @@ class TraceWindow(Screen):
             self._update_ascii_art(f"? {response}")
     
     def action_go_back(self) -> None:
-        """Go back to the previous screen"""
         if self.bridge:
             self.bridge.close()
         self.app.pop_screen()
     
     def on_key(self, event) -> None:
-        """Handle key presses"""
         if event.key == "enter" and self.input_field and self.input_field.has_focus:
             # Find which button to trigger based on focused input
             focused_id = self.input_field.id

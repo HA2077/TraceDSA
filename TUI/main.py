@@ -7,9 +7,11 @@ from textual.screen import Screen
 
 from screens.splash import SplashScreen
 from screens.menu import MainMenu
-from screens.trace import TraceWindow
+from screens.trace_screen import TraceWindow
 
 from bridge import DSBridge
+
+import os
 
 
 class TraceDSApp(App):
@@ -62,5 +64,6 @@ class TraceDSApp(App):
             bridge.close()
         self.exit()
 
-
-import os
+if __name__ == "__main__":
+    app = TraceDSApp()
+    app.run()
