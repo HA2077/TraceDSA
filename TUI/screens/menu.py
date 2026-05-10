@@ -44,26 +44,26 @@ class MainMenu(Screen):
         yield Container(
             Container(
                 Static("Choose a Data Structure or Algorithm", id="title"),
-                Input(placeholder="[ 🔍 Search... ]", id="search-input"),
+                Input(placeholder="[ 🔍 Search... ]", id="search_input"),
                 id="header-section"
             ),
             
             Container(
-                Static(self._get_random_dsa_art(), id="random-art", classes="ascii-art"),
-                Static(self.random_fact, id="fun-fact"),
-                id="middle-section"
+                Static(self._get_random_dsa_art(), id="random_art", classes="ascii_art"),
+                Static(self.random_fact, id="fun_fact"),
+                id="middle_section"
             ),
             
             Container(
-                id="button-section"
+                id="button_section"
             ),
             
-            id="main-menu-container"
+            id="main_menu_container"
         )
     
     def on_mount(self) -> None:
         self.show_level_1()  # Start with level 1 (categories)
-        self.query_one("#search-input").focus()
+        self.query_one("#search_input").focus()
     
     def _get_random_dsa_art(self) -> str:
         arts = [
@@ -91,7 +91,7 @@ class MainMenu(Screen):
         self._build_level_2_buttons(category)
     
     def _build_level_1_buttons(self) -> None:
-        container = self.query_one("#button-section")
+        container = self.query_one("#button_section")
         container.remove_children()
         
         buttons = []
@@ -102,18 +102,17 @@ class MainMenu(Screen):
         # Arrange buttons in rows of 3
         for i in range(0, len(buttons), 3):
             row_buttons = buttons[i:i+3]
-            container.mount(Horizontal(*row_buttons, id=f"level1-row-{i//3}"))
+            container.mount(Horizontal(*row_buttons, id=f"level1_row_{i//3}"))
     
     def _build_level_2_buttons(self, category: str) -> None:
-        """Build the module buttons for Level 2"""
-        container = self.query_one("#button-section")
+        container = self.query_one("#button_section")
         container.remove_children()
         
         modules = self.CATEGORY_MODULES.get(category, [])
         buttons = []
         
         # Back button
-        back_btn = Button("← Back", variant="default", id="back-button")
+        back_btn = Button("← Back", variant="default", id="back_button")
         buttons.append(back_btn)
         
         # Module buttons
@@ -129,7 +128,7 @@ class MainMenu(Screen):
                 container.mount(back_button)
                 for i in range(0, len(module_buttons), 3):
                     row_buttons = module_buttons[i:i+3]
-                    container.mount(Horizontal(*row_buttons, id=f"level2-row-{i//3}"))
+                    container.mount(Horizontal(*row_buttons, id=f"level2_row_{i//3}"))
             else:
                 # Just back button
                 container.mount(back_button)
@@ -143,7 +142,7 @@ class MainMenu(Screen):
         elif button_id.startswith("module_"):
             module = button_id.replace("module_", "")
             self._launch_module(module)
-        elif button_id == "back-button":
+        elif button_id == "back_button":
             self.show_level_1()
     
     def _launch_module(self, module_name: str) -> None:
@@ -156,14 +155,20 @@ class MainMenu(Screen):
             "Singly LinkedList": "ll",
             "Doubly LinkedList": "dll",
             "Binary Search Tree": "bst",
-            "Min-Heap": "heap-min",
-            "Max-Heap": "heap-max",
+            "Min-Heap": "heap",
+            "Max-Heap": "heap",
         }
         
         binary_name = module_mapping.get(module_name, module_name.lower().replace(" ", ""))
         
-        binary_path = f"./TUI/bins/linux/{binary_name}"
-        if not os.path.exists(binary_path):
+        try:
+            # Import here to avoid circular imports
+            import sys
+            sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+            from bridge import get_binary
+            binary_path = get_binary(binary_name)
+        except Exception:
+            binary_path = f"./TUI/bins/linux/{binary_name}"
             alternatives = {
                 "heap-min": "heap",
                 "heap-max": "heap",
