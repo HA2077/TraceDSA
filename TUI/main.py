@@ -9,6 +9,8 @@ from screens.splash import SplashScreen
 from screens.menu import MainMenu
 from screens.trace_screen import TraceWindow
 
+import platform
+
 from bridge import DSBridge
 
 import os
@@ -39,7 +41,8 @@ class TraceDSApp(App):
         ]
 
         for name in binary_names:
-            binary_path = f"bins/linux/{name}"
+            sysname = platform.system().lower()
+            binary_path = f"TUI/bins/{sysname}/{name}"
             if os.path.exists(binary_path):
                 try:
                     self.bridges[name] = DSBridge(name)

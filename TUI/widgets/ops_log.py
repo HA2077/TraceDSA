@@ -1,33 +1,29 @@
 from textual.widget import Widget
-from textual.widgets import Static
-
+from textual.widgets import RichLog
+from rich.text import Text
 
 class OpsLog(Widget):
-    def __init__(self):
+    def __init__(self, max_entries=100):
         super().__init__()
-        self.log_entries = []
-        self.max_entries = 100  # Limit log size to prevent memory issues
-        self.static = Static("")
-        
+        self.max_entries = max_entries
+        self._rich_log = None
+
     def compose(self):
-        yield self.static
-        
-    def add_entry(self, entry):
-        self.log_entries.append(entry)
-        if len(self.log_entries) > self.max_entries:
-            self.log_entries = self.log_entries[-self.max_entries:]
-        self._update_display()
-        
-    def clear(self):
-        self.log_entries = []
-        self._update_display()
-        
-    def _update_display(self):
-        if not self.log_entries:
-            content = "No operations yet"
+        self._rich_log = RichLog(auto_scroll=True, markup=False)
+        yield self._rich_log
+
+    def add_entry(self, message: str) -> None:
+        if message.startswith("ERROR"):
+            text = Text(message, style="bold red")
+        elif message.startswith("OK"):
+            text = Text(message, style="cyan")
         else:
-            content = "\n".join(self.log_entries)
-        self.static.update(content)
-        
-    def render(self):
-        return ""
+            text = Text(message, style="dim")
+
+        self._rich_log.write(text)
+
+        while self._rich_log.line_count > self.max_entries:
+            self._rich_log.clear()
+
+    def clear(self) -> None:
+        self._rich_log.clear()
