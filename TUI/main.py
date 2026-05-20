@@ -14,90 +14,23 @@ class TraceDSApp(App):
     CSS_PATH = None
 
     DEFAULT_CSS = """
-    /* === Color Variables === */
-    $bg: #1a1a2e;
-    $panel-bg: #16213e;
-    $panel-border: #0f3460;
-    $accent: #00d4ff;
-    $text: #e0e0e0;
-    $text-bright: #ffffff;
-    $error: #ff4444;
-    $ok: #00d4ff;
-    $dim: #666680;
-
-    /* === App === */
+    /* === App & Screen === */
     App {
-        background: $bg;
-        color: $text;
+        background: #1a1a2e;
+        color: #e0e0e0;
     }
 
     Screen {
-        background: $bg;
+        background: #1a1a2e;
         height: 100%;
     }
 
-    /* === Typography === */
     Static, Label {
-        color: $text;
+        color: #e0e0e0;
     }
 
-    /* === Containers === */
     Container {
         background: transparent;
-    }
-
-    /* === Splash Screen === */
-    SplashScreen {
-        align: center middle;
-    }
-
-    #splash-container {
-        layout: vertical;
-        align: center middle;
-        width: 60;
-        height: auto;
-        background: $panel-bg;
-        border: solid $accent;
-        padding: 2 4;
-    }
-
-    #pypi-link, #github-link {
-        color: $accent;
-        text-style: underline;
-        width: auto;
-    }
-
-    #pypi-link:hover, #github-link:hover {
-        color: $text-bright;
-    }
-
-    #ascii-line-1, #ascii-line-2, #ascii-line-3,
-    #ascii-line-4, #ascii-line-5, #ascii-line-6 {
-        color: $accent;
-        text-style: bold;
-        width: auto;
-    }
-
-    #tagline {
-        color: $text-bright;
-        text-align: center;
-        width: 100%;
-    }
-
-    #start-button {
-        width: auto;
-        background: $accent;
-        color: $bg;
-        text-style: bold;
-    }
-
-    #start-button:hover {
-        background: $text-bright;
-    }
-
-    #start-button:focus {
-        background: $text-bright;
-        border: solid $text-bright;
     }
 
     /* === Main Menu === */
@@ -112,14 +45,14 @@ class TraceDSApp(App):
         align: center middle;
         width: 100%;
         height: auto;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
 
     #title {
-        color: $text-bright;
+        color: #ffffff;
         text-style: bold;
         text-align: center;
         width: 100%;
@@ -128,17 +61,17 @@ class TraceDSApp(App):
     #search_input {
         width: 40;
         margin: 1 0;
-        background: $bg;
-        border: solid $panel-border;
-        color: $text;
+        background: #1a1a2e;
+        border: solid #0f3460;
+        color: #e0e0e0;
     }
 
     #search_input:focus {
-        border: solid $accent;
+        border: solid #00d4ff;
     }
 
     #search_input > .input--placeholder {
-        color: $dim;
+        color: #666680;
     }
 
     #middle_section {
@@ -146,20 +79,20 @@ class TraceDSApp(App):
         align: center middle;
         width: 100%;
         height: auto;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
 
     #random_art {
-        color: $accent;
+        color: #00d4ff;
         text-align: center;
         width: 100%;
     }
 
     #fun_fact {
-        color: $text;
+        color: #e0e0e0;
         text-align: center;
         text-style: italic;
         width: 100%;
@@ -180,51 +113,50 @@ class TraceDSApp(App):
 
     /* === Buttons === */
     Button {
-        background: $panel-bg;
-        color: $text;
-        border: solid $panel-border;
+        background: #16213e;
+        color: #e0e0e0;
+        border: solid #0f3460;
         text-style: bold;
-        transition: background 100ms, color 100ms;
     }
 
     Button:hover {
-        background: $accent;
-        color: $bg;
+        background: #00d4ff;
+        color: #1a1a2e;
     }
 
     Button:focus {
-        border: solid $accent;
+        border: solid #00d4ff;
         text-style: bold underline;
     }
 
     Button.primary {
-        color: $accent;
-        border: solid $accent;
+        color: #00d4ff;
+        border: solid #00d4ff;
     }
 
     Button.primary:hover {
-        background: $accent;
-        color: $bg;
+        background: #00d4ff;
+        color: #1a1a2e;
     }
 
     Button.success {
-        color: $text-bright;
-        border: solid $panel-border;
+        color: #ffffff;
+        border: solid #0f3460;
     }
 
     Button.success:hover {
-        background: $accent;
-        color: $bg;
+        background: #00d4ff;
+        color: #1a1a2e;
     }
 
     Button.default {
-        color: $dim;
-        border: solid $panel-border;
+        color: #666680;
+        border: solid #0f3460;
     }
 
     Button.default:hover {
-        color: $text;
-        border: solid $accent;
+        color: #e0e0e0;
+        border: solid #00d4ff;
     }
 
     /* === Trace Window === */
@@ -239,22 +171,22 @@ class TraceDSApp(App):
         content-align: left middle;
         width: 100%;
         height: auto;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         padding: 0 2;
     }
 
     #trace_header #back_button {
         width: auto;
-        color: $dim;
+        color: #666680;
     }
 
     #trace_header #back_button:hover {
-        color: $accent;
+        color: #00d4ff;
     }
 
     #module_name {
-        color: $text-bright;
+        color: #ffffff;
         text-style: bold;
         text-align: center;
         width: 1fr;
@@ -269,14 +201,14 @@ class TraceDSApp(App):
     #ascii_panel {
         width: 60%;
         height: 100%;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         padding: 1 2;
         overflow: auto;
     }
 
     #ascii_placeholder {
-        color: $dim;
+        color: #666680;
         text-align: center;
     }
 
@@ -293,14 +225,14 @@ class TraceDSApp(App):
     #log_panel {
         width: 40%;
         height: 100%;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         layout: vertical;
         padding: 0 1;
     }
 
     #log_header {
-        color: $accent;
+        color: #00d4ff;
         text-style: bold;
         width: 100%;
         text-align: center;
@@ -308,8 +240,8 @@ class TraceDSApp(App):
     }
 
     #log_panel RichLog {
-        background: $bg;
-        color: $text;
+        background: #1a1a2e;
+        color: #e0e0e0;
         width: 100%;
         height: 1fr;
     }
@@ -322,8 +254,8 @@ class TraceDSApp(App):
     #button_container {
         width: 100%;
         height: auto;
-        background: $panel-bg;
-        border: solid $panel-border;
+        background: #16213e;
+        border: solid #0f3460;
         padding: 1 2;
         layout: horizontal;
         overflow-x: auto;
@@ -336,36 +268,36 @@ class TraceDSApp(App):
 
     /* === Inputs === */
     Input {
-        background: $bg;
-        color: $text;
-        border: solid $panel-border;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        border: solid #0f3460;
         width: 12;
         margin-right: 1;
     }
 
     Input:focus {
-        border: solid $accent;
+        border: solid #00d4ff;
     }
 
     Input > .input--placeholder {
-        color: $dim;
+        color: #666680;
     }
 
     /* === Scrollbar === */
     ScrollBar {
-        background: $bg;
+        background: #1a1a2e;
     }
 
     ScrollBar:hover {
-        background: $panel-bg;
+        background: #16213e;
     }
 
     ScrollBar > .scrollbar--thumb {
-        background: $accent;
+        background: #00d4ff;
     }
 
     ScrollBar > .scrollbar--thumb:hover {
-        background: $text-bright;
+        background: #ffffff;
     }
     """
 
@@ -379,22 +311,17 @@ class TraceDSApp(App):
     def __init__(self):
         super().__init__()
         self.bridges = {}
-        self._initialize_bridges()
 
-    def _initialize_bridges(self):
-        binary_names = [
-            "stack", "stackll", "queue", "queuell",
-            "circqueue", "ll", "dll", "bst", "heap"
-        ]
-
-        for name in binary_names:
-            sysname = platform.system().lower()
-            binary_path = f"TUI/bins/{sysname}/{name}"
-            if os.path.exists(binary_path):
-                try:
-                    self.bridges[name] = DSBridge(name)
-                except Exception:
-                    pass
+    def initialize_bridge(self, name: str) -> bool:
+        sysname = platform.system().lower()
+        binary_path = f"TUI/bins/{sysname}/{name}"
+        if os.path.exists(binary_path):
+            try:
+                self.bridges[name] = DSBridge(name)
+                return True
+            except Exception:
+                return False
+        return False
 
     def get_bridge(self, name: str):
         return self.bridges.get(name)
