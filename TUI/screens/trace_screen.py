@@ -1,14 +1,15 @@
 from textual.app import ComposeResult
-from textual.containers import Container, Horizontal, Vertical
-from textual.widgets import Static, Button, Input, Label
+from textual.containers import Container, Horizontal
+from textual.widgets import Static, Button, Input
 from textual.screen import Screen
 from textual.binding import Binding
-from rich.text import Text
+
 import os
 import sys
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
+
 from bridge import DSBridge
 from widgets.ascii_array import ASCIIArray
 from widgets.ascii_tree import ASCII2DTree
@@ -17,12 +18,114 @@ from widgets.ops_log import OpsLog
 
 
 class TraceWindow(Screen):
-    
+
     BINDINGS = [
         Binding("escape", "go_back", "Back"),
-        Binding("backspace", "go_back", "Back"),
     ]
-    
+
+    MODULE_CONFIGS = {
+        "stack": {
+            "ascii_type": "array",
+            "buttons": [
+                ("PUSH", "push_btn", True),
+                ("POP", "pop_btn", False),
+                ("PEEK", "peek_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "stackll": {
+            "ascii_type": "array",
+            "buttons": [
+                ("PUSH", "push_btn", True),
+                ("POP", "pop_btn", False),
+                ("PEEK", "peek_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "queue": {
+            "ascii_type": "array",
+            "buttons": [
+                ("ENQUEUE", "enqueue_btn", True),
+                ("DEQUEUE", "dequeue_btn", False),
+                ("PEEK", "peek_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "queuell": {
+            "ascii_type": "array",
+            "buttons": [
+                ("ENQUEUE", "enqueue_btn", True),
+                ("DEQUEUE", "dequeue_btn", False),
+                ("PEEK", "peek_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "circqueue": {
+            "ascii_type": "array",
+            "buttons": [
+                ("ENQUEUE", "enqueue_btn", True),
+                ("DEQUEUE", "dequeue_btn", False),
+                ("PEEK", "peek_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "ll": {
+            "ascii_type": "linked",
+            "buttons": [
+                ("INSERT_START", "insert_start_btn", True),
+                ("INSERT_END", "insert_end_btn", True),
+                ("DELETE_START", "del_start_btn", False),
+                ("DELETE_END", "del_end_btn", False),
+                ("DELETE_VAL", "delete_val_btn", True),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "dll": {
+            "ascii_type": "doubly",
+            "buttons": [
+                ("INSERT_START", "insert_start_btn", True),
+                ("INSERT_END", "insert_end_btn", True),
+                ("DELETE_START", "del_start_btn", False),
+                ("DELETE_END", "del_end_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "bst": {
+            "ascii_type": "tree",
+            "buttons": [
+                ("INSERT", "insert_btn", True),
+                ("REMOVE", "remove_btn", True),
+                ("FIND", "find_btn", True),
+                ("INORDER", "inorder_btn", False),
+                ("PREORDER", "preorder_btn", False),
+                ("POSTORDER", "postorder_btn", False),
+                ("PRINT", "print_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+        "heap": {
+            "ascii_type": "heap",
+            "buttons": [
+                ("ENQUEUE_MIN", "enqueue_min_btn", True),
+                ("DEQUEUE_MIN", "dequeue_min_btn", False),
+                ("PEEK_MIN", "peek_min_btn", False),
+                ("PRINT_MIN", "print_min_btn", False),
+                ("ENQUEUE_MAX", "enqueue_max_btn", True),
+                ("DEQUEUE_MAX", "dequeue_max_btn", False),
+                ("PEEK_MAX", "peek_max_btn", False),
+                ("PRINT_MAX", "print_max_btn", False),
+                ("CLEAR", "clear_btn", False),
+            ],
+        },
+    }
+
     def __init__(self, binary_name: str, display_name: str):
         super().__init__()
         self.binary_name = binary_name
@@ -30,45 +133,9 @@ class TraceWindow(Screen):
         self.bridge = None
         self.ascii_widget = None
         self.log_widget = None
-        self.input_field = None
-        
-        self.operation_buttons = {
-            "stack": [
-                ("PUSH [value]", "push_btn", "PUSH"),
-                ("POP", "pop_btn", "POP"),
-                ("PEEK", "peek_btn", "PEEK"),
-                ("PRINT", "print_btn", "PRINT"),
-                ("CLEAR", "clear_btn", "CLEAR"),
-            ],
-            "queue": [
-                ("ENQUEUE [value]", "enqueue_btn", "ENQUEUE"),
-                ("DEQUEUE", "dequeue_btn", "DEQUEUE"),
-                ("PEEK", "peek_btn", "PEEK"),
-                ("PRINT", "print_btn", "PRINT"),
-                ("CLEAR", "clear_btn", "CLEAR"),
-            ],
-            "bst": [
-                ("INSERT [value]", "insert_btn", "INSERT"),
-                ("REMOVE [value]", "remove_btn", "REMOVE"),
-                ("FIND [value]", "find_btn", "FIND"),
-                ("INORDER", "inorder_btn", "INORDER"),
-                ("PREORDER", "preorder_btn", "PREORDER"),
-                ("POSTORDER", "postorder_btn", "POSTORDER"),
-                ("CLEAR", "clear_btn", "CLEAR"),
-            ],
-            "heap": [
-                ("ENQUEUE [value]", "enqueue_btn", "ENQUEUE"),
-                ("DEQUEUE MIN", "dequeue_min_btn", "DEQUEUE MIN"),
-                ("PEEK MIN", "peek_min_btn", "PEEK MIN"),
-                ("PRINT", "print_btn", "PRINT"),
-                ("CLEAR", "clear_btn", "CLEAR"),
-            ],
-            "default": [
-                ("OP [value]", "op_btn", "OP"),
-                ("CLEAR", "clear_btn", "CLEAR"),
-            ]
-        }
-    
+        self.input_fields = {}
+        self._active_input = None
+
     def compose(self) -> ComposeResult:
         yield Container(
             Container(
@@ -76,304 +143,268 @@ class TraceWindow(Screen):
                 Static(self.display_name.upper(), id="module_name"),
                 id="trace_header"
             ),
-            
-            # Main content: ASCII visualization and operation log
             Horizontal(
                 Container(
-                    # Will be replaced with actual widget in on_mount
-                    Static("Initializing...", id="ascii_placeholder"),
+                    Static("Loading...", id="ascii_placeholder"),
                     id="ascii_panel"
                 ),
-                
                 Container(
                     Static("Operation Log", id="log_header"),
-                    # Will be replaced with actual widget in on_mount
-                    Static("", id="log_content"),
                     id="log_panel"
                 ),
                 id="main_content"
             ),
-            
-            # Bottom bar: Operation buttons
-            Container(
-                id="button_container"
-            ),
-            
+            Container(id="button_container"),
             id="trace_window_container"
         )
-    
+
     def on_mount(self) -> None:
-        try:
-            self.bridge = DSBridge(self.binary_name)
-        except Exception as e:
-            self.notify(f"Failed to connect to {self.binary_name}: {e}", severity="error")
-            self.app.pop_screen()
-            return
-        
-        # Get references to containers
+        bridge = self.app.get_bridge(self.binary_name)
+        if bridge:
+            self.bridge = bridge
+        else:
+            try:
+                self.bridge = DSBridge(self.binary_name)
+            except Exception as e:
+                self.notify(f"Failed to connect to {self.binary_name}: {e}", severity="error")
+                self.app.pop_screen()
+                return
+
         ascii_container = self.query_one("#ascii_panel")
         log_container = self.query_one("#log_panel")
-        
-        # Clear the containers and mount our actual widgets
+
         ascii_container.remove_children()
         log_container.remove_children()
-        
-        # Initialize and mount the appropriate ASCII widget based on binary type
-        if self.binary_name in ["stack", "stackll", "queue", "queuell", "circqueue"]:
+
+        config = self.MODULE_CONFIGS.get(self.binary_name, self.MODULE_CONFIGS.get("stack"))
+        ascii_type = config["ascii_type"]
+
+        if ascii_type in ("array", "linked", "doubly"):
             self.ascii_widget = ASCIIArray(title=self.display_name)
-            ascii_container.mount(self.ascii_widget)
-        elif self.binary_name == "bst":
+        elif ascii_type == "tree":
             self.ascii_widget = ASCII2DTree(title=self.display_name)
-            ascii_container.mount(self.ascii_widget)
-        elif self.binary_name == "heap":
-            # For heap, we'll determine min/max from the display name
-            heap_type = "min" if "Min" in self.display_name else "max"
+        elif ascii_type == "heap":
+            heap_type = "min" if "Min" in self.display_name else "min"
             self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=heap_type)
-            ascii_container.mount(self.ascii_widget)
         else:
-            # Fallback to generic array widget
             self.ascii_widget = ASCIIArray(title=self.display_name)
-            ascii_container.mount(self.ascii_widget)
-        
+
+        ascii_container.mount(self.ascii_widget)
+
         self.log_widget = OpsLog()
         log_container.mount(self.log_widget)
-        self.input_field = None  # Will be set when needed
-        
+
         self._build_operation_buttons()
-        
-        self._clear_log()
-        self._log_operation(f"Connected to {self.display_name}")
-        
-        if self.binary_name in ["stack", "stackll", "queue", "queuell", "circqueue"]:
-            self.ascii_widget.update_data([])  # Empty array
-        elif self.binary_name == "bst":
-            self.ascii_widget.update_tree([])  # Empty tree
-        elif self.binary_name == "heap":
-            self.ascii_widget.update_heap([])  # Empty heap
-    
+
+        self.log_widget.add_entry(f"Connected to {self.display_name}")
+
+        if ascii_type in ("array", "linked", "doubly"):
+            self.ascii_widget.update_data([])
+        elif ascii_type == "tree":
+            self.ascii_widget.update_tree([])
+        elif ascii_type == "heap":
+            self.ascii_widget.update_heap([])
+
+        first_input = self.query_one("Input", expect_type=Input)
+        if first_input:
+            first_input.focus()
+
     def _build_operation_buttons(self) -> None:
-        """Build operation buttons based on the binary type"""
         container = self.query_one("#button_container")
         container.remove_children()
-        
-        # Get button configuration for this binary type
-        button_configs = self.operation_buttons.get(
-            self.binary_name, 
-            self.operation_buttons["default"]
-        )
-        
-        buttons = []
-        for label, button_id, command_prefix in button_configs:
-            if "[value]" in label:
-                input_id = button_id.replace("_btn", "_input")
-                btn = Button(label.replace("[value]", ""), id=button_id)
-                buttons.append(("input", input_id, label, btn))
+
+        config = self.MODULE_CONFIGS.get(self.binary_name)
+        if not config:
+            return
+
+        button_specs = config["buttons"]
+
+        for label, btn_id, needs_input in button_specs:
+            if needs_input:
+                input_id = f"{btn_id}_input"
+                input_widget = Input(placeholder="value", id=input_id)
+                btn = Button(label, id=btn_id)
+                self.input_fields[btn_id] = input_widget
+                container.mount(Horizontal(input_widget, btn, id=f"{btn_id}_group"))
             else:
-                btn = Button(label, id=button_id)
-                buttons.append(("button", button_id, label, btn))
-        
-        for i in range(0, len(buttons), 3):
-            group = buttons[i:i+3]
-            button_widgets = []
-            
-            for btn_type, btn_id, btn_label, btn in group:
-                if btn_type == "input":
-                    input_field = Input(placeholder="value", id=btn_id)
-                    container.mount(Horizontal(input_field, btn, id=f"{btn_id}_group"))
-                    if "push" in btn_id.lower() or "enqueue" in btn_id.lower() or "insert" in btn_id.lower():
-                        self.input_field = input_field  # Store reference for Enter key
-                else:
-                    # Regular button
-                    container.mount(btn)
-                    button_widgets.append(btn)
-    
+                btn = Button(label, id=btn_id)
+                container.mount(btn)
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
-        
+
         if button_id == "back_button":
             self.action_go_back()
             return
-        
-        # Find the command associated with this button
-        command = self._get_command_for_button(button_id)
+
+        command = self._build_command(button_id)
         if command:
             self._execute_command(command)
-    
-    def _get_command_for_button(self, button_id: str) -> str:
-        command_map = {
-            "back_button": "EXIT",  # Handled separately
-            
-            # Stack operations
-            "push_input": lambda: f"PUSH {self.query_one('#push_input').value}",
-            "pop_btn": "POP",
-            "peek_btn": "PEEK",
-            "print_btn": "PRINT",
-            "clear_btn": lambda: self._clear_and_reset(),
-            
-            # Queue operations
-            "enqueue_input": lambda: f"ENQUEUE {self.query_one('#enqueue_input').value}",
-            "dequeue_btn": "DEQUEUE",
-            
-            # BST operations
-            "insert_input": lambda: f"INSERT {self.query_one('#insert_input').value}",
-            "remove_input": lambda: f"REMOVE {self.query_one('#remove_input').value}",
-            "find_input": lambda: f"FIND {self.query_one('#find_input').value}",
-            "inorder_btn": "INORDER",
-            "preorder_btn": "PREORDER",
-            "postorder_btn": "POSTORDER",
-            
-            # Heap operations
-            "dequeue_min_btn": "DEQUEUE MIN",
-            "peek_min_btn": "PEEK MIN",
-        }
-        
-        if button_id in command_map:
-            mapping = command_map[button_id]
-            if callable(mapping):
-                return mapping()
-            return mapping
+
+    def _build_command(self, button_id: str) -> str | None:
+        config = self.MODULE_CONFIGS.get(self.binary_name)
+        if not config:
+            return None
+
+        for label, btn_id, needs_input in config["buttons"]:
+            if btn_id == button_id:
+                if needs_input:
+                    input_widget = self.input_fields.get(btn_id)
+                    if input_widget:
+                        value = input_widget.value.strip()
+                        if not value:
+                            self.notify("Please enter a value", severity="warning")
+                            return None
+                        return f"{label} {value}"
+                    return None
+                else:
+                    return label
+
         return None
-    
-    def _clear_and_reset(self) -> str:
-        self._clear_log()
-        self._log_operation(f"Cleared {self.display_name}")
-        self._update_ascii_art("[]")
-        self.bridge.close()
-        self.bridge = DSBridge(self.binary_name)
-        return ""  # No command to send
-    
+
     def _execute_command(self, command: str) -> None:
-        """Execute a command and update the display"""
-        if not command:  # Special case like clear
+        if not command:
             return
-            
+
         try:
             response = self.bridge.send(command)
-            
-            self._log_operation(f"> {command}")
-            self._log_operation(f"< {response}")
-            
-            self._update_ascii_art_from_response(response)
-            
-            # Clear input field if applicable
-            if self.input_field and self.input_field.has_focus:
-                self.input_field.value = ""
-                
+
+            self.log_widget.add_entry(f"> {command}")
+            self.log_widget.add_entry(f"< {response}")
+
+            self._update_ascii_from_response(response)
+
+            if command.split()[0] in ("PUSH", "ENQUEUE", "INSERT", "INSERT_START", "INSERT_END", "ENQUEUE_MIN", "ENQUEUE_MAX"):
+                for inp in self.input_fields.values():
+                    inp.value = ""
+
         except Exception as e:
-            self._log_operation(f"ERROR: {str(e)}")
+            self.log_widget.add_entry(f"ERROR: {str(e)}")
             self.notify(f"Command failed: {str(e)}", severity="error")
-    
-    def _log_operation(self, message: str) -> None:
-        if self.log_widget:
-            self.log_widget.add_entry(message)
-    
-    def _clear_log(self) -> None:
-        if self.log_widget:
-            self.log_widget.clear()
-    
-    def _update_ascii_art(self, art: str) -> None:
-        if self.ascii_widget:
-            # For our custom widgets, we need to update their internal data and refresh
-            if hasattr(self.ascii_widget, 'update_data'):
-                # ASCIIArray widget
+
+    def _update_ascii_from_response(self, response: str) -> None:
+        if response.startswith("ERROR"):
+            return
+
+        if not response.startswith("OK"):
+            return
+
+        content = response[3:].strip()
+
+        ascii_type = self.MODULE_CONFIGS.get(self.binary_name, {}).get("ascii_type", "array")
+
+        if ascii_type in ("array", "linked", "doubly"):
+            self._update_array_widget(content)
+        elif ascii_type == "tree":
+            self._update_tree_widget(content)
+        elif ascii_type == "heap":
+            self._update_heap_widget(content)
+
+    def _update_array_widget(self, content: str) -> None:
+        if not self.ascii_widget:
+            return
+
+        if "Forward:" in content and "Backward:" in content:
+            forward_part = content.split("Forward:")[1].split("Backward:")[0].strip("[] ")
+            if forward_part.strip():
                 try:
-                    # Try to parse as array data like "[1 2 3]"
-                    if art.startswith('[') and art.endswith(']'):
-                        content = art[1:-1].strip()
-                        if content:
-                            data = [int(x.strip()) for x in content.split() if x.strip()]
-                            self.ascii_widget.update_data(data)
-                        else:
-                            self.ascii_widget.update_data([])
-                    else:
-                        # Just update with the raw string for now
-                        self.ascii_widget.update_data([])
+                    cleaned = forward_part.replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().isdigit()]
+                    self.ascii_widget.update_data(data)
                 except ValueError:
-                    # If parsing fails, keep current data
                     pass
-            elif hasattr(self.ascii_widget, 'update_tree'):
-                # ASCII2DTree widget
+            else:
+                self.ascii_widget.update_data([])
+            return
+
+        if "Linked List:" in content:
+            list_part = content.split("Linked List:")[1].strip("[] ")
+            if list_part.strip():
                 try:
-                    # Try to parse as tree traversal data
-                    if art.startswith('[') and art.endswith(']'):
-                        content = art[1:-1].strip()
-                        if content:
-                            data = [int(x.strip()) for x in content.split() if x.strip()]
-                            self.ascii_widget.update_tree(data)
-                        else:
-                            self.ascii_widget.update_tree([])
-                    else:
-                        self.ascii_widget.update_tree([])
+                    cleaned = list_part.replace("->", " ").replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().isdigit()]
+                    self.ascii_widget.update_data(data)
+                except ValueError:
+                    pass
+            else:
+                self.ascii_widget.update_data([])
+            return
+
+        if "[" in content and "]" in content:
+            start = content.index("[") + 1
+            end = content.rindex("]")
+            inner = content[start:end].strip()
+            if inner:
+                try:
+                    cleaned = inner.replace("->", " ").replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().lstrip("-").isdigit()]
+                    self.ascii_widget.update_data(data)
+                except ValueError:
+                    pass
+            else:
+                self.ascii_widget.update_data([])
+        else:
+            self.ascii_widget.update_data([])
+
+    def _update_tree_widget(self, content: str) -> None:
+        if not self.ascii_widget:
+            return
+
+        if "[" in content and "]" in content:
+            start = content.index("[") + 1
+            end = content.rindex("]")
+            inner = content[start:end].strip()
+            if inner:
+                try:
+                    cleaned = inner.replace("->", " ").replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().lstrip("-").isdigit()]
+                    self.ascii_widget.update_tree(data)
                 except ValueError:
                     self.ascii_widget.update_tree([])
-            elif hasattr(self.ascii_widget, 'update_heap'):
-                # ASCIIHeap widget
+            else:
+                self.ascii_widget.update_tree([])
+        else:
+            self.ascii_widget.update_tree([])
+
+    def _update_heap_widget(self, content: str) -> None:
+        if not self.ascii_widget:
+            return
+
+        if "Min-Heap:" in content or "Max-Heap:" in content:
+            if "Min-Heap:" in content:
+                self.ascii_widget.heap_type = "min"
+                part = content.split("Min-Heap:")[1]
+            else:
+                self.ascii_widget.heap_type = "max"
+                part = content.split("Max-Heap:")[1]
+
+            part = part.strip("[] ")
+            if part:
                 try:
-                    # Try to parse as heap array data
-                    if art.startswith('[') and art.endswith(']'):
-                        content = art[1:-1].strip()
-                        if content:
-                            data = [int(x.strip()) for x in content.split() if x.strip()]
-                            self.ascii_widget.update_heap(data)
-                        else:
-                            self.ascii_widget.update_heap([])
-                    else:
-                        self.ascii_widget.update_heap([])
+                    cleaned = part.replace("->", " ").replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().lstrip("-").isdigit()]
+                    self.ascii_widget.update_heap(data)
                 except ValueError:
                     self.ascii_widget.update_heap([])
             else:
-                # Fallback - just refresh the widget
-                self.ascii_widget.refresh()
-    
-    def _update_ascii_art_from_response(self, response: str) -> None:
-        """Update ASCII art based on binary response"""
-        if response.startswith("OK"):
-            # Extract meaningful part of response for display
-            if ": [" in response:
-                # Format like "OK Stack: [1 2 3]"
-                content = response.split(": [", 1)[1].rstrip("]")
-                if content.strip():
-                    self._update_ascii_art(f"[{content}]")
-                else:
-                    self._update_ascii_art("[]")
-            elif "Forward:" in response and "Backward:" in response:
-                # Doubly linked list format
-                self._update_ascii_art(response[3:])  # Remove "OK "
-            elif "In-order:" in response or "Pre-order:" in response or "Post-order:" in response:
-                # BST traversals
-                self._update_ascii_art(response[3:])  # Remove "OK "
-            elif "Min-Heap:" in response or "Max-Heap:" in response:
-                # Heap format
-                self._update_ascii_art(response[3:])  # Remove "OK "
+                self.ascii_widget.update_heap([])
+        elif "[" in content and "]" in content:
+            start = content.index("[") + 1
+            end = content.rindex("]")
+            inner = content[start:end].strip()
+            if inner:
+                try:
+                    cleaned = inner.replace("->", " ").replace("<->", " ")
+                    data = [int(x.strip()) for x in cleaned.split() if x.strip() and x.strip().lstrip("-").isdigit()]
+                    self.ascii_widget.update_heap(data)
+                except ValueError:
+                    self.ascii_widget.update_heap([])
             else:
-                # Generic OK response
-                self._update_ascii_art(response[3:].strip() or "[]")
-        elif response.startswith("ERROR"):
-            # Show error in ASCII art area
-            self._update_ascii_art(f"ERROR: {response[6:]}")
+                self.ascii_widget.update_heap([])
         else:
-            # Unexpected response format
-            self._update_ascii_art(f"? {response}")
-    
+            self.ascii_widget.update_heap([])
+
     def action_go_back(self) -> None:
         if self.bridge:
             self.bridge.close()
         self.app.pop_screen()
-    
-    def on_key(self, event) -> None:
-        if event.key == "enter" and self.input_field and self.input_field.has_focus:
-            focused_id = self.input_field.id
-            if focused_id == "push_input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#push_btn")))
-            elif focused_id == "enqueue_input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#enqueue_btn")))
-            elif focused_id == "insert_input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#insert_btn")))
-            elif focused_id == "remove_input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#remove_btn")))
-            elif focused_id == "find_input":
-                self.app.post_message(self.__class__.ButtonPressed(self.query_one("#find_btn")))
-            # Add more as needed
-
-
-from bridge import DSBridge
