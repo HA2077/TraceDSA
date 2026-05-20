@@ -33,6 +33,7 @@ class TraceDSApp(App):
 
     Screen {
         background: $bg;
+        height: 100%;
     }
 
     /* === Typography === */
@@ -46,6 +47,10 @@ class TraceDSApp(App):
     }
 
     /* === Splash Screen === */
+    SplashScreen {
+        align: center middle;
+    }
+
     #splash-container {
         layout: vertical;
         align: center middle;
@@ -81,13 +86,18 @@ class TraceDSApp(App):
 
     #start-button {
         width: auto;
-        text-align: center;
-    }
-
-    #start-button Button {
         background: $accent;
         color: $bg;
         text-style: bold;
+    }
+
+    #start-button:hover {
+        background: $text-bright;
+    }
+
+    #start-button:focus {
+        background: $text-bright;
+        border: solid $text-bright;
     }
 
     /* === Main Menu === */
@@ -105,6 +115,7 @@ class TraceDSApp(App):
         background: $panel-bg;
         border: solid $panel-border;
         padding: 1 2;
+        margin-bottom: 1;
     }
 
     #title {
@@ -138,7 +149,7 @@ class TraceDSApp(App):
         background: $panel-bg;
         border: solid $panel-border;
         padding: 1 2;
-        margin: 1 0;
+        margin-bottom: 1;
     }
 
     #random_art {
@@ -163,12 +174,17 @@ class TraceDSApp(App):
         padding: 1 2;
     }
 
+    #button_section Horizontal {
+        margin-bottom: 1;
+    }
+
     /* === Buttons === */
     Button {
         background: $panel-bg;
         color: $text;
         border: solid $panel-border;
         text-style: bold;
+        transition: background 100ms, color 100ms;
     }
 
     Button:hover {
@@ -220,6 +236,7 @@ class TraceDSApp(App):
 
     #trace_header {
         layout: horizontal;
+        content-align: left middle;
         width: 100%;
         height: auto;
         background: $panel-bg;
@@ -244,6 +261,7 @@ class TraceDSApp(App):
     }
 
     #main_content {
+        layout: horizontal;
         width: 100%;
         height: 1fr;
     }
@@ -254,11 +272,22 @@ class TraceDSApp(App):
         background: $panel-bg;
         border: solid $panel-border;
         padding: 1 2;
+        overflow: auto;
     }
 
     #ascii_placeholder {
         color: $dim;
         text-align: center;
+    }
+
+    #ascii_panel Static {
+        width: 100%;
+        height: auto;
+    }
+
+    ASCIIArray, ASCII2DTree, ASCIIHeap {
+        width: 100%;
+        height: 100%;
     }
 
     #log_panel {
@@ -278,9 +307,14 @@ class TraceDSApp(App):
         padding: 1 0;
     }
 
-    RichLog {
+    #log_panel RichLog {
         background: $bg;
         color: $text;
+        width: 100%;
+        height: 1fr;
+    }
+
+    OpsLog {
         width: 100%;
         height: 1fr;
     }
@@ -292,6 +326,7 @@ class TraceDSApp(App):
         border: solid $panel-border;
         padding: 1 2;
         layout: horizontal;
+        overflow-x: auto;
     }
 
     #button_container Horizontal {
@@ -299,7 +334,7 @@ class TraceDSApp(App):
         margin-right: 1;
     }
 
-    /* === Inputs in Trace Window === */
+    /* === Inputs === */
     Input {
         background: $bg;
         color: $text;
@@ -314,11 +349,6 @@ class TraceDSApp(App):
 
     Input > .input--placeholder {
         color: $dim;
-    }
-
-    /* === Notification === */
-    .notification {
-        border: solid $accent;
     }
 
     /* === Scrollbar === */
@@ -380,9 +410,11 @@ class TraceDSApp(App):
             bridge.close()
         self.exit()
 
+
 def main():
     app = TraceDSApp()
     app.run()
+
 
 if __name__ == "__main__":
     main()
