@@ -17,6 +17,31 @@ class MainMenu(Screen):
         Binding("q", "quit", "Quit"),
         Binding("escape", "quit", "Quit"),
     ]
+
+    DEFAULT_CSS = """
+    .search-category-header {
+        color: #00d4ff;
+        text-style: bold;
+        width: 100%;
+        padding: 0 0 0 1;
+        margin-top: 1;
+        margin-bottom: 0;
+    }
+
+    .no-results {
+        color: #666680;
+        text-align: center;
+        width: 100%;
+        margin-top: 2;
+    }
+
+    #search_results_container {
+        layout: vertical;
+        width: 100%;
+        height: auto;
+        padding: 0 2;
+    }
+    """
     
     CATEGORY_MODULES = {
         "Stack": ["Stack (Array)", "Stack (LinkedList)"],
@@ -43,6 +68,11 @@ class MainMenu(Screen):
         self.show_level_2 = False
         self.random_fact = random.choice(self.FUN_FACTS)
         self._module_id_map = {}
+        self._mount_counter = 0
+    
+    def _next_id(self, prefix: str) -> str:
+        self._mount_counter += 1
+        return f"{prefix}_{self._mount_counter}"
     
     def _sanitize_id(self, text: str) -> str:
         sanitized = re.sub(r'[^a-zA-Z0-9_-]', '_', text)
@@ -72,7 +102,7 @@ class MainMenu(Screen):
         )
     
     def on_mount(self) -> None:
-        self._show_level_1()  # Start with level 1 (categories)
+        self._show_level_1()
         self.query_one("#search_input").focus()
     
     def _get_random_dsa_art(self) -> str:
@@ -90,6 +120,57 @@ class MainMenu(Screen):
         ]
         return random.choice(arts)
     
+    def on_input_changed(self, event: Input.Changed) -> None:
+        value = event.value.strip()
+        if not value:
+            self._restore_normal_state()
+        else:
+            self._show_search_results(value)
+
+    def _collect_matches(self, query: str) -> list:
+        q = query.lower()
+        matches = []
+        for category, modules in self.CATEGORY_MODULES.items():
+            cat_match = q in category.lower()
+            if cat_match:
+                for module in modules:
+                    matches.append((category, module))
+            else:
+                for module in modules:
+                    if q in module.lower():
+                        matches.append((category, module))
+        return matches
+
+    def _show_search_results(self, query: str) -> None:
+        self.show_level_2 = False
+        self.query_one("#middle_section").display = False
+
+        matches = self._collect_matches(query)
+        container = self.query_one("#button_section")
+        container.remove_children()
+        self._module_id_map.clear()
+
+        if not matches:
+            container.mount(Static("No matching modules", classes="no-results"))
+            return
+
+        current_category = None
+        for category, module in matches:
+            if category != current_category:
+                container.mount(Static(category, classes="search-category-header"))
+                current_category = category
+            safe_id = self._sanitize_id(module)
+            search_id = self._next_id("search")
+            self._module_id_map[search_id] = module
+            container.mount(Button(module, variant="success", id=search_id))
+
+    def _restore_normal_state(self) -> None:
+        self.query_one("#middle_section").display = True
+        if self.show_level_2:
+            self._build_level_2_buttons(self.selected_category)
+        else:
+            self._build_level_1_buttons()
+
     def _show_level_1(self) -> None:
         self.show_level_2 = False
         self.selected_category = None
@@ -109,7 +190,6 @@ class MainMenu(Screen):
             btn = Button(category, variant="primary", id=f"category_{category}")
             buttons.append(btn)
         
-        # Arrange buttons in rows of 3
         for i in range(0, len(buttons), 3):
             row_buttons = buttons[i:i+3]
             container.mount(Horizontal(*row_buttons, id=f"level1_row_{i//3}"))
@@ -122,7 +202,6 @@ class MainMenu(Screen):
         buttons = []
         self._module_id_map.clear()
         
-        # Back button
         back_btn = Button("← Back", variant="default", id="back_button")
         buttons.append(back_btn)
         
@@ -142,7 +221,6 @@ class MainMenu(Screen):
                     row_buttons = module_buttons[i:i+3]
                     container.mount(Horizontal(*row_buttons, id=f"level2_row_{i//3}"))
             else:
-                # Just back button
                 container.mount(back_button)
     
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -154,6 +232,10 @@ class MainMenu(Screen):
         elif button_id.startswith("module_"):
             safe_id = button_id.replace("module_", "")
             module = self._module_id_map.get(safe_id)
+            if module:
+                self._launch_module(module)
+        elif button_id.startswith("search_"):
+            module = self._module_id_map.get(button_id)
             if module:
                 self._launch_module(module)
         elif button_id == "back_button":
