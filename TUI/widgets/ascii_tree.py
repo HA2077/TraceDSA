@@ -2,7 +2,7 @@ from textual.widget import Widget
 from textual.widgets import Static
 
 
-class ASCII2DTree(Widget):
+class ASCIIBranchTree(Widget):
 
     def __init__(self, tree_data=None, title="BST"):
         super().__init__()
@@ -14,13 +14,33 @@ class ASCII2DTree(Widget):
         self._static = Static("")
         yield self._static
 
+    def _extract_values(self, data):
+        if not data:
+            return []
+        if isinstance(data[0], str) and data[0].startswith("["):
+            content = data[0].strip("[]").split()
+            try:
+                return [int(x) for x in content if x.strip()]
+            except ValueError:
+                return data
+        try:
+            return [int(x) for x in data]
+        except (ValueError, TypeError):
+            return data
+
     def update_tree(self, tree_data):
-        self.tree_data = tree_data or []
-        self._root = self._build_bst(self.tree_data)
+        tree_data = tree_data or []
+        if tree_data == self.tree_data and self._root is not None:
+            self._refresh_display()
+            return
+        self.tree_data = tree_data
+        values = self._extract_values(tree_data)
+        self._root = self._build_bst(values)
         self._refresh_display()
 
     def _refresh_display(self):
-        self._static.update(self._render())
+        if hasattr(self, "_static") and self._static is not None:
+            self._static.update(self._render())
 
     def _build_bst(self, values):
         if not values:
@@ -40,25 +60,8 @@ class ASCII2DTree(Widget):
         return node
 
     def _render(self):
-        if not self.tree_data:
-            return f"{self.title}: Empty Tree"
-
-        if isinstance(self.tree_data[0], str) and self.tree_data[0].startswith("["):
-            content = self.tree_data[0].strip("[]").split()
-            try:
-                values = [int(x) for x in content if x.strip()]
-            except ValueError:
-                return f"{self.title}:\n" + " ".join(self.tree_data)
-            self._root = self._build_bst(values)
-        else:
-            try:
-                values = [int(x) for x in self.tree_data]
-            except (ValueError, TypeError):
-                return f"{self.title}: {self.tree_data}"
-            self._root = self._build_bst(values)
-
         if self._root is None:
-            return f"{self.title}: Empty Tree"
+            return f"{self.title}\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 
         lines = []
         self._draw_tree(self._root, "", True, lines)
@@ -73,13 +76,9 @@ class ASCII2DTree(Widget):
 
         new_prefix = prefix + ("    " if is_last else "│   ")
 
-        has_children = node["left"] is not None or node["right"] is not None
-
-        if has_children:
+        if node["left"] is not None or node["right"] is not None:
             if node["left"]:
                 self._draw_tree(node["left"], new_prefix, node["right"] is None, lines)
-            else:
-                pass
 
             if node["right"]:
                 self._draw_tree(node["right"], new_prefix, True, lines)

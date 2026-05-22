@@ -22,37 +22,36 @@ class ASCIIHeap(Widget):
         self.view_mode = "array" if self.view_mode == "tree" else "tree"
         self._refresh_display()
 
+    def view_mode_label(self):
+        return "(tree view)" if self.view_mode == "tree" else "(array view)"
+
     def _refresh_display(self):
-        self._static.update(self._render())
+        if hasattr(self, "_static") and self._static is not None:
+            self._static.update(self._render())
 
     def _render(self):
         if not self.heap_data:
-            return f"{self.title} ({self.heap_type}-heap): [empty]"
+            return f"{self.title} ({self.heap_type}-heap)\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 
         if self.view_mode == "tree":
             return self._render_as_tree()
         return self._render_as_array()
 
     def _render_as_array(self):
-        cells = []
-        for item in self.heap_data:
-            cells.append(f"│ {self._pad(item)} │")
+        padded = [self._pad(item) for item in self.heap_data]
 
-        top = "  ┌" + "─────┬" * (len(cells) - 1) + "─────┐"
-        mid = "  " + "  ".join(cells)
-        bot = "  └" + "─────┴" * (len(cells) - 1) + "─────┘"
+        top = "  ┌" + "─────┬" * (len(padded) - 1) + "─────┐"
+        mid = "  │" + "│".join(padded) + "│"
+        bot = "  └" + "─────┴" * (len(padded) - 1) + "─────┘"
 
-        indices = "  "
+        indices = "   "
         for i in range(len(self.heap_data)):
-            indices += f"  {i}  "
+            indices += str(i).center(5) + " "
 
-        return f"{self.title} ({self.heap_type}-heap)\n\n{top}\n{mid}\n{bot}\n{indices}"
+        return f"{self.title} ({self.heap_type}-heap) {self.view_mode_label()}\n\n{top}\n{mid}\n{bot}\n{indices}"
 
     def _render_as_tree(self):
-        if not self.heap_data:
-            return f"{self.title}: Empty Heap"
-
-        lines = [f"{self.title} ({self.heap_type}-heap)", ""]
+        lines = [f"{self.title} ({self.heap_type}-heap) {self.view_mode_label()}", ""]
         self._draw_heap_tree(0, "", True, lines)
         return "\n".join(lines)
 
@@ -71,11 +70,10 @@ class ASCIIHeap(Widget):
         has_left = left < len(self.heap_data)
         has_right = right < len(self.heap_data)
 
-        if has_left or has_right:
-            if has_left:
-                self._draw_heap_tree(left, new_prefix, not has_right, lines)
-            if has_right:
-                self._draw_heap_tree(right, new_prefix, True, lines)
+        if has_left:
+            self._draw_heap_tree(left, new_prefix, not has_right, lines)
+        if has_right:
+            self._draw_heap_tree(right, new_prefix, True, lines)
 
     def _pad(self, val):
         s = str(val)

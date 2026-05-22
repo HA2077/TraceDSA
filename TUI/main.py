@@ -217,7 +217,7 @@ class TraceDSApp(App):
         height: auto;
     }
 
-    ASCIIArray, ASCII2DTree, ASCIIHeap {
+    ASCIIArray, ASCIIBranchTree, ASCIIHeap {
         width: 100%;
         height: 100%;
     }

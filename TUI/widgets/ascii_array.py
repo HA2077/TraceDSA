@@ -1,6 +1,7 @@
 from textual.widget import Widget
 from textual.widgets import Static
 
+
 class ASCIIArray(Widget):
     def __init__(self, data=None, title="Array"):
         super().__init__()
@@ -16,11 +17,12 @@ class ASCIIArray(Widget):
         self._refresh_display()
 
     def _refresh_display(self):
-        self._static.update(self._render())
+        if hasattr(self, "_static") and self._static is not None:
+            self._static.update(self._render())
 
     def _render(self):
         if not self.data:
-            return f"{self.title}: [empty]"
+            return f"{self.title}\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 
         if "Stack" in self.title:
             return self._render_stack()
@@ -33,88 +35,72 @@ class ASCIIArray(Widget):
         else:
             return self._render_array()
 
-    # The following methods generate ASCII art for different data structures
     def _render_stack(self):
-        lines = [f"{self.title}", ""]
-        lines.append("  top")
-        lines.append("   │")
+        lines = [f"{self.title}", "", "  top", "   │"]
         for i, item in enumerate(self.data):
-                lines.append(f" ┌─────┐")
-                lines.append(f" │{self._pad(item)}│")
-                lines.append(f" └─────┘")
-                lines.append(f"   │")
-        lines.append("   │")
+            lines.append(f" ┌─────┐")
+            lines.append(f" │{self._pad(item)}│")
+            lines.append(f" └─────┘")
+            if i < len(self.data) - 1:
+                lines.append("   │")
         lines.append(" bottom")
         return "\n".join(lines)
 
     def _render_queue(self):
-        if not self.data:
-            return f"{self.title}: [empty]"
+        padded = [self._pad(item) for item in self.data]
 
-        cells = []
-        for item in self.data:
-            cells.append(f"│ {self._pad(item)} │")
-
-        top = "front" + "─" * (len(cells) * 7 - 5) + "rear"
-        box_top = "  ┌" + "─────┬" * (len(cells) - 1) + "─────┐"
-        box_mid = "  " + "  ".join(cells)
-        box_bot = "  └" + "─────┴" * (len(cells) - 1) + "─────┘"
+        dash_count = max(0, 6 * len(padded) - 6)
+        top = "front" + "─" * dash_count + "rear"
+        box_top = "  ┌" + "─────┬" * (len(padded) - 1) + "─────┐"
+        box_mid = "  │" + "│".join(padded) + "│"
+        box_bot = "  └" + "─────┴" * (len(padded) - 1) + "─────┘"
 
         return f"{self.title}\n\n{top}\n{box_top}\n{box_mid}\n{box_bot}"
 
     def _render_singly_linked(self):
-        if not self.data:
-            return f"{self.title}: [empty]"
-
-        nodes = []
+        tops, mids, bots = [], [], []
         for item in self.data:
-            nodes.append(f"┌─────┐")
-            nodes.append(f"│ {self._pad(item)} │──→")
-            nodes.append(f"└─────┘")
+            tops.append("┌─────┐   ")
+            mids.append(f"│{self._pad(item)}│──→")
+            bots.append("└─────┘   ")
 
         lines = [f"{self.title}", ""]
-        for i in range(0, len(nodes), 3):
-            lines.append("  " + "  ".join(nodes[i:i+3]))
-
-        lines.append("       " * (len(self.data) - 1) + "  NULL")
+        lines.append("  " + "".join(tops))
+        lines.append("  " + "".join(mids))
+        lines.append("  " + "".join(bots))
+        if self.data:
+            null_offset = "  " + " " * (len(self.data) * 10 - 4)
+            lines.append(null_offset + "NULL")
         return "\n".join(lines)
 
     def _render_doubly_linked(self):
-        if not self.data:
-            return f"{self.title}: [empty]"
-
-        nodes = []
+        tops, mids, bots = [], [], []
         for item in self.data:
-            nodes.append(f"┌─────┐")
-            nodes.append(f"│ {self._pad(item)} │")
-            nodes.append(f"└─────┘")
+            tops.append("┌─────┐   ")
+            mids.append(f"│{self._pad(item)}│←→ ")
+            bots.append("└─────┘   ")
+
+        if self.data:
+            mids[-1] = mids[-1].replace("←→ ", "   ")
 
         lines = [f"{self.title}", ""]
-        for i in range(0, len(nodes), 3):
-            lines.append("  " + "  ".join(nodes[i:i+3]))
-
-        connector = "  "
-        for i in range(len(self.data)):
-            if i == 0:
-                connector += "  ↔  "
-            else:
-                connector += "  ↔  "
-        lines.append(connector)
-        lines.append("  NULL" + "      " * (len(self.data) - 1) + "  NULL")
+        lines.append("  " + "".join(tops))
+        lines.append("  " + "".join(mids))
+        lines.append("  " + "".join(bots))
+        if self.data:
+            lines.append("  NULL" + "          " * (len(self.data) - 1) + "  NULL")
         return "\n".join(lines)
 
     def _render_array(self):
-        cells = []
-        for item in self.data:
-            cells.append(f"│ {self._pad(item)} │")
+        padded = [self._pad(item) for item in self.data]
 
-        top = "  ┌" + "─────┬" * (len(cells) - 1) + "─────┐"
-        mid = "  " + "  ".join(cells)
-        bot = "  └" + "─────┴" * (len(cells) - 1) + "─────┘"
+        top = "  ┌" + "─────┬" * (len(padded) - 1) + "─────┐"
+        mid = "  │" + "│".join(padded) + "│"
+        bot = "  └" + "─────┴" * (len(padded) - 1) + "─────┘"
 
-        indices = "  "
+        indices = "   "
         for i in range(len(self.data)):
-            indices += f"  {i}  "
+            indices += str(i).center(5) + " "
 
         return f"{self.title}\n\n{top}\n{mid}\n{bot}\n{indices}"
 

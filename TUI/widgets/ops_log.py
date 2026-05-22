@@ -1,17 +1,19 @@
 from textual.widget import Widget
 from textual.widgets import RichLog
 from rich.text import Text
-from collections import deque
+
 
 class OpsLog(Widget):
     def __init__(self, max_entries=100):
         super().__init__()
         self.max_entries = max_entries
         self._rich_log = None
-        self._lines = deque(maxlen=max_entries)
 
     def compose(self):
-        self._rich_log = RichLog(auto_scroll=True, markup=False)
+        self._rich_log = RichLog(
+            auto_scroll=True, markup=False, highlight=True,
+            max_lines=self.max_entries
+        )
         yield self._rich_log
 
     def add_entry(self, message: str) -> None:
@@ -22,11 +24,7 @@ class OpsLog(Widget):
         else:
             text = Text(message, style="dim")
 
-        self._lines.append(text)
-        self._rich_log.clear()
-        for line in self._lines:
-            self._rich_log.write(line)
+        self._rich_log.write(text)
 
     def clear(self) -> None:
-        self._lines.clear()
         self._rich_log.clear()

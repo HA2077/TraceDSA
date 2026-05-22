@@ -12,7 +12,7 @@ sys.path.append(parent_dir)
 
 from bridge import DSBridge
 from widgets.ascii_array import ASCIIArray
-from widgets.ascii_tree import ASCII2DTree
+from widgets.ascii_tree import ASCIIBranchTree
 from widgets.ascii_heap import ASCIIHeap
 from widgets.ops_log import OpsLog
 
@@ -182,7 +182,7 @@ class TraceWindow(Screen):
         if ascii_type in ("array", "linked", "doubly"):
             self.ascii_widget = ASCIIArray(title=self.display_name)
         elif ascii_type == "tree":
-            self.ascii_widget = ASCII2DTree(title=self.display_name)
+            self.ascii_widget = ASCIIBranchTree(title=self.display_name)
         elif ascii_type == "heap":
             heap_type = "min" if "Min" in self.display_name else "min"
             self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=heap_type)
