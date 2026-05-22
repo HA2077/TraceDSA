@@ -105,6 +105,8 @@ class TraceDSApp(App):
         width: 100%;
         height: 1fr;
         padding: 1 2;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     #button_section Horizontal {
