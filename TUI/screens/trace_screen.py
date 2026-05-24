@@ -254,6 +254,12 @@ class TraceWindow(Screen):
                         value = input_widget.value.strip()
                         if not value:
                             self.notify("Please enter a value", severity="warning")
+                            input_widget.focus()
+                            return None
+                        if not value.lstrip('-').isdigit() or (value.startswith('-') and len(value) == 1):
+                            self.notify(f"Numbers only — got '{value}'", severity="error")
+                            input_widget.value = ""
+                            input_widget.focus()
                             return None
                         return f"{label} {value}"
                     return None
@@ -264,6 +270,11 @@ class TraceWindow(Screen):
 
     def _execute_command(self, command: str) -> None:
         if not command:
+            return
+
+        if not self.bridge or not self.bridge.is_alive():
+            self.log_widget.add_entry("ERROR: Connection to binary lost")
+            self.notify("Connection lost. Press Escape to go back.", severity="error")
             return
 
         try:
