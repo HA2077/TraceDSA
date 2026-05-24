@@ -3,6 +3,7 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 
 from screens.splash import SplashScreen
+from screens.confirm_dialog import ConfirmDialog
 
 import platform
 import os
@@ -10,8 +11,29 @@ import os
 from bridge import DSBridge
 
 
+SHORTCUTS = {
+    "global": [
+        ("q", "Quit (with confirmation)", "All screens"),
+        ("h / ?", "Show this help screen", "All screens"),
+    ],
+    "splash": [
+        ("enter / s", "Start application", "SplashScreen"),
+    ],
+    "menu": [
+        ("/", "Focus search bar to filter modules", "MainMenu"),
+        ("escape", "Quit (with confirmation)", "MainMenu"),
+    ],
+    "trace": [
+        ("escape", "Return to main menu", "TraceWindow"),
+        ("Tab", "Cycle through buttons and inputs", "TraceWindow"),
+    ],
+}
+
+
 class TraceDSApp(App):
     CSS_PATH = None
+
+    SHORTCUTS = SHORTCUTS
 
     DEFAULT_CSS = """
     /* === App & Screen === */
@@ -268,6 +290,17 @@ class TraceDSApp(App):
         margin-right: 1;
     }
 
+    /* === Status Bar === */
+    #status_bar {
+        color: #666680;
+        text-style: italic;
+        width: 100%;
+        height: auto;
+        padding: 0 2;
+        background: #16213e;
+        border-top: solid #0f3460;
+    }
+
     /* === Inputs === */
     Input {
         background: #1a1a2e;
@@ -307,7 +340,7 @@ class TraceDSApp(App):
     SUB_TITLE = "Data Structures Visualization"
 
     BINDINGS = [
-        Binding("q", "quit", "Quit", priority=True),
+        Binding("q", "show_confirm_quit", "Quit", priority=True),
     ]
 
     def __init__(self):
@@ -333,6 +366,13 @@ class TraceDSApp(App):
 
     def on_mount(self) -> None:
         self.push_screen(SplashScreen())
+
+    def action_show_confirm_quit(self) -> None:
+        from screens.confirm_dialog import ConfirmDialog
+        if isinstance(self.screen, ConfirmDialog):
+            self.exit()
+        else:
+            self.push_screen(ConfirmDialog())
 
     def action_quit(self) -> None:
         for bridge in self.bridges.values():

@@ -4,6 +4,7 @@ from textual.widgets import Static, Button
 from textual.screen import Screen
 from textual.binding import Binding
 from .menu import MainMenu
+from .help_screen import HelpScreen
 
 
 class SplashScreen(Screen):
@@ -11,6 +12,8 @@ class SplashScreen(Screen):
     BINDINGS = [
         Binding("enter", "start_app", "Start"),
         Binding("s", "start_app", "Start"),
+        Binding("h", "show_help", "Help"),
+        Binding("?", "show_help", "Help"),
     ]
 
     BINARY_NAMES = [
@@ -204,3 +207,6 @@ class SplashScreen(Screen):
         if self._start_button.disabled:
             return
         self.app.switch_screen(MainMenu())
+
+    def action_show_help(self) -> None:
+        self.app.push_screen(HelpScreen())

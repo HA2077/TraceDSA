@@ -15,13 +15,46 @@ from widgets.ascii_array import ASCIIArray
 from widgets.ascii_tree import ASCIIBranchTree
 from widgets.ascii_heap import ASCIIHeap
 from widgets.ops_log import OpsLog
+from .help_screen import HelpScreen
 
 
 class TraceWindow(Screen):
 
     BINDINGS = [
         Binding("escape", "go_back", "Back"),
+        Binding("h", "show_help", "Help"),
+        Binding("?", "show_help", "Help"),
     ]
+
+    _FOCUS_DESCRIPTIONS = {
+        "back_button": "Return to the main menu",
+        "push_btn": "PUSH <value> — Add to top of stack",
+        "pop_btn": "POP — Remove and return the top element",
+        "peek_btn": "PEEK — View the top element without removing it",
+        "print_btn": "PRINT — Display the current state",
+        "clear_btn": "CLEAR — Remove all elements",
+        "enqueue_btn": "ENQUEUE <value> — Add to the back of the queue",
+        "dequeue_btn": "DEQUEUE — Remove and return the front element",
+        "insert_btn": "INSERT <value> — Insert into the tree",
+        "remove_btn": "REMOVE <value> — Remove from the tree",
+        "find_btn": "FIND <value> — Search for a value in the tree",
+        "inorder_btn": "INORDER — In-order traversal (sorted)",
+        "preorder_btn": "PREORDER — Pre-order traversal (root first)",
+        "postorder_btn": "POSTORDER — Post-order traversal (children first)",
+        "insert_start_btn": "INSERT_START <value> — Insert at the beginning",
+        "insert_end_btn": "INSERT_END <value> — Insert at the end",
+        "del_start_btn": "DELETE_START — Remove the first element",
+        "del_end_btn": "DELETE_END — Remove the last element",
+        "delete_val_btn": "DELETE_VAL <value> — Remove a node by its value",
+        "enqueue_min_btn": "ENQUEUE_MIN <value> — Insert into min-heap",
+        "dequeue_min_btn": "DEQUEUE_MIN — Extract the minimum element",
+        "peek_min_btn": "PEEK_MIN — View the minimum element",
+        "print_min_btn": "PRINT_MIN — Display min-heap contents",
+        "enqueue_max_btn": "ENQUEUE_MAX <value> — Insert into max-heap",
+        "dequeue_max_btn": "DEQUEUE_MAX — Extract the maximum element",
+        "peek_max_btn": "PEEK_MAX — View the maximum element",
+        "print_max_btn": "PRINT_MAX — Display max-heap contents",
+    }
 
     MODULE_CONFIGS = {
         "stack": {
@@ -155,8 +188,12 @@ class TraceWindow(Screen):
                 id="main_content"
             ),
             Container(id="button_container"),
+            Static("", id="status_bar"),
             id="trace_window_container"
         )
+
+    def action_show_help(self) -> None:
+        self.app.push_screen(HelpScreen())
 
     def on_mount(self) -> None:
         bridge = self.app.get_bridge(self.binary_name)
@@ -208,6 +245,21 @@ class TraceWindow(Screen):
         first_input = self.query_one("Input", expect_type=Input)
         if first_input:
             first_input.focus()
+
+        self.query_one("#status_bar").update(
+            "Tab to navigate, Enter to execute, Escape to go back"
+        )
+
+    def on_widget_focused(self, event) -> None:
+        widget = event.widget
+        desc = self._FOCUS_DESCRIPTIONS.get(widget.id)
+        sb = self.query_one("#status_bar")
+        if desc:
+            sb.update(desc)
+        elif isinstance(widget, Input):
+            sb.update("Enter a numeric value")
+        else:
+            sb.update("Tab to navigate, Enter to execute, Escape to go back")
 
     def _build_operation_buttons(self) -> None:
         container = self.query_one("#button_container")

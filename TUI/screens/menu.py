@@ -9,13 +9,15 @@ from textual.screen import Screen
 from textual.binding import Binding
 
 from .trace_screen import TraceWindow
+from .help_screen import HelpScreen
 
 
 class MainMenu(Screen):
 
     BINDINGS = [
-        Binding("q", "quit", "Quit"),
-        Binding("escape", "quit", "Quit"),
+        Binding("/", "focus_search", "Search"),
+        Binding("h", "show_help", "Help"),
+        Binding("?", "show_help", "Help"),
     ]
 
     DEFAULT_CSS = """
@@ -255,6 +257,12 @@ class MainMenu(Screen):
     def on_mount(self) -> None:
         self._show_level_1()
         self.query_one("#search_input").focus()
+
+    def action_focus_search(self) -> None:
+        self.query_one("#search_input").focus()
+
+    def action_show_help(self) -> None:
+        self.app.push_screen(HelpScreen())
 
     def _get_random_dsa_art(self) -> str:
         arts = [
