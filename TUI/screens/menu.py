@@ -17,6 +17,7 @@ class MainMenu(Screen):
 
     BINDINGS = [
         Binding("/", "focus_search", "Search"),
+        Binding("q", "show_confirm_quit", "Quit"),
         Binding("h", "show_help", "Help"),
         Binding("?", "show_help", "Help"),
     ]

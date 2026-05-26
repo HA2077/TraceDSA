@@ -223,7 +223,7 @@ class TraceWindow(Screen):
         elif ascii_type == "tree":
             self.ascii_widget = ASCIIBranchTree(title=self.display_name)
         elif ascii_type == "heap":
-            heap_type = "min" if "Min" in self.display_name else "min"
+            heap_type = "min" if "Min" in self.display_name else "max"
             self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=heap_type)
         else:
             self.ascii_widget = ASCIIArray(title=self.display_name)
@@ -254,14 +254,12 @@ class TraceWindow(Screen):
 
     def on_widget_focused(self, event) -> None:
         widget = event.widget
-        desc = self._FOCUS_DESCRIPTIONS.get(widget.id)
         sb = self.query_one("#status_bar")
-        if desc:
-            sb.update(desc)
+        if isinstance(widget, Button):
+            desc = self._FOCUS_DESCRIPTIONS.get(widget.id)
+            sb.update(desc if desc else "Tab to navigate, Enter to execute, Escape to go back")
         elif isinstance(widget, Input):
             sb.update("Enter a numeric value")
-        else:
-            sb.update("Tab to navigate, Enter to execute, Escape to go back")
 
     def _build_operation_buttons(self) -> None:
         container = self.query_one("#button_container")
@@ -339,7 +337,7 @@ class TraceWindow(Screen):
 
             self._update_ascii_from_response(response)
 
-            if command.split()[0] in ("PUSH", "ENQUEUE", "INSERT", "INSERT_START", "INSERT_END", "ENQUEUE_MIN", "ENQUEUE_MAX"):
+            if command.split()[0] in ("PUSH", "ENQUEUE", "INSERT", "INSERT_START", "INSERT_END", "ENQUEUE_MIN", "ENQUEUE_MAX", "REMOVE", "FIND", "DELETE_VAL"):
                 for inp in self.input_fields.values():
                     inp.value = ""
 
