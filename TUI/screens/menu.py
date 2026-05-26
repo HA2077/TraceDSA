@@ -7,6 +7,7 @@ from textual.containers import Container, Horizontal, ScrollableContainer
 from textual.widgets import Static, Button, Input
 from textual.screen import Screen
 from textual.binding import Binding
+from textual.widgets import Footer
 
 from .trace_screen import TraceWindow
 from .help_screen import HelpScreen
@@ -233,6 +234,7 @@ class MainMenu(Screen):
         return sanitized
 
     def compose(self) -> ComposeResult:
+        yield Footer()
         yield Container(
             Container(
                 Static("Choose a Data Structure or Algorithm", id="title"),

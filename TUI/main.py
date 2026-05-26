@@ -341,6 +341,7 @@ class TraceDSApp(App):
 
     BINDINGS = [
         Binding("q", "show_confirm_quit", "Quit", priority=True),
+        Binding("TAB", "cycle_focus", "Cycle Focus")
     ]
 
     def __init__(self):

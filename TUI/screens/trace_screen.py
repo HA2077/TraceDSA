@@ -3,6 +3,7 @@ from textual.containers import Container, Horizontal
 from textual.widgets import Static, Button, Input
 from textual.screen import Screen
 from textual.binding import Binding
+from textual.widgets import Footer
 
 import os
 import sys
@@ -170,6 +171,7 @@ class TraceWindow(Screen):
         self._active_input = None
 
     def compose(self) -> ComposeResult:
+        yield Footer()
         yield Container(
             Container(
                 Button("← Back", id="back_button", variant="default"),

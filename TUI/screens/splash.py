@@ -3,6 +3,7 @@ from textual.containers import Container
 from textual.widgets import Static, Button
 from textual.screen import Screen
 from textual.binding import Binding
+from textual.widgets import Footer
 from .menu import MainMenu
 from .help_screen import HelpScreen
 
@@ -133,6 +134,7 @@ class SplashScreen(Screen):
     """
 
     def compose(self) -> ComposeResult:
+        yield Footer()
         yield Container(
             Container(
                 Button("PyPI", id="pypi-btn"),
