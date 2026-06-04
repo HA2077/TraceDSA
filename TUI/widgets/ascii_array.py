@@ -27,8 +27,9 @@ class ASCIIArray(Static):
             return self._render_array()
 
     def _render_stack(self):
+        items = reversed(self.data) if "Array" in self.title else self.data
         lines = [f"{self.title}", "", "  top", "   │"]
-        for i, item in enumerate(self.data):
+        for i, item in enumerate(items):
             lines.append(f" ┌─────┐")
             lines.append(f" │{self._pad(item)}│")
             lines.append(f" └─────┘")

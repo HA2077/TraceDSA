@@ -11,16 +11,16 @@ class ASCIIHeap(Static):
 
     def update_heap(self, heap_data):
         self.heap_data = heap_data or []
-        self.update(self._render())
+        self.update(self._build_display())
 
     def toggle_view(self):
         self.view_mode = "array" if self.view_mode == "tree" else "tree"
-        self.update(self._render())
+        self.update(self._build_display())
 
     def view_mode_label(self):
         return "(tree view)" if self.view_mode == "tree" else "(array view)"
 
-    def _render(self):
+    def _build_display(self):
         if not self.heap_data:
             return f"{self.title} ({self.heap_type}-heap)\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 

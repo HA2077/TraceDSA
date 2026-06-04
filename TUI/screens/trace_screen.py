@@ -1,5 +1,3 @@
-from cProfile import label
-
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal
 from textual.widgets import Static, Button, Input
@@ -49,14 +47,11 @@ class TraceWindow(Screen):
         "del_start_btn": "DELETE_START — Remove the first element",
         "del_end_btn": "DELETE_END — Remove the last element",
         "delete_val_btn": "DELETE_VAL <value> — Remove a node by its value",
-        "enqueue_min_btn": "ENQUEUE_MIN <value> — Insert into min-heap",
-        "dequeue_min_btn": "DEQUEUE_MIN — Extract the minimum element",
-        "peek_min_btn": "PEEK_MIN — View the minimum element",
-        "print_min_btn": "PRINT_MIN — Display min-heap contents",
-        "enqueue_max_btn": "ENQUEUE_MAX <value> — Insert into max-heap",
-        "dequeue_max_btn": "DEQUEUE_MAX — Extract the maximum element",
-        "peek_max_btn": "PEEK_MAX — View the maximum element",
-        "print_max_btn": "PRINT_MAX — Display max-heap contents",
+        "heap_enqueue_btn": "ENQUEUE <value> — Insert into the heap",
+        "heap_dequeue_btn": "DEQUEUE — Extract the root element",
+        "heap_peek_btn": "PEEK — View the root element",
+        "heap_print_btn": "PRINT — Display the current heap",
+        "toggle_btn": "TOGGLE — Switch between Min-Heap and Max-Heap mode",
     }
 
     _STATE_COMMANDS = {
@@ -103,7 +98,6 @@ class TraceWindow(Screen):
             "buttons": [
                 ("ENQUEUE", "enqueue_btn", True),
                 ("DEQUEUE", "dequeue_btn", False),
-                ("PEEK", "peek_btn", False),
                 ("PRINT", "print_btn", False),
                 ("CLEAR", "clear_btn", False),
             ],
@@ -113,7 +107,6 @@ class TraceWindow(Screen):
             "buttons": [
                 ("ENQUEUE", "enqueue_btn", True),
                 ("DEQUEUE", "dequeue_btn", False),
-                ("PEEK", "peek_btn", False),
                 ("PRINT", "print_btn", False),
                 ("CLEAR", "clear_btn", False),
             ],
@@ -157,14 +150,11 @@ class TraceWindow(Screen):
         "heap": {
             "ascii_type": "heap",
             "buttons": [
-                ("ENQUEUE_MIN", "enqueue_min_btn", True),
-                ("DEQUEUE_MIN", "dequeue_min_btn", False),
-                ("PEEK_MIN", "peek_min_btn", False),
-                ("PRINT_MIN", "print_min_btn", False),
-                ("ENQUEUE_MAX", "enqueue_max_btn", True),
-                ("DEQUEUE_MAX", "dequeue_max_btn", False),
-                ("PEEK_MAX", "peek_max_btn", False),
-                ("PRINT_MAX", "print_max_btn", False),
+                ("ENQUEUE", "heap_enqueue_btn", True),
+                ("DEQUEUE", "heap_dequeue_btn", False),
+                ("PEEK", "heap_peek_btn", False),
+                ("PRINT", "heap_print_btn", False),
+                ("TOGGLE", "toggle_btn", False),
                 ("CLEAR", "clear_btn", False),
             ],
         },
@@ -179,6 +169,7 @@ class TraceWindow(Screen):
         self.log_widget = None
         self.input_fields = {}
         self._active_input = None
+        self._heap_mode = "min"
 
     def compose(self) -> ComposeResult:
         yield Footer()
@@ -233,8 +224,7 @@ class TraceWindow(Screen):
         elif ascii_type == "tree":
             self.ascii_widget = ASCIIBranchTree(title=self.display_name)
         elif ascii_type == "heap":
-            heap_type = "min" if "Min" in self.display_name else "max"
-            self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=heap_type)
+            self.ascii_widget = ASCIIHeap(title=self.display_name, heap_type=self._heap_mode)
         else:
             self.ascii_widget = ASCIIArray(title=self.display_name)
 
@@ -302,6 +292,10 @@ class TraceWindow(Screen):
             self.action_go_back()
             return
 
+        if button_id == "toggle_btn":
+            self._toggle_heap_mode()
+            return
+
         command = self._build_command(button_id)
         if command:
             self._execute_command(command)
@@ -332,12 +326,26 @@ class TraceWindow(Screen):
                             input_widget.value = ""
                             input_widget.focus()
                             return None
-                        return f"{label} {value}"
+                        return f"{self._map_heap_cmd(label)} {value}"
                     return None
                 else:
-                    return label
+                    return self._map_heap_cmd(label)
 
         return None
+
+    def _map_heap_cmd(self, label: str) -> str:
+        if self.binary_name != "heap":
+            return label
+        if label == "CLEAR":
+            return label
+        return f"{label}_{self._heap_mode.upper()}"
+
+    def _toggle_heap_mode(self) -> None:
+        self._heap_mode = "max" if self._heap_mode == "min" else "min"
+        if self.ascii_widget and hasattr(self.ascii_widget, "heap_type"):
+            self.ascii_widget.heap_type = self._heap_mode
+        self.log_widget.add_entry(f"Switched to {self._heap_mode.upper()}-Heap mode")
+        self._execute_command(f"PRINT_{self._heap_mode.upper()}")
 
     def _execute_command(self, command: str) -> None:
         if not command:

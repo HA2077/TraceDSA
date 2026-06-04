@@ -318,6 +318,11 @@ class TraceDSApp(App):
         color: #666680;
     }
 
+    #button_container Input {
+        width: 12;
+        max-width: 16;
+    }
+
     /* === Scrollbar === */
     ScrollBar {
         background: #1a1a2e;

@@ -176,7 +176,7 @@ class MainMenu(Screen):
         "Queue": ["Queue (Array)", "Queue (LinkedList)", "Circular Queue"],
         "LinkedList": ["Singly LinkedList", "Doubly LinkedList"],
         "BST": ["Binary Search Tree"],
-        "Heap": ["Min-Heap", "Max-Heap"],
+        "PriorityQueue": ["Heap"],
     }
 
     FUN_FACTS = [
@@ -416,8 +416,7 @@ class MainMenu(Screen):
             "Singly LinkedList": "ll",
             "Doubly LinkedList": "dll",
             "Binary Search Tree": "bst",
-            "Min-Heap": "heap",
-            "Max-Heap": "heap",
+            "Heap": "heap",
         }
 
         binary_name = module_mapping.get(module_name, module_name.lower().replace(" ", ""))
