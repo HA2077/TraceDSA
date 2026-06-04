@@ -1,3 +1,5 @@
+from cProfile import label
+
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal
 from textual.widgets import Static, Button, Input
@@ -252,9 +254,11 @@ class TraceWindow(Screen):
         elif ascii_type == "heap":
             self.ascii_widget.update_heap([])
 
-        first_input = self.query_one("Input", expect_type=Input)
-        if first_input:
+        try:
+            first_input = self.query_one("Input", expect_type=Input)
             first_input.focus()
+        except Exception:
+            pass
 
         self.query_one("#status_bar").update(
             "Tab to navigate, Enter to execute, Escape to go back"
@@ -285,7 +289,8 @@ class TraceWindow(Screen):
                 input_widget = Input(placeholder="value", id=input_id)
                 btn = Button(label, id=btn_id)
                 self.input_fields[btn_id] = input_widget
-                container.mount(Horizontal(input_widget, btn, id=f"{btn_id}_group"))
+                container.mount(input_widget)
+                container.mount(btn)
             else:
                 btn = Button(label, id=btn_id)
                 container.mount(btn)
@@ -298,6 +303,12 @@ class TraceWindow(Screen):
             return
 
         command = self._build_command(button_id)
+        if command:
+            self._execute_command(command)
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        btn_id = event.input.id.replace("_input", "")
+        command = self._build_command(btn_id)
         if command:
             self._execute_command(command)
 

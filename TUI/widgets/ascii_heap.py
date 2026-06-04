@@ -1,33 +1,24 @@
-from textual.widget import Widget
 from textual.widgets import Static
 
 
-class ASCIIHeap(Widget):
+class ASCIIHeap(Static):
     def __init__(self, heap_data=None, title="Heap", heap_type="min"):
-        super().__init__()
+        super().__init__("")
         self.heap_data = heap_data or []
         self.title = title
         self.heap_type = heap_type
         self.view_mode = "tree"
 
-    def compose(self):
-        self._static = Static("")
-        yield self._static
-
     def update_heap(self, heap_data):
         self.heap_data = heap_data or []
-        self._refresh_display()
+        self.update(self._render())
 
     def toggle_view(self):
         self.view_mode = "array" if self.view_mode == "tree" else "tree"
-        self._refresh_display()
+        self.update(self._render())
 
     def view_mode_label(self):
         return "(tree view)" if self.view_mode == "tree" else "(array view)"
-
-    def _refresh_display(self):
-        if hasattr(self, "_static") and self._static is not None:
-            self._static.update(self._render())
 
     def _render(self):
         if not self.heap_data:

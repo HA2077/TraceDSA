@@ -1,26 +1,17 @@
-from textual.widget import Widget
 from textual.widgets import Static
 
 
-class ASCIIArray(Widget):
+class ASCIIArray(Static):
     def __init__(self, data=None, title="Array"):
-        super().__init__()
+        super().__init__("")
         self.data = data or []
         self.title = title
 
-    def compose(self):
-        self._static = Static("")
-        yield self._static
-
     def update_data(self, data):
         self.data = data or []
-        self._refresh_display()
+        self.update(self._build_display())
 
-    def _refresh_display(self):
-        if hasattr(self, "_static") and self._static is not None:
-            self._static.update(self._render())
-
-    def _render(self):
+    def _build_display(self):
         if not self.data:
             return f"{self.title}\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 

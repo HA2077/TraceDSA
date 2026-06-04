@@ -1,18 +1,13 @@
-from textual.widget import Widget
 from textual.widgets import Static
 
 
-class ASCIIBranchTree(Widget):
+class ASCIIBranchTree(Static):
 
     def __init__(self, tree_data=None, title="BST"):
-        super().__init__()
+        super().__init__("")
         self.tree_data = tree_data or []
         self.title = title
         self._root = None
-
-    def compose(self):
-        self._static = Static("")
-        yield self._static
 
     def _extract_values(self, data):
         if not data:
@@ -31,16 +26,12 @@ class ASCIIBranchTree(Widget):
     def update_tree(self, tree_data):
         tree_data = tree_data or []
         if tree_data == self.tree_data and self._root is not None:
-            self._refresh_display()
+            self.update(self._build_display())
             return
         self.tree_data = tree_data
         values = self._extract_values(tree_data)
         self._root = self._build_bst(values)
-        self._refresh_display()
-
-    def _refresh_display(self):
-        if hasattr(self, "_static") and self._static is not None:
-            self._static.update(self._render())
+        self.update(self._build_display())
 
     def _build_bst(self, values):
         if not values:
@@ -59,7 +50,7 @@ class ASCIIBranchTree(Widget):
             node["right"] = self._insert_node(node["right"], val)
         return node
 
-    def _render(self):
+    def _build_display(self):
         if self._root is None:
             return f"{self.title}\n\n  ┌─────────┐\n  │ [empty] │\n  └─────────┘"
 
