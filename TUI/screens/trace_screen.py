@@ -35,6 +35,7 @@ class TraceWindow(Screen):
         "peek_btn": "PEEK — View the top element without removing it",
         "print_btn": "PRINT — Display the current state",
         "clear_btn": "CLEAR — Remove all elements",
+        "clear_log_btn": "CLEAR LOG — Clear the operation log",
         "enqueue_btn": "ENQUEUE <value> — Add to the back of the queue",
         "dequeue_btn": "DEQUEUE — Remove and return the front element",
         "insert_btn": "INSERT <value> — Insert into the tree",
@@ -286,6 +287,8 @@ class TraceWindow(Screen):
                 btn = Button(label, id=btn_id)
                 container.mount(btn)
 
+        container.mount(Button("CLEAR LOG", id="clear_log_btn", classes="clear-log"))
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
 
@@ -295,6 +298,11 @@ class TraceWindow(Screen):
 
         if button_id == "toggle_btn":
             self._toggle_heap_mode()
+            return
+
+        if button_id == "clear_log_btn":
+            self.log_widget.clear()
+            self.log_widget.add_entry("Log cleared")
             return
 
         command = self._build_command(button_id)

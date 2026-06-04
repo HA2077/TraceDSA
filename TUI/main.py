@@ -294,6 +294,10 @@ class TraceDSApp(App):
         margin: 0 1;
     }
 
+    .clear-log {
+        margin-left: 3;
+    }
+
     /* === Status Bar === */
     #status_bar {
         color: #666680;
