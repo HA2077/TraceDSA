@@ -57,6 +57,14 @@ class TraceWindow(Screen):
         "print_max_btn": "PRINT_MAX — Display max-heap contents",
     }
 
+    _STATE_COMMANDS = {
+        "PUSH", "POP", "ENQUEUE", "DEQUEUE",
+        "INSERT", "INSERT_START", "INSERT_END",
+        "DELETE_START", "DELETE_END", "DELETE_VAL",
+        "ENQUEUE_MIN", "DEQUEUE_MIN", "ENQUEUE_MAX", "DEQUEUE_MAX",
+        "PRINT", "PRINT_MIN", "PRINT_MAX", "CLEAR",
+    }
+
     MODULE_CONFIGS = {
         "stack": {
             "ascii_type": "array",
@@ -335,7 +343,8 @@ class TraceWindow(Screen):
             self.log_widget.add_entry(f"> {command}")
             self.log_widget.add_entry(f"< {response}")
 
-            self._update_ascii_from_response(response)
+            if command.split()[0] in self._STATE_COMMANDS:
+                self._update_ascii_from_response(response)
 
             if command.split()[0] in ("PUSH", "ENQUEUE", "INSERT", "INSERT_START", "INSERT_END", "ENQUEUE_MIN", "ENQUEUE_MAX", "REMOVE", "FIND", "DELETE_VAL"):
                 for inp in self.input_fields.values():
