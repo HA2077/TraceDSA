@@ -18,7 +18,7 @@ class ConfirmDialog(Screen):
         height: auto;
         padding: 2 4;
         background: #16213e;
-        border: solid #00d4ff;
+        border: round #00d4ff;
         align: center middle;
     }
 
@@ -46,7 +46,7 @@ class ConfirmDialog(Screen):
 
     #confirm-y {
         background: #16213e;
-        border: solid #00d4ff;
+        border: round #00d4ff;
         color: #00d4ff;
         width: 1;
         margin-right: 1;
@@ -59,7 +59,7 @@ class ConfirmDialog(Screen):
 
     #confirm-n {
         background: #16213e;
-        border: solid #666680;
+        border: round #666680;
         color: #666680;
         width: 1;
     }
@@ -76,10 +76,16 @@ class ConfirmDialog(Screen):
         Binding("escape", "cancel", "Cancel"),
     ]
 
+    def __init__(self, title: str = "Exit TraceDSA?", message: str = "All unsaved state will be lost.", on_confirm = None):
+        super().__init__()
+        self._title = title
+        self._message = message
+        self._on_confirm = on_confirm
+
     def compose(self) -> ComposeResult:
         yield Container(
-            Static("Exit TraceDSA?", id="confirm-title"),
-            Static("All unsaved state will be lost.", id="confirm-subtitle"),
+            Static(self._title, id="confirm-title"),
+            Static(self._message, id="confirm-subtitle"),
             Horizontal(
                 Button("Yes  [y]", id="confirm-y"),
                 Button("No   [n]", id="confirm-n"),
@@ -89,13 +95,19 @@ class ConfirmDialog(Screen):
         )
 
     def action_confirm(self) -> None:
-        self.app.exit()
+        if self._on_confirm:
+            self._on_confirm()
+        else:
+            self.app.exit()
 
     def action_cancel(self) -> None:
         self.app.pop_screen()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "confirm-y":
-            self.app.exit()
+            if self._on_confirm:
+                self._on_confirm()
+            else:
+                self.app.exit()
         else:
             self.app.pop_screen()

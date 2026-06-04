@@ -68,7 +68,7 @@ class TraceDSApp(App):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
@@ -84,12 +84,12 @@ class TraceDSApp(App):
         width: 40;
         margin: 1 0;
         background: #1a1a2e;
-        border: solid #0f3460;
+        border: round #0f3460;
         color: #e0e0e0;
     }
 
     #search_input:focus {
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     #search_input > .input--placeholder {
@@ -102,7 +102,7 @@ class TraceDSApp(App):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
@@ -139,7 +139,7 @@ class TraceDSApp(App):
     Button {
         background: #16213e;
         color: #e0e0e0;
-        border: solid #0f3460;
+        border: round #0f3460;
         text-style: bold;
     }
 
@@ -149,13 +149,13 @@ class TraceDSApp(App):
     }
 
     Button:focus {
-        border: solid #00d4ff;
+        border: round #00d4ff;
         text-style: bold underline;
     }
 
     Button.primary {
         color: #00d4ff;
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     Button.primary:hover {
@@ -165,7 +165,7 @@ class TraceDSApp(App):
 
     Button.success {
         color: #ffffff;
-        border: solid #0f3460;
+        border: round #0f3460;
     }
 
     Button.success:hover {
@@ -175,12 +175,12 @@ class TraceDSApp(App):
 
     Button.default {
         color: #666680;
-        border: solid #0f3460;
+        border: round #0f3460;
     }
 
     Button.default:hover {
         color: #e0e0e0;
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     /* === Trace Window === */
@@ -196,7 +196,7 @@ class TraceDSApp(App):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 0 2;
     }
 
@@ -226,7 +226,7 @@ class TraceDSApp(App):
         width: 60%;
         height: 100%;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         overflow: auto;
     }
@@ -250,7 +250,7 @@ class TraceDSApp(App):
         width: 40%;
         height: 100%;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         layout: vertical;
         padding: 0 1;
     }
@@ -279,7 +279,7 @@ class TraceDSApp(App):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         layout: horizontal;
         overflow-x: auto;
@@ -288,6 +288,10 @@ class TraceDSApp(App):
     #button_container Horizontal {
         width: auto;
         margin-right: 1;
+    }
+
+    #button_container Button {
+        margin: 0 1;
     }
 
     /* === Status Bar === */
@@ -305,13 +309,13 @@ class TraceDSApp(App):
     Input {
         background: #1a1a2e;
         color: #e0e0e0;
-        border: solid #0f3460;
+        border: round #0f3460;
         width: 12;
         margin-right: 1;
     }
 
     Input:focus {
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     Input > .input--placeholder {
@@ -321,6 +325,7 @@ class TraceDSApp(App):
     #button_container Input {
         width: 12;
         max-width: 16;
+        margin: 0 1;
     }
 
     /* === Scrollbar === */

@@ -35,7 +35,7 @@ class MainMenu(Screen):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
@@ -58,7 +58,7 @@ class MainMenu(Screen):
     #search_input {
         width: 50;
         background: #1a1a2e;
-        border: solid #0f3460;
+        border: round #0f3460;
         color: #e0e0e0;
     }
 
@@ -68,7 +68,7 @@ class MainMenu(Screen):
         width: 100%;
         height: auto;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         padding: 1 2;
         margin-bottom: 1;
     }
@@ -108,6 +108,10 @@ class MainMenu(Screen):
         margin-bottom: 1;
     }
 
+    #button_section Horizontal Button {
+        margin: 0 1;
+    }
+
     #button_section > Button {
         margin-bottom: 1;
         align: center middle;
@@ -118,7 +122,7 @@ class MainMenu(Screen):
         min-width: 24;
         padding: 0 3;
         background: #16213e;
-        border: solid #00d4ff;
+        border: round #00d4ff;
         color: #00d4ff;
     }
 
@@ -131,26 +135,26 @@ class MainMenu(Screen):
         min-width: 22;
         padding: 0 3;
         background: #1a1a2e;
-        border: solid #0f3460;
+        border: round #0f3460;
         color: #e0e0e0;
     }
 
     Button.success:hover {
         background: #00d4ff;
         color: #1a1a2e;
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     Button.default {
         min-width: 12;
         background: #16213e;
-        border: solid #0f3460;
+        border: round #0f3460;
         color: #666680;
     }
 
     Button.default:hover {
         color: #e0e0e0;
-        border: solid #00d4ff;
+        border: round #00d4ff;
     }
 
     /* Search results */
@@ -425,9 +429,11 @@ class MainMenu(Screen):
             import sys
             sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
             from bridge import get_binary
+            import platform
             binary_path = get_binary(binary_name)
+            os_path = platform.system().lower()
         except Exception:
-            binary_path = f"./TUI/bins/linux/{binary_name}"
+            binary_path = f"./TUI/bins/{os_path}/{binary_name}"
 
         if os.path.exists(binary_path):
             self.app.push_screen(TraceWindow(binary_name, module_name))

@@ -17,6 +17,7 @@ from widgets.ascii_tree import ASCIIBranchTree
 from widgets.ascii_heap import ASCIIHeap
 from widgets.ops_log import OpsLog
 from .help_screen import HelpScreen
+from .confirm_dialog import ConfirmDialog
 
 
 class TraceWindow(Screen):
@@ -496,6 +497,14 @@ class TraceWindow(Screen):
             self.ascii_widget.update_heap([])
 
     def action_go_back(self) -> None:
-        if self.bridge:
-            self.bridge.close()
-        self.app.pop_screen()
+        def _on_confirm():
+            if self.bridge:
+                self.bridge.close()
+            self.app.pop_screen()
+            self.app.pop_screen()
+
+        self.app.push_screen(ConfirmDialog(
+            title="Return to Main Menu?",
+            message="All unsaved state will be lost.",
+            on_confirm=_on_confirm
+        ))
