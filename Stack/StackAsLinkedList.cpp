@@ -51,6 +51,17 @@ int StackAsLinkedList::peek(){
     return top;
 }
 
+void StackAsLinkedList::clear(){
+    SNode* ptr = head;
+    while (ptr != nullptr){
+        SNode* temp = ptr;
+        ptr = ptr->next;
+        delete temp;
+    }
+    head = nullptr;
+    stacksize = 0;
+}
+
 std::string StackAsLinkedList::toString(){
     if (head == nullptr){
         return "Stack: [empty]";

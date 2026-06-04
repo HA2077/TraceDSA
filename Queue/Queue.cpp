@@ -20,6 +20,12 @@ void Queue::Dequeue(){
     Queuearr.remove(0);
 }
 
+void Queue::clear(){
+    while (Queuearr.getSize() > 0){
+        Queuearr.remove(0);
+    }
+}
+
 std::string Queue::toString(){
     if (Queuearr.getSize() == 0){
         return "Queue: [empty]";

@@ -41,6 +41,17 @@ void QueueAsLinkedList::Dequeue(){
     listSize--;
 }
 
+void QueueAsLinkedList::clear(){
+    LNode* ptr = head;
+    while (ptr != nullptr){
+        LNode* temp = ptr;
+        ptr = ptr->next;
+        delete temp;
+    }
+    head = nullptr;
+    listSize = 0;
+}
+
 std::string QueueAsLinkedList::toString(){
     if (head == nullptr){
         return "Queue: [empty]";

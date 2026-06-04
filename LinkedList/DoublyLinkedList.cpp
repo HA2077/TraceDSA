@@ -119,6 +119,18 @@ void DoublyLinkedList::deleteWithVal(int value){
     listSize--;
 }
 
+void DoublyLinkedList::clear(){
+    DNode* ptr = head;
+    while (ptr != nullptr){
+        DNode* temp = ptr;
+        ptr = ptr->next;
+        delete temp;
+    }
+    head = nullptr;
+    tail = nullptr;
+    listSize = 0;
+}
+
 std::string DoublyLinkedList::toString(){
     if (head == nullptr){
         return "Doubly Linked List: [empty]";

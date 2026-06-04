@@ -15,6 +15,7 @@ public:
     void push(int value);
     void pop();
     int peek();
+    void clear();
     std::string toString();
 };
 

@@ -19,7 +19,7 @@ int main() {
             int val;
             if (iss >> val) {
                 bst.insert(val);
-                cout << "OK " << bst.inorder() << endl; // Show inorder after insert
+                cout << "OK " << bst.preorder() << endl; // Show preorder after insert
             } 
             else
                 cout << "ERROR Invalid value" << endl;
@@ -30,7 +30,7 @@ int main() {
             if (iss >> val) {
                 try {
                     bst.remove(val);
-                    cout << "OK " << bst.inorder() << endl;
+                    cout << "OK " << bst.preorder() << endl;
                 } catch (const exception& e) {
                     cout << "ERROR " << e.what() << endl;
                 }
@@ -67,11 +67,11 @@ int main() {
         }
         else if (cmd == "CLEAR") {
             bst.clear();
-            cout << "OK " << bst.inorder() << endl;
+            cout << "OK " << bst.preorder() << endl;
             cout.flush();
         }
         else if (cmd == "PRINT") {
-            cout << "OK " << bst.inorder() << endl;
+            cout << "OK " << bst.preorder() << endl;
             cout.flush();
         }
         else if (cmd == "EXIT") {

@@ -94,6 +94,17 @@ void LinkedList::deletewithval(int value){
     listSize--;
 }
 
+void LinkedList::clear(){
+    Node* ptr = head;
+    while (ptr != nullptr){
+        Node* temp = ptr;
+        ptr = ptr->next;
+        delete temp;
+    }
+    head = nullptr;
+    listSize = 0;
+}
+
 std::string LinkedList::toString(){
     if (head == nullptr){
         return "List: [empty]";

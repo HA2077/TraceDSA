@@ -27,6 +27,14 @@ void CircularQueue::Dequeue(){
     Qsize--;
 }
 
+void CircularQueue::clear(){
+    Qsize = 0;
+    Front = 0;
+    for (int i = 0; i < 10;++i){
+        Queuearr[i] = -1;
+    }
+}
+
 std::string CircularQueue::toString(){
     if (Qsize == 0){
         return "Queue: [empty]";

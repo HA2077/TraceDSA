@@ -71,6 +71,11 @@ int main() {
             cout << "OK " << ll.toString() << endl;
             cout.flush();
         }
+        else if (cmd == "CLEAR") {
+            ll.clear();
+            cout << "OK " << ll.toString() << endl;
+            cout.flush();
+        }
         else if (cmd == "EXIT") {
             cout << "BYE" << endl;
             cout.flush();

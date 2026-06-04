@@ -36,6 +36,12 @@ int Stack::peek(){
     return top;
 }
 
+void Stack::clear(){
+    stack.clear();
+    top = -1;
+    stacksize = 0;
+}
+
 std::string Stack::toString(){
     if (stacksize == 0)
         return "Stack: [empty]";

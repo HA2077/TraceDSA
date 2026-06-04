@@ -22,6 +22,7 @@ public:
     void deleteAtTheStart();
     void deleteAtTheEnd();
     void deleteWithVal(int value);
+    void clear();
     std::string toString();
 };
 

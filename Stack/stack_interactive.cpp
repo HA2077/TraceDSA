@@ -45,6 +45,11 @@ int main(){
             }
             cout.flush();
         }
+        else if (cmd == "CLEAR") {
+            s.clear();
+            cout << "OK " << s.toString() << endl;
+            cout.flush();
+        }
         else if (cmd == "PRINT") {
             cout << "OK " << s.toString() << endl;
             cout.flush();

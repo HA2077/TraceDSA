@@ -11,6 +11,7 @@ private:
 public:
     void Enqueue(int value);
     void Dequeue();
+    void clear();
     std::string toString();
 };
 
