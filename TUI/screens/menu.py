@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.binding import Binding
 from textual.widgets import Footer
 
-from .trace_screen import TraceWindow
+from .info_screen import ModuleInfoScreen
 from .help_screen import HelpScreen
 
 
@@ -307,9 +307,8 @@ class MainMenu(Screen):
         arts = [
     "   ┌─────┐\n   │  5  │  ← TOP\n   ├─────┤\n   │  3  │\n   ├─────┤\n   │  7  │\n   └─────┘",
     "    PUSH\n      ↓\n   ┌─────┐\n   │  A  │\n   ├─────┤\n   │  B  │\n   ├─────┤\n   │  C  │\n   └─────┘\n      ↑\n     POP",
-    "  FRONT → ┌───┬───┬───┐ ← REAR\n          │ 1 │ 2 │ 3 │\n          └───┴───┴───┘",
+    "   FRONT → ┌───┬───┬───┐ ← REAR\n          │ 1 │ 2 │ 3 │\n          └───┴───┴───┘",
     "  ENQUEUE →  ┌───┐ ┌───┐ ┌───┐\n             │ 7 │→│ 5 │→│ 3 │ → DEQUEUE\n             └───┘ └───┘ └───┘",
-    "  HEAD\n   ↓\n  ┌───┐    ┌───┐    ┌───┐\n  │ 1 │───→│ 2 │───→│ 3 │───→ NULL\n  └───┘    └───┘    └───┘",
     "  NULL ←──┬──→ ┌───┐ ←──┬──→ ┌───┐\n          │    │ A │    │    │ B │\n          └──→ └───┘ ───→ └──→ └───┘ → NULL",
     "       5\n      / \\\n     3   7\n    / \\\n   1   4",
     "      [8]\n     /   \\\n   [3]   [10]\n   / \\\n [1] [6]",
@@ -463,7 +462,7 @@ class MainMenu(Screen):
             binary_path = f"./TUI/bins/{os_path}/{binary_name}"
 
         if os.path.exists(binary_path):
-            self.app.push_screen(TraceWindow(binary_name, module_name))
+            self.app.push_screen(ModuleInfoScreen(binary_name, module_name))
         else:
             self.notify(f"Module '{module_name}' not yet implemented", severity="warning")
 
