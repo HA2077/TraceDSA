@@ -11,11 +11,11 @@ import sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from bridge import DSBridge
-from widgets.ascii_array import ASCIIArray
-from widgets.ascii_tree import ASCIIBranchTree
-from widgets.ascii_heap import ASCIIHeap
-from widgets.ops_log import OpsLog
+from tracedsa.bridge import DSBridge
+from tracedsa.widgets.ascii_array import ASCIIArray
+from tracedsa.widgets.ascii_tree import ASCIIBranchTree
+from tracedsa.widgets.ascii_heap import ASCIIHeap
+from tracedsa.widgets.ops_log import OpsLog
 from .help_screen import HelpScreen
 from .confirm_dialog import ConfirmDialog
 

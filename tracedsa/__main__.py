@@ -2,13 +2,13 @@
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 
-from screens.splash import SplashScreen
-from screens.confirm_dialog import ConfirmDialog
+from tracedsa.screens.splash import SplashScreen
+from tracedsa.screens.confirm_dialog import ConfirmDialog
 
 import platform
 import os
 
-from bridge import DSBridge
+from tracedsa.bridge import DSBridge
 
 
 SHORTCUTS = {
@@ -364,7 +364,7 @@ class TraceDSApp(App):
 
     def initialize_bridge(self, name: str) -> bool:
         sysname = platform.system().lower()
-        binary_path = f"TUI/bins/{sysname}/{name}"
+        binary_path = f"tracedsa/bins/{sysname}/{name}"
         if os.path.exists(binary_path):
             try:
                 self.bridges[name] = DSBridge(name)
@@ -383,7 +383,7 @@ class TraceDSApp(App):
         self.push_screen(SplashScreen())
 
     def action_show_confirm_quit(self) -> None:
-        from screens.confirm_dialog import ConfirmDialog
+        from tracedsa.screens.confirm_dialog import ConfirmDialog
         if isinstance(self.screen, ConfirmDialog):
             self.exit()
         else:

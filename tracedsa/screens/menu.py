@@ -459,7 +459,7 @@ class MainMenu(Screen):
         try:
             import sys
             sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-            from bridge import get_binary
+            from tracedsa.bridge import get_binary
             import platform
             binary_path = get_binary(binary_name)
             os_path = platform.system().lower()

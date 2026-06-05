@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
 
-BINS = TUI/bins/linux
+BINS = tracedsa/bins/linux
 
 # Sources
 SRCS_STACK       = Stack/Stack.cpp Stack/stack_interactive.cpp
