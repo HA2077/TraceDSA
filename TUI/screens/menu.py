@@ -3,7 +3,7 @@ import re
 import random
 
 from textual.app import ComposeResult
-from textual.containers import Container, Horizontal, ScrollableContainer
+from textual.containers import Container, Horizontal
 from textual.widgets import Static, Button, Input
 from textual.screen import Screen
 from textual.binding import Binding
@@ -27,6 +27,7 @@ class MainMenu(Screen):
         layout: vertical;
         width: 100%;
         height: 100%;
+        overflow-y: auto;
     }
 
     #header-section {
@@ -36,7 +37,7 @@ class MainMenu(Screen):
         height: auto;
         background: #16213e;
         border: round #0f3460;
-        padding: 1 2;
+        padding: 0 2;
         margin-bottom: 1;
     }
 
@@ -69,7 +70,7 @@ class MainMenu(Screen):
         height: auto;
         background: #16213e;
         border: round #0f3460;
-        padding: 1 2;
+        padding: 0 2;
         margin-bottom: 1;
     }
 
@@ -87,10 +88,16 @@ class MainMenu(Screen):
         margin-top: 1;
     }
 
-    #button_scroll {
+    #section_header {
+        color: #00d4ff;
+        text-style: bold;
+        text-align: center;
         width: 100%;
-        height: 1fr;
-        background: transparent;
+        padding: 0 2;
+        background: #16213e;
+        border: round #0f3460;
+        height: auto;
+        margin-bottom: 1;
     }
 
     #button_section {
@@ -184,41 +191,68 @@ class MainMenu(Screen):
     }
 
     FUN_FACTS = [
-        "A stack follows LIFO — last in, first out",
-        "Your CPU uses a call stack to track function calls",
-        "Undo/redo in every text editor is just two stacks",
-        "DFS graph traversal can be implemented with a stack",
-
-        "A queue follows FIFO — first in, first out",
-        "OS schedulers use priority queues to manage processes",
-        "BFS graph traversal uses a queue under the hood",
-        "Circular queues avoid the wasted space of linear queues",
-
-        "Linked lists excel at O(1) insertions and deletions",
-        "Your RAM is essentially a giant implicit linked structure",
-        "The Linux kernel uses doubly linked lists extensively",
-        "Linked lists trade random access for flexible memory use",
-
-        "BSTs keep data sorted for O(log n) average lookup",
-        "A perfectly balanced BST is basically a binary search",
-        "In-order traversal of a BST gives sorted output",
-        "AVL trees self-balance to guarantee O(log n) worst case",
-        "The first BST was described by P.F. Windley in 1960",
-
-        "Heaps give O(1) access to the min or max element",
-        "Heapsort runs in O(n log n) with O(1) extra space",
-        "Python's heap module is a min-heap by default",
-        "A heap is complete — every level filled left to right",
-
-        "Arrays have O(1) access because memory is contiguous",
-        "Hash tables offer O(1) average lookup via hashing",
-        "Dijkstra's algorithm uses a min-heap for efficiency",
-        "The word 'algorithm' comes from Al-Khwarizmi's name",
-        "Graphs model everything: maps, social networks, compilers",
-        "A trie can autocomplete words in O(L) where L is length",
-        "Most interview problems reduce to 5 core DS patterns",
-        "This one is special one the probability of this showing up is 3.6%"
-    ]
+    "A stack follows LIFO — last in, first out.",
+    "Your CPU uses a call stack to track function calls.",
+    "Undo/redo in every text editor is just two stacks.",
+    "DFS graph traversal can be implemented with a stack.",
+    "Bad programmers worry about the code. Good programmers worry about data structures and their relationships. — Linus Torvalds",
+    "Function call stack = the backbone of every program crash traceback you've ever read.",
+    "A queue follows FIFO — first in, first out.",
+    "OS schedulers use priority queues to manage processes.",
+    "BFS graph traversal uses a queue under the hood.",
+    "Circular queues avoid the wasted space of linear queues.",
+    "Print spoolers, task schedulers, and bread lines all speak Queue.",
+    "Premature optimization is the root of all evil. — Donald Knuth",
+    "Linked lists excel at O(1) insertions and deletions.",
+    "Your RAM is essentially a giant implicit linked structure.",
+    "The Linux kernel uses doubly linked lists extensively.",
+    "Linked lists trade random access for flexible memory use.",
+    "Random numbers should not be generated with a method chosen at random. — Donald Knuth",
+    "A pointer is just a memory address wearing a fancy hat.",
+    "BSTs keep data sorted for O(log n) average lookup.",
+    "A perfectly balanced BST is basically a binary search.",
+    "In-order traversal of a BST gives sorted output.",
+    "AVL trees self-balance to guarantee O(log n) worst case.",
+    "The first BST was described by P.F. Windley in 1960.",
+    "An algorithm must be seen to be believed. — Donald Knuth",
+    "Red-black trees: because perfectly balanced is too much work.",
+    "Heaps give O(1) access to the min or max element.",
+    "Heapsort runs in O(n log n) with O(1) extra space.",
+    "Python's heapq module is a min-heap by default.",
+    "A heap is complete — every level filled left to right.",
+    "If you optimize everything, you will always be unhappy. — Donald Knuth",
+    "Dijkstra's algorithm uses a min-heap to find shortest paths fast.",
+    "Arrays have O(1) access because memory is contiguous.",
+    "Hash tables offer O(1) average lookup via hashing.",
+    "The word 'algorithm' comes from Al-Khwarizmi's name.",
+    "Graphs model everything: maps, social networks, compilers.",
+    "A trie can autocomplete words in O(L) where L is length.",
+    "Most interview problems reduce to 5 core DS patterns.",
+    "Talk is cheap. Show me the code. — Linus Torvalds",
+    "Computer Science is no more about computers than astronomy is about telescopes. — Edsger W. Dijkstra",
+    "Programs are meant to be read by humans and only incidentally for computers to execute. — Donald Knuth",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. — Martin Fowler",
+    "There are only two hard things in Computer Science: cache invalidation and naming things. — Phil Karlton",
+    "If debugging is the process of removing software bugs, then programming must be the process of putting them in. — Edsger Dijkstra",
+    "Given enough eyeballs, all bugs are shallow. — Linus Torvalds",
+    "Intelligence is the ability to avoid doing work, yet getting the work done. — Linus Torvalds",
+    "Science is what we understand well enough to explain to a computer. Art is everything else we do. — Donald Knuth",
+    "A programming language is a tool that has a profound influence on our thinking habits. — Edsger Dijkstra",
+    "Code never lies, comments sometimes do. — Ron Jeffries",
+    "The best programs are written so that computing machines can perform them quickly and so that human beings can understand them clearly. — Donald Knuth",
+    "Legacy code is code without tests. — Michael Feathers",
+    "Simplicity is the ultimate sophistication. — Leonardo da Vinci",
+    "Developers are drawn to complexity like moths to a flame, frequently with the same result. — Neal Ford",
+    "Make illegal states unrepresentable. — Yaron Minsky",
+    "First, solve the problem. Then, write the code. — John Johnson",
+    "All models are wrong but some models are useful. — George Box",
+    "Beware of bugs in the above code; I have only proved it correct, not tried it. — Donald Knuth",
+    "Smart data structures and dumb code works a lot better than the other way around. — Eric S. Raymond",
+    "I am not a visionary. I'm an engineer. I'm happy with the people who are wandering around looking at the stars but I am looking at the ground and I want to fix the pothole before I fall in. — Linus Torvalds",
+    "Most good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program. — Linus Torvalds",
+    "The enjoyment of one's tools is an essential ingredient of successful work. — Donald Knuth",
+    "The computer is simply an instrument whose music is ideas. — Alan Kay",
+]
 
     def __init__(self):
         super().__init__()
@@ -254,10 +288,8 @@ class MainMenu(Screen):
                 Static(self.random_fact, id="fun_fact"),
                 id="middle_section"
             ),
-            ScrollableContainer(
-                Container(id="button_section"),
-                id="button_scroll"
-            ),
+            Static("Categories", id="section_header"),
+            Container(id="button_section"),
             id="main_menu_container"
         )
 
@@ -273,30 +305,21 @@ class MainMenu(Screen):
 
     def _get_random_dsa_art(self) -> str:
         arts = [
-            "  [top]  \n  [ 5 ]  \n  [ 3 ]  \n  [ 7 ]  \n[bottom]",
-            "  ┌─────┐\n  │  9  │\n  │  4  │\n  │  1  │\n  └─────┘",
-            "  PUSH →\n  [ A ]  \n  [ B ]  \n  [ C ]  \n  ← POP",
-
-            "[front] [ 1 ] [ 2 ] [ 3 ] [rear]",
-            "enq→ [ 7 ][ 5 ][ 3 ][ 1 ] →deq",
-
-            "[ 5 ] -> [ 3 ] -> [ 7 ] -> [NULL]",
-            "┌───┐  ┌───┐  ┌───┐\n│ 1 │→ │ 2 │→ │ 3 │→ NULL\n└───┘  └───┘  └───┘",
-            "NULL ← [ A ] ↔ [ B ] ↔ [ C ] → NULL",
-
-            "    5    \n   / \\   \n  3   7  \n / \\     \n1   4    ",
-            "      8\n    /   \\\n   3     10\n  / \\      \\\n 1   6     14",
-            "   [50]\n  /    \\\n[30]  [70]\n /  \\\n[20][40]",
-
-            "[ 1 ]\n[ 3 ] [ 2 ]\n[ 5 ] [ 4 ] [ 6 ] [ 7 ]",
-            "      [1]\n    [3] [2]\n  [7][6][5][4]",
-            "min→ [1][3][2][7][6][5][4]",
-
-            "┌───┬───┬───┬───┐\n│ 4 │ 2 │ 7 │ 1 │\n└───┴───┴───┴───┘\n  0   1   2   3",
-            "[ 10 | 20 | 30 | 40 | 50 ]",
-
-            "  A --- B\n  |  \\  |\n  C --- D",
-            "  (A)→(B)→(D)\n   ↓    ↓\n  (C)→(E)",
+    "   ┌─────┐\n   │  5  │  ← TOP\n   ├─────┤\n   │  3  │\n   ├─────┤\n   │  7  │\n   └─────┘",
+    "    PUSH\n      ↓\n   ┌─────┐\n   │  A  │\n   ├─────┤\n   │  B  │\n   ├─────┤\n   │  C  │\n   └─────┘\n      ↑\n     POP",
+    "  FRONT → ┌───┬───┬───┐ ← REAR\n          │ 1 │ 2 │ 3 │\n          └───┴───┴───┘",
+    "  ENQUEUE →  ┌───┐ ┌───┐ ┌───┐\n             │ 7 │→│ 5 │→│ 3 │ → DEQUEUE\n             └───┘ └───┘ └───┘",
+    "  HEAD\n   ↓\n  ┌───┐    ┌───┐    ┌───┐\n  │ 1 │───→│ 2 │───→│ 3 │───→ NULL\n  └───┘    └───┘    └───┘",
+    "  NULL ←──┬──→ ┌───┐ ←──┬──→ ┌───┐\n          │    │ A │    │    │ B │\n          └──→ └───┘ ───→ └──→ └───┘ → NULL",
+    "       5\n      / \\\n     3   7\n    / \\\n   1   4",
+    "      [8]\n     /   \\\n   [3]   [10]\n   / \\\n [1] [6]",
+    "       [1]\n      /   \\\n    [3]   [2]\n   / \\\n [7] [6]",
+    "  ┌───┬───┬───┬───┐\n  │ 4 │ 2 │ 7 │ 1 │\n  └───┴───┴───┴───┘\n    0   1   2   3",
+    "  ┌────┬────┬────┬────┐\n  │ 10 │ 20 │ 30 │ 40 │\n  └────┴────┴────┴────┘\n    0    1    2    3",
+    "  ┌─────────┬─────────┐\n  │  key    │  value  │\n  ├─────────┼─────────┤\n  │  \"dsa\"  │   42    │\n  │  \"ai\"   │   99    │\n  └─────────┴─────────┘",
+    "     A ─── B\n     │     │\n     C ─── D",
+    "    (A)──→(B)──→(D)\n     ↓     ↓\n    (C)──→(E)",
+    "       ROOT\n        │\n    ┌───┴───┐\n    ↓       ↓\n    a       b\n    │       │\n    ↓       ↓\n    p       a\n    │\n    ↓\n    p\n    │\n    ↓\n    l\n    │\n    ↓\n    e",
 ]
         return random.choice(arts)
 
@@ -324,6 +347,7 @@ class MainMenu(Screen):
     def _show_search_results(self, query: str) -> None:
         self.show_level_2 = False
         self.query_one("#middle_section").display = False
+        self.query_one("#section_header").display = False
 
         matches = self._collect_matches(query)
         container = self.query_one("#button_section")
@@ -345,6 +369,7 @@ class MainMenu(Screen):
 
     def _restore_normal_state(self) -> None:
         self.query_one("#middle_section").display = True
+        self.query_one("#section_header").display = True
         if self.show_level_2:
             self._build_level_2_buttons(self.selected_category)
         else:
@@ -353,11 +378,13 @@ class MainMenu(Screen):
     def _show_level_1(self) -> None:
         self.show_level_2 = False
         self.selected_category = None
+        self.query_one("#section_header").update("Categories")
         self._build_level_1_buttons()
 
     def _show_level_2(self, category: str) -> None:
         self.show_level_2 = True
         self.selected_category = category
+        self.query_one("#section_header").update("Modules")
         self._build_level_2_buttons(category)
 
     def _build_level_1_buttons(self) -> None:
