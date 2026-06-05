@@ -188,6 +188,7 @@ class MainMenu(Screen):
         "LinkedList": ["Singly LinkedList", "Doubly LinkedList"],
         "BST": ["Binary Search Tree"],
         "PriorityQueue": ["Heap"],
+        "Algorithms": [],
     }
 
     FUN_FACTS = [
@@ -420,6 +421,10 @@ class MainMenu(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
+
+        if button_id == "category_Algorithms":
+            self.notify("Sorting & Searching algorithms coming in a future release!", severity="information")
+            return
 
         if button_id.startswith("category_"):
             category = button_id.replace("category_", "")
