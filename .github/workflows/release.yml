@@ -20,9 +20,27 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - run: choco install mingw -y
-      - run: make -f makefile.windows all
-      - uses: actions/upload-artifact@v4
+
+      - name: Install MinGW
+        run: choco install mingw -y
+
+      - name: Build Windows binaries
+        run: make -f makefile.windows all
+
+      - name: Smoke test binaries
+        run: |
+          cd tracedsa/bins/windows
+          echo "=== Testing stackll ==="
+          .\stackll.exe || echo "stackll FAILED"
+          echo "=== Testing stack ==="
+          .\stack.exe || echo "stack FAILED"
+          echo "=== Binary sizes ==="
+          dir
+          echo "=== Checking for common DLLs ==="
+          strings stackll.exe | findstr "libgcc\|libstdc\|pthread" || echo "No obvious runtime DLLs found"
+
+      - name: Upload Windows binaries
+        uses: actions/upload-artifact@v4
         with:
           name: bins-windows
           path: tracedsa/bins/windows/
