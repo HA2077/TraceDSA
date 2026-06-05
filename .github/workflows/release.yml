@@ -1,0 +1,66 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make -f makefile.inter all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bins-linux
+          path: tracedsa/bins/linux/
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: choco install mingw -y
+      - run: make -f makefile.windows all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bins-windows
+          path: tracedsa/bins/windows/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install gcc
+      - run: make -f makefile.macos CXX=g++-14 all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bins-macos
+          path: tracedsa/bins/macos/
+
+  publish:
+    needs: [build-linux, build-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bins-linux
+          path: tracedsa/bins/linux
+      - uses: actions/download-artifact@v4
+        with:
+          name: bins-windows
+          path: tracedsa/bins/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: bins-macos
+          path: tracedsa/bins/macos
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install hatch twine
+      - run: hatch build
+      - run: twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
