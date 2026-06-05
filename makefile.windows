@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic
+CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic -static -static-libgcc -static-libstdc++
 
 BINS = tracedsa/bins/windows
 
