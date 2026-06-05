@@ -1,19 +1,34 @@
 import subprocess
 import platform
 import os
+import stat
 
 def get_binary(name):
     system = platform.system().lower()
     ext = ".exe" if system == "windows" else ""
     folder = "macos" if system == "darwin" else system
     base = os.path.dirname(__file__)
-    return os.path.join(base, "bins", folder, f"{name}{ext}")
+    binary = os.path.join(base, "bins", folder, f"{name}{ext}")
+    
+    if not os.path.exists(binary):
+        raise FileNotFoundError(f"Binary not found: {binary}")
+    
+    if os.name != "nt":  # Not Windows
+        try:
+            mode = os.stat(binary).st_mode
+            if not (mode & stat.S_IEXEC):
+                os.chmod(binary, mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+        except (OSError, PermissionError):
+            pass  # Best effort only
+    
+    return binary
 
 class DSBridge:
     def __init__(self, name):
         self.name = name
+        binary = get_binary(name)
         self.proc = subprocess.Popen(
-            [get_binary(name)],
+            [binary],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,

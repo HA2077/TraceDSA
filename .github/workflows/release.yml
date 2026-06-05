@@ -47,14 +47,22 @@ jobs:
         with:
           name: bins-linux
           path: tracedsa/bins/linux
+
       - uses: actions/download-artifact@v4
         with:
           name: bins-windows
           path: tracedsa/bins/windows
+
       - uses: actions/download-artifact@v4
         with:
           name: bins-macos
           path: tracedsa/bins/macos
+
+      - name: Fix executable permissions
+        run: |
+          chmod -R +x tracedsa/bins/linux/
+          chmod -R +x tracedsa/bins/macos/
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
