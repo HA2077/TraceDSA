@@ -1,25 +1,70 @@
-# Data Structures in C++ (TraceDSA)
-**A collection of foundational Data Structures implemented from scratch in C++, built for a better understanding of the data structure course I am taking.**
+<div align="center">
 
-## 🚀 Current Modules
+# TraceDSA
 
-* **Stack:** Implemented using a custom `ArrayList` (LIFO). Includes manual boundary checking to ensure stability during `pop` operations.
-* **Queue:** Implemented using a custom `ArrayList` (FIFO). Utilizes dynamic resizing to eliminate fixed-size limitations.
-* **Singly Linked List:** Built using custom `Node` structs and `nullptr` for modern memory safety (C++23 standard). Supports insertion and deletion at both ends and by specific value.
-* **Binary Search Tree (BST):** Implemented with insert, remove, find operations and three traversal methods (Pre-order, In-order, Post-order).
-* **Priority Queue (Heap):** Implemented with both Min-Heap and Max-Heap functionality, supporting insert, extract-min/max, and peek operations.
+**Visualize Data Structures in real time a Python TUI powered by C++23 binaries.**
 
-## 🛠️ Extended Roadmap
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/tracedsa)](https://pypi.org/project/tracedsa/)
 
-As the semester progresses, the following structures will be implemented in sync with the course syllabus:
+</div>
 
-- [x] **ArrayList:** Manual implementation of a dynamic array (resizing logic).
-- [x] **Trees:** Binary Search Trees (BST) and traversal algorithms (In-order, Pre-order, Post-order).
-- [x] **Priority Queues:** Implementation using Heaps.
-- [ ] **Unified TUI:** A Terminal User Interface for real-time visualization of data states.
-    * *Note: Still evaluating whether to use Python for the TUI wrapper or keep it pure C++.*
+![TraceDSA SC](docs/Trace.png)
 
-## 💻 Tech Stack
-* **Language:** C++23 (utilizing `nullptr` and modern standards).
-* **Environment:** Linux / Windows GCC.
-* **Key Improvement:** Stack and Queue now use a custom ArrayList implementation instead of STL vector or fixed arrays.
+## Features
+
+- 9 data structures with live ASCII visualization
+- C++23 backend binaries via subprocess bridge
+- Real-time operation log with color-coded responses
+- DS info screen summary, Big O, pros/cons, usage
+- Search and filter modules from the menu
+- Min/Max heap toggle
+- Works out of the box via pip
+
+## What is it
+
+TraceDSA is a terminal user interface that wraps custom C++23 data structure implementations in an interactive Python TUI. It lets you explore how stacks, queues, trees, and heaps behave with live ASCII art, operation logging, and instant feedback after every command.
+
+## Install & Run
+
+```bash
+pip install tracedsa
+tdsa
+```
+
+## Data Structures
+
+| Category | Modules |
+|----------|---------|
+| **Stack** | Stack (Array), Stack (LinkedList) |
+| **Queue** | Queue (Array), Queue (LinkedList), Circular Queue |
+| **Linked List** | Singly LinkedList, Doubly LinkedList |
+| **BST** | Binary Search Tree |
+| **Heap** | Min-Heap, Max-Heap |
+
+## How it works
+
+TraceDSA uses a Python Textual TUI that spawns standalone C++23 interactive binaries as subprocesses. The TUI communicates with each binary via a simple stdin/stdout protocol (`PUSH 10` → `OK Stack: [10]`). Every button press sends a command, and the response updates the ASCII visualization and operation log in real time. No STL containers are used in the C++ backend every data structure is built from scratch.
+
+## Requirements
+
+- Python 3.10+
+- Linux (Windows & macOS in progress)
+
+## Built With
+
+- **Python** — [Textual](https://github.com/Textualize/textual) framework for the TUI
+- **C++23** — All data structures implemented from scratch (no STL containers)
+
+## Author
+
+**HA** [GitHub](https://github.com/HA2077) · [LinkedIn](https://www.linkedin.com/in/hassanahmedcs/)
+
+## License
+
+MIT see [LICENSE](LICENSE)
+
+--- 
+
+Made with ❤️ and stay tuned for updates!
